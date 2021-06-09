@@ -11,7 +11,7 @@ const Leveling = require('../src/index');
 const leveling = new Leveling(bot, {
     storagePath: './leveling.json', // Full path to a JSON file. Default: './leveling.json'.
     checkStorage: true, // Checks the if database file exists and if it has errors. Default: true.
-    xp: 5, // Amount of XP that user will receive after sending a message. Default: 5.
+    xp: 5000, // Amount of XP that user will receive after sending a message. Default: 5.
     maxXP: 300, // Amount of XP that user will need to reach the next level. This value will double for each level. Default: 300.
     status: true, // You can enable or disable the leveling system using this option. Default: true.
     lockedChannels: [], // Array of channel IDs that won't give XP to users. Default: [].
@@ -27,9 +27,30 @@ const leveling = new Leveling(bot, {
     }
 });
 
+
 leveling.on('levelUp', data => {
+    console.log(`${data.user.tag} just reached the level ${data.level} on server with ID ${data.guildID}.`)
     data.sendMessage(`Congrats, ${data.user}, you just reached the level **${data.level}**!`)
 })
+leveling.on('addXP', data => {
+    console.log(`User with ID ${data.userID} just received ${data.xp} XP on server with ID ${data.guildID}.`)
+})
+leveling.on('setXP', data => {
+    console.log(`Someone's just set ${data.xp} XP to user with ID ${data.userID} on server with ID ${data.guildID}.`)
+})
+leveling.on('addLevel', data => {
+    console.log(`Someone's just added ${data.level} levels to user with ID ${data.userID} on server with ID ${data.guildID}.`)
+})
+leveling.on('setLevel', data => {
+    console.log(`Someone's just set level ${data.level} to user with ID ${data.userID} on server with ID ${data.guildID}.`)
+})
+leveling.on('addTotalXP', data => {
+    console.log(`Someone's just added ${data.totalXP} of total XP to user with ID ${data.userID} on server with ID ${data.guildID}.`)
+})
+leveling.on('setTotalXP', data => {
+    console.log(`Someone's just set ${data.totalXP} of total XP to user with ID ${data.userID} on server with ID ${data.guildID}.`)
+})
+
 
 bot.on('message', async message => {
     if (message.content.startsWith(prefix + 'help')) return message.channel.send(`Commands:\n${prefix}help\n${prefix}rank (${prefix}ranks)\n${prefix}leaderboard (${prefix}lb)`)

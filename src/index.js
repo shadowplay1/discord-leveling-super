@@ -183,6 +183,8 @@ module.exports = class Leveling extends EventEmitter {
                 difference: this.options.maxXP
             }
             this.emit('setLevel', {
+                userID: memberID,
+                guildID,
                 xp: 0,
                 totalXP: 0,
                 level: Number(level),
@@ -206,6 +208,8 @@ module.exports = class Leveling extends EventEmitter {
             difference: ranks.maxXP - ranks.xp
         }
         this.emit('setLevel', {
+            userID: memberID,
+            guildID,
             xp: ranks.xp,
             totalXP: ranks.totalXP,
             level: Number(level),
@@ -251,6 +255,8 @@ module.exports = class Leveling extends EventEmitter {
                 difference: this.options.maxXP
             }
             this.emit('addLevel', {
+                userID: memberID,
+                guildID,
                 xp: 0,
                 totalXP: 0,
                 level: Number(level),
@@ -274,9 +280,11 @@ module.exports = class Leveling extends EventEmitter {
             difference: ranks.maxXP - ranks.xp
         }
         this.emit('addLevel', {
+            userID: memberID,
+            guildID,
             xp: ranks.xp,
             totalXP: ranks.totalXP,
-            level: Number(level) + ranks.level,
+            level: Number(level),
             maxXP: ranks.maxXP,
             difference: ranks.maxXP - ranks.xp
         })
@@ -319,6 +327,8 @@ module.exports = class Leveling extends EventEmitter {
                 difference: this.options.maxXP
             }
             this.emit('setXP', {
+                userID: memberID,
+                guildID,
                 xp: Number(xp),
                 totalXP: 0,
                 level: 1,
@@ -342,6 +352,8 @@ module.exports = class Leveling extends EventEmitter {
             difference: ranks.maxXP - Number(xp)
         }
         this.emit('setXP', {
+            userID: memberID,
+            guildID,
             xp: Number(xp),
             totalXP: ranks.totalXP,
             level: ranks.level,
@@ -387,6 +399,8 @@ module.exports = class Leveling extends EventEmitter {
                 difference: this.options.maxXP
             }
             this.emit('addXP', {
+                userID: memberID,
+                guildID,
                 xp: Number(xp),
                 totalXP: 0,
                 level: 1,
@@ -410,7 +424,9 @@ module.exports = class Leveling extends EventEmitter {
             difference: ranks.maxXP - xp
         }
         this.emit('addXP', {
-            xp: ranks.xp + Number(xp),
+            userID: memberID,
+            guildID,
+            xp: Number(xp),
             totalXP: ranks.totalXP,
             level: ranks.level,
             maxXP: ranks.maxXP,
@@ -455,6 +471,8 @@ module.exports = class Leveling extends EventEmitter {
                 difference: this.options.maxXP
             }
             this.emit('setTotalXP', {
+                userID: memberID,
+                guildID,
                 xp: 0,
                 totalXP: Number(xp),
                 level: 1,
@@ -477,7 +495,9 @@ module.exports = class Leveling extends EventEmitter {
             maxXP: ranks.maxXP,
             difference: ranks.maxXP - ranks.xp
         }
-        this.emit('addTotalXP', {
+        this.emit('setTotalXP', {
+            userID: memberID,
+            guildID,
             xp: ranks.xp,
             totalXP: Number(xp),
             level: ranks.level,
@@ -523,6 +543,8 @@ module.exports = class Leveling extends EventEmitter {
                 difference: this.options.maxXP
             }
             this.emit('addTotalXP', {
+                userID: memberID,
+                guildID,
                 xp: 0,
                 totalXP: Number(xp),
                 level: 1,
@@ -546,8 +568,10 @@ module.exports = class Leveling extends EventEmitter {
             difference: ranks.maxXP - ranks.xp
         }
         this.emit('addTotalXP', {
+            userID: memberID,
+            guildID,
             xp: ranks.xp,
-            totalXP: ranks.totalXP + Number(xp),
+            totalXP: Number(xp),
             level: ranks.level,
             maxXP: ranks.maxXP,
             difference: ranks.maxXP - ranks.xp
@@ -689,7 +713,7 @@ module.exports = class Leveling extends EventEmitter {
                 this.options.lockedChannels == undefined ? this.options.lockedChannels = [] : this.options.lockedChannels
                 this.options.filter == undefined ? this.options.filter = () => true : this.options.filter
                 this.options.xp == undefined || this.options.xp == null ? this.options.xp = 5 : this.options.xp = this.options.xp
-                this.options.maxXP == undefined || this.options.maxXP == null ? this.options.maxXP = 300 : this.options.xp = this.options.maxXP
+                this.options.maxXP == undefined || this.options.maxXP == null ? this.options.maxXP = 300 : this.options.maxXP = this.options.maxXP
                 this.options.checkStorage == undefined ? this.options.checkStorage = true : this.options.checkStorage
                 typeof this.options.updater == 'object' ? this.options.updater : this.options.updater = {}
                 typeof this.options.errorHandler == 'object' ? this.options.errorHandler : this.options.errorHandler = {}
@@ -812,6 +836,7 @@ module.exports = class Leveling extends EventEmitter {
                         }
                         if (xp >= maxXP - 1) {
                             this.emit('levelUp', {
+                                guildID,
                                 user: message.author,
                                 level: level + 1,
                                 maxXP: this.options.maxXP * (level + 1),
@@ -837,6 +862,15 @@ module.exports = class Leveling extends EventEmitter {
                                 maxXP,
                                 difference: maxXP - (xp + messageXP)
                             }
+                            this.emit('addXP', {
+                                guildID: message.guild.id,
+                                userID: message.author.id,
+                                xp: messageXP,
+                                totalXP: totalXP + messageXP,
+                                level,
+                                maxXP,
+                                difference: maxXP - (xp + messageXP)
+                            })
                             writeFileSync(this.options.storagePath, JSON.stringify(obj, null, '\t'))
                         }
                     }

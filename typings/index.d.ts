@@ -20,7 +20,7 @@ declare module 'discord-leveling-super' {
         /**
          * Constructor options object.
          */
-        public options: Options
+        public options: LevelingOptions
         /**
          * Database checking interval.
          */
@@ -28,7 +28,7 @@ declare module 'discord-leveling-super' {
         /**
          * Leveling errors object.
          */
-        public errors: ErrorList
+        public errors: LevelingErrorList
         /**
          * 'LevelingError' Error instance.
          */
@@ -36,9 +36,9 @@ declare module 'discord-leveling-super' {
         /**
          * The Leveling class.
          * @param {Client} client Discord Bot Client.
-         * @param {Options} options Constructor options object.
+         * @param {LevelingOptions} options Constructor options object.
          */
-        constructor(client: Client, options?: Options)
+        constructor(client: Client, options?: LevelingOptions)
         /**
         * Fetches the entire database.
         * @returns {Object} Database contents
@@ -138,15 +138,15 @@ declare module 'discord-leveling-super' {
          * @returns If started successfully: true; else: Error instance.
          */
         init(): Promise<true | Error>
-        on<K extends keyof ModuleEvents>(
+        on<K extends keyof LevelingEvents>(
             event: K,
-            listener: (...args: ModuleEvents[K][]) => void
+            listener: (...args: LevelingEvents[K][]) => void
         ): this;
-        once<K extends keyof ModuleEvents>(
+        once<K extends keyof LevelingEvents>(
             event: K,
-            listener: (...args: ModuleEvents[K][]) => void
+            listener: (...args: LevelingEvents[K][]) => void
         ): this;
-        emit<K extends keyof ModuleEvents>(event: K, ...args: ModuleEvents[K][]): boolean;
+        emit<K extends keyof LevelingEvents>(event: K, ...args: LevelingEvents[K][]): boolean;
     }
     class LevelingError extends Error {
         /**
@@ -160,11 +160,11 @@ declare module 'discord-leveling-super' {
         constructor(message: string | Error) { }
     }
     namespace Leveling {
-        declare const version: '1.0.0'
+        declare const version: '1.0.2'
     }
     export = Leveling;
 }
-interface Options {
+interface LevelingOptions {
     /**
     * Full path to a JSON file. Default: './storage.json'.
     */
@@ -232,27 +232,39 @@ interface Options {
 }
 interface LevelData {
     /**
+     * Guild ID.
+     */
+    guildID: string
+    /**
+     * User ID.
+     */
+    userID: string
+    /**
      * User's amount of XP.
      */
-    xp: number,
+    xp: number
     /**
      * User's total amount of XP.
      */
-    totalXP: number,
+    totalXP: number
     /**
      * User's level.
      */
-    level: number,
+    level: number
     /**
     * How much XP in total the user need to reach the next level.
     */
-    maxXP: number,
+    maxXP: number
     /**
     * The difference between max XP and current amount of XP. It shows how much XP he need to reach the next level.
     */
     difference: number
 }
 interface LevelUpData {
+    /**
+     * Guild ID.
+     */
+    guildID: string
     /**
      * The user reached a new level.
      */
@@ -295,7 +307,7 @@ interface LeaderboardData {
     difference: Number,
     user: GuildMember
 }
-interface ModuleEvents {
+interface LevelingEvents {
     levelUp: LevelUpData,
     setLevel: LevelData,
     addLevel: LevelData,
@@ -304,7 +316,7 @@ interface ModuleEvents {
     setTotalXP: LevelData,
     addTotalXP: LevelData
 }
-interface ErrorList {
+interface LevelingErrorList {
     noClient: 'Specify the bot client.',
     notReady: 'The module is not ready to work.',
     oldNodeVersion: 'This module is supporting only Node.js v14 or newer. Installed version is ',

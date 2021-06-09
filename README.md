@@ -152,6 +152,19 @@ bot.login('token') // https://discord.com/developers/applications
 <ul>
     <li><b>The first version of the module: added leveling methods, events, LevelingError class and type defenitions.</b></li>
 </ul>
+<b>1.0.1</b>
+<ul>
+    <li><b>Code optimization.</b></li>
+    <li><b>Fixed typos.</b></li>
+</ul>
+<b>1.0.2</b>
+<ul>
+    <li><b>Code optimization.</b></li>
+    <li><b>Fixed typos.</b></li>
+    <li><b>Fixed bugs.</b></li>
+    <li><b>Added an events example, updated and fixed other examples.</b></li>
+    <li><b>Now every event is returning a guild ID and user ID with other properties and 'levelUp' event is also returns a guild ID.</b></li>
+</ul>
 
 ## Useful Links
 <ul>
