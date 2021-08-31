@@ -2,7 +2,7 @@
     "meta": {
         "generator": "0.10.0",
         "format": 20,
-        "date": 1630404115605
+        "date": 1630419217046
     },
     "custom": {
         "general": {
@@ -260,7 +260,7 @@
                     "meta": {
                         "line": 39,
                         "file": "index.js",
-                        "path": "../discord-leveling-super1/src"
+                        "path": "../discord-leveling-super/src"
                     }
                 },
                 {
@@ -277,7 +277,7 @@
                     "meta": {
                         "line": 44,
                         "file": "index.js",
-                        "path": "../discord-leveling-super1/src"
+                        "path": "../discord-leveling-super/src"
                     }
                 },
                 {
@@ -293,7 +293,7 @@
                     "meta": {
                         "line": 49,
                         "file": "index.js",
-                        "path": "../discord-leveling-super1/src"
+                        "path": "../discord-leveling-super/src"
                     }
                 },
                 {
@@ -309,7 +309,7 @@
                     "meta": {
                         "line": 54,
                         "file": "index.js",
-                        "path": "../discord-leveling-super1/src"
+                        "path": "../discord-leveling-super/src"
                     }
                 },
                 {
@@ -325,7 +325,7 @@
                     "meta": {
                         "line": 59,
                         "file": "index.js",
-                        "path": "../discord-leveling-super1/src"
+                        "path": "../discord-leveling-super/src"
                     }
                 },
                 {
@@ -342,7 +342,7 @@
                     "meta": {
                         "line": 64,
                         "file": "index.js",
-                        "path": "../discord-leveling-super1/src"
+                        "path": "../discord-leveling-super/src"
                     }
                 },
                 {
@@ -358,7 +358,7 @@
                     "meta": {
                         "line": 69,
                         "file": "index.js",
-                        "path": "../discord-leveling-super1/src"
+                        "path": "../discord-leveling-super/src"
                     }
                 },
                 {
@@ -374,7 +374,7 @@
                     "meta": {
                         "line": 74,
                         "file": "index.js",
-                        "path": "../discord-leveling-super1/src"
+                        "path": "../discord-leveling-super/src"
                     }
                 }
             ],
@@ -401,7 +401,7 @@
                     "meta": {
                         "line": 82,
                         "file": "index.js",
-                        "path": "../discord-leveling-super1/src"
+                        "path": "../discord-leveling-super/src"
                     }
                 },
                 {
@@ -420,7 +420,7 @@
                     "meta": {
                         "line": 99,
                         "file": "index.js",
-                        "path": "../discord-leveling-super1/src"
+                        "path": "../discord-leveling-super/src"
                     }
                 },
                 {
@@ -439,7 +439,7 @@
                     "meta": {
                         "line": 106,
                         "file": "index.js",
-                        "path": "../discord-leveling-super1/src"
+                        "path": "../discord-leveling-super/src"
                     }
                 },
                 {
@@ -482,7 +482,7 @@
                     "meta": {
                         "line": 117,
                         "file": "index.js",
-                        "path": "../discord-leveling-super1/src"
+                        "path": "../discord-leveling-super/src"
                     }
                 },
                 {
@@ -519,7 +519,7 @@
                     "meta": {
                         "line": 137,
                         "file": "index.js",
-                        "path": "../discord-leveling-super1/src"
+                        "path": "../discord-leveling-super/src"
                     }
                 },
                 {
@@ -578,7 +578,7 @@
                     "meta": {
                         "line": 155,
                         "file": "index.js",
-                        "path": "../discord-leveling-super1/src"
+                        "path": "../discord-leveling-super/src"
                     }
                 },
                 {
@@ -637,7 +637,7 @@
                     "meta": {
                         "line": 227,
                         "file": "index.js",
-                        "path": "../discord-leveling-super1/src"
+                        "path": "../discord-leveling-super/src"
                     }
                 },
                 {
@@ -696,7 +696,7 @@
                     "meta": {
                         "line": 299,
                         "file": "index.js",
-                        "path": "../discord-leveling-super1/src"
+                        "path": "../discord-leveling-super/src"
                     }
                 },
                 {
@@ -755,7 +755,7 @@
                     "meta": {
                         "line": 370,
                         "file": "index.js",
-                        "path": "../discord-leveling-super1/src"
+                        "path": "../discord-leveling-super/src"
                     }
                 },
                 {
@@ -814,7 +814,7 @@
                     "meta": {
                         "line": 442,
                         "file": "index.js",
-                        "path": "../discord-leveling-super1/src"
+                        "path": "../discord-leveling-super/src"
                     }
                 },
                 {
@@ -873,7 +873,7 @@
                     "meta": {
                         "line": 514,
                         "file": "index.js",
-                        "path": "../discord-leveling-super1/src"
+                        "path": "../discord-leveling-super/src"
                     }
                 },
                 {
@@ -905,7 +905,7 @@
                     "meta": {
                         "line": 584,
                         "file": "index.js",
-                        "path": "../discord-leveling-super1/src"
+                        "path": "../discord-leveling-super/src"
                     }
                 },
                 {
@@ -948,7 +948,7 @@
                     "meta": {
                         "line": 601,
                         "file": "index.js",
-                        "path": "../discord-leveling-super1/src"
+                        "path": "../discord-leveling-super/src"
                     }
                 },
                 {
@@ -1002,7 +1002,7 @@
                     "meta": {
                         "line": 618,
                         "file": "index.js",
-                        "path": "../discord-leveling-super1/src"
+                        "path": "../discord-leveling-super/src"
                     }
                 },
                 {
@@ -1021,7 +1021,7 @@
                     "meta": {
                         "line": 662,
                         "file": "index.js",
-                        "path": "../discord-leveling-super1/src"
+                        "path": "../discord-leveling-super/src"
                     }
                 },
                 {
@@ -1049,7 +1049,7 @@
                     "meta": {
                         "line": 675,
                         "file": "index.js",
-                        "path": "../discord-leveling-super1/src"
+                        "path": "../discord-leveling-super/src"
                     }
                 },
                 {
@@ -1078,14 +1078,14 @@
                     "meta": {
                         "line": 730,
                         "file": "index.js",
-                        "path": "../discord-leveling-super1/src"
+                        "path": "../discord-leveling-super/src"
                     }
                 }
             ],
             "meta": {
                 "line": 33,
                 "file": "index.js",
-                "path": "../discord-leveling-super1/src"
+                "path": "../discord-leveling-super/src"
             }
         },
         {
@@ -1127,14 +1127,14 @@
                     "meta": {
                         "line": 19,
                         "file": "LevelingError.js",
-                        "path": "../discord-leveling-super1/src"
+                        "path": "../discord-leveling-super/src"
                     }
                 }
             ],
             "meta": {
                 "line": 4,
                 "file": "LevelingError.js",
-                "path": "../discord-leveling-super1/src"
+                "path": "../discord-leveling-super/src"
             }
         }
     ],
@@ -1187,7 +1187,7 @@
             "meta": {
                 "line": 933,
                 "file": "index.js",
-                "path": "../discord-leveling-super1/src"
+                "path": "../discord-leveling-super/src"
             }
         },
         {
@@ -1270,7 +1270,7 @@
             "meta": {
                 "line": 940,
                 "file": "index.js",
-                "path": "../discord-leveling-super1/src"
+                "path": "../discord-leveling-super/src"
             }
         },
         {
@@ -1376,7 +1376,7 @@
             "meta": {
                 "line": 950,
                 "file": "index.js",
-                "path": "../discord-leveling-super1/src"
+                "path": "../discord-leveling-super/src"
             }
         },
         {
@@ -1602,7 +1602,7 @@
             "meta": {
                 "line": 962,
                 "file": "index.js",
-                "path": "../discord-leveling-super1/src"
+                "path": "../discord-leveling-super/src"
             }
         },
         {
@@ -1639,7 +1639,7 @@
             "meta": {
                 "line": 984,
                 "file": "index.js",
-                "path": "../discord-leveling-super1/src"
+                "path": "../discord-leveling-super/src"
             }
         }
     ],
