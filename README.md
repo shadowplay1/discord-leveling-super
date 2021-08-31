@@ -29,7 +29,7 @@ pnpm add discord-leveling-super
 
 ## 🤓 | How to use?
 ### 1. Run `npm i discord-leveling-super`.
-### 2. Do `require` or `import` in your code to use the module.
+### 2. Do `require` or `import` in your code to use the module like this:
 ```js
 const Leveling = require('discord-leveling-super')
 // or:
@@ -40,7 +40,7 @@ import Leveling from 'discord-leveling-super'
 
 ### 1. [Clone this repository](https://github.com/shadowplay1/discord-leveling-super/archive/refs/heads/main.zip).
 ### 2. Run `npm run build` or `build.bat` file.
-### 3. Do `require` or `import` the `dist/index` path in your code to use the module.
+### 3. Do `require` or `import` the `dist/index` path in your code to use the module like this:
 ```js
 const Leveling = require('dist/index')
 // or:
