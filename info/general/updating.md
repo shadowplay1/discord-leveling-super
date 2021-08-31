@@ -25,7 +25,7 @@ So you have to change your code like this:
 - `leveling.setTotalXP()` ==> `leveling.totalXP.set()`
 - `leveling.all()` ==> `leveling.utils.all()`
 
-See the [changelog](https://dls-docs.tk/#/docs/main/stable/general/changelog) for the full list of changes.
+See the [changelog](https://dls-docs.tk/#/docs/main/1.0.3/general/changelog) for the full list of changes.
 
 ## ❗ | Useful Links
 <ul>
