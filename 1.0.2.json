@@ -1,0 +1,1647 @@
+{
+    "meta": {
+        "generator": "0.10.0",
+        "format": 20,
+        "date": 1630404115605
+    },
+    "custom": {
+        "general": {
+            "name": "General",
+            "files": {
+                "1.0.2-welcome": {
+                    "name": "Welcome",
+                    "type": "md",
+                    "content": "# Discord Leveling Super\r\n\r\n[![Downloads](https://img.shields.io/npm/dt/discord-leveling-super?style=for-the-badge)](https://www.npmjs.com/package/discord-leveling-super)\r\n[![Stable Version](https://img.shields.io/npm/v/discord-leveling-super?style=for-the-badge)](https://www.npmjs.com/package/discord-leveling-super)\r\n\r\n<b>Discord Leveling Super</b> - Easy and customizable leveling framework for your [Discord Bot](https://discord.js.org/#/).\r\n\r\n## Install\r\n<b>Please note:</br><b>\r\n<b>Node.js 14.0.0 or newer is required.</b><br>\r\n<b>All types in brackets mean the type of what the method or event returns.</b>\r\n```console\r\nnpm i discord-leveling-super\r\n```\r\n\r\n## Table of Contents\r\n<ul>\r\n  <li><b><a href=\"https://www.npmjs.com/package/discord-leveling-super#example-usage\">Example Usage</a></b></li>\r\n  <li><b><a href=\"https://www.npmjs.com/package/discord-leveling-super#constructor-options\">Constructor Options</a></b></li>\r\n  <li><b><a href=\"https://www.npmjs.com/package/discord-leveling-super#module-methods\">Module Methods</a></b></li>\r\n  <li><b><a href=\"https://www.npmjs.com/package/discord-leveling-super#module-properties\">Module Properties</a></b></li>\r\n  <li><b><a href=\"https://www.npmjs.com/package/discord-leveling-super#module-events\">Module Events</a></b></li>\r\n  <li><b><a href=\"https://www.npmjs.com/package/discord-leveling-super#changelog\">Changelog</a></b></li>\r\n  <li><b><a href=\"https://www.npmjs.com/package/discord-leveling-super#useful-links\">Useful Links</a></b></li>\r\n</ul>\r\n\r\n## Example Usage\r\n<b>Before we start, I will show you a simple example usage for this module.</b>\r\n\r\n```js\r\nconst { Client, Intents } = require('discord.js') // npm i discord.js\r\nconst bot = new Client({\r\n    partials: ['CHANNEL', 'GUILD_MEMBER', 'MESSAGE', 'REACTION', 'USER'], \r\n    ws: {\r\n        intents: Intents.ALL \r\n    } \r\n});\r\n\r\nconst botPrefix = '!';\r\nconst Leveling = require('discord-leveling-super');\r\nconst leveling = new Leveling(bot, {\r\n    storagePath: './leveling.json', // Full path to a JSON file. Default: './leveling.json'.\r\n    checkStorage: true, // Checks the if database file exists and if it has errors. Default: true.\r\n    xp: 5, // Amount of XP that user will receive after sending a message. Default: 5.\r\n    maxXP: 300, // Amount of XP that user will need to reach the next level. This value will double for each level. Default: 300.\r\n    status: true, // You can enable or disable the leveling system using this option. Default: true.\r\n    lockedChannels: [], // Array of channel IDs that won't give XP to users. Default: [].\r\n    filter: msg => !msg.content.startsWith(botPrefix), // Callback function that accepts amessage, it must return a boolean value and it will add XP only to authors of filtered messages.; Use 'null' to disable the filter. Default: null.\r\n    updater: {\r\n        checkUpdates: true, // Sends the update state message in console on start. Default: true.\r\n        upToDateMessage: true // Sends the message in console on start if module is up to date. Default: true.\r\n    },\r\n    errorHandler: {\r\n        handleErrors: true, // Handles all errors on start. Default: true.\r\n        attempts: 5, // Amount of attempts to load the module. Use 'null' for infinity attempts. Default: 5.\r\n        time: 3000 // Time between every attempt to start the module. Default: 3000.\r\n    }\r\n});\r\n\r\nleveling.on('levelUp', data => {\r\n    data.sendMessage(`Congrats, ${data.user}, you just reached the level **${data.level}**!`)\r\n})\r\n\r\nbot.on('ready', () => {\r\n  console.log(`${bot.user.tag} is ready!`);\r\n});\r\n\r\nbot.login('token') // https://discord.com/developers/applications\r\n```\r\n<b>Now, let's start!</b>\r\n\r\n## Constructor Options\r\n<b>Please note:</b>\r\n<br>\r\n<b>This module requires a Discord Bot Client as the first parameter. Options object is the seconds one.</b>\r\n<ul>\r\n    <li><b>options.storagePath: Full path to a JSON file. Default: './storage.json.' (String)</b></li>\r\n    <li><b>options.checkStorage: Checks for if database file exists and if it has errors. Default: true. (Boolean)</b></li>\r\n    <li><b>options.updateCountdown: Checks for if storage file exists in specified time (in ms). Default: 1000. (Number)</b></li>\r\n    <li><b>options.xp: Amount of XP that user will receive after sending a message. Default: 5. (Number)</b></li>\r\n    <li><b>options.maxXP: Amount of XP that user will totally need to reach the next level. This value will double for each level. Default: 300. (Number)</b></li>\r\n    <li><b>options.status: You can enable or disable the leveling system using this option. Default: true. (Boolean)</b></li>\r\n    <li><b>options.lockedChannels: Array of channel IDs that won't give XP to users. Default: []. (Array)</b></li>\r\n    <li><b>options.filter: Callback function that accepts amessage, it must return a boolean value and it will add XP only to authors of filtered messages.; Use 'null' to disable the filter. Default: null. (Function)</b></li>\r\n    <li><b>options.updater</b>: <b>Update Checker options object:</b>\r\n    <ul>\r\n        <li><b>options.updater.checkUpdates.</b>: <b>Sends the update state message in console on start. Default: true. (Boolean)</b></li>\r\n        <li><b>options.updater.upToDateMessage</b>: <b> Sends the message in console on start if module is up to date. Default: true. (Boolean)</b></li>\r\n    </ul>\r\n    <li><b>options.errorHandler</b>: <b>Error Handler options object:</b>\r\n    <ul>\r\n        <li><b>options.errorHandler.handleErrors.</b>: <b>Handles all errors on startup. Default: true. (Boolean)</b></li>\r\n        <li><b>options.errorHandler.attempts</b>: <b>Amount of attempts to load the module. Use 'null' for infinity attempts. Default: 5. (Number)</b></li>\r\n        <li><b>options.errorHandler.time</b>: <b>Time between every attempt to start the module. Default: 3000. (Number)</b></li>\r\n    </ul>\r\n</ul>\r\n<b>Once the module starts, the update checker will show you a beautiful message in your console!</b>\r\n\r\n![Up To Date Example](https://cdn.discordapp.com/attachments/764192017542283325/851913394872909844/Screenshot_6.png)\r\n\r\n![Out Of Date Example](https://cdn.discordapp.com/attachments/764192017542283325/851913976220090459/Screenshot_6.png)\r\n\r\n## Module Methods\r\n<ul>\r\n    <li><b>rank(memberID, guildID): Fetches the user's rank. (Object)</b></li>\r\n    <li><b>leaderboard(guildID): Returns a leaderboard array. (Array)</b></li>\r\n    <br>\r\n    <li><b>setLevel(level, memberID, guildID): Sets the level to specified user. (Object)</b></li>\r\n    <li><b>addLevel(level, memberID, guildID): Adds the level to specified user. (Object)</b></li>\r\n    <br>\r\n    <li><b>setXP(xp, memberID, guildID): Sets the XP to specified user. (Object)</b></li>\r\n    <li><b>addXP(xp, memberID, guildID): Adds the XP to specified user. (Object)</b></li>\r\n    <br>\r\n    <li><b>setTotalXP(xp, memberID, guildID): Sets the total XP to specified user. (Object)</b></li>\r\n    <li><b>addTotalXP(xp, memberID, guildID): Adds the total XP to specified user. (Object)</b></li>\r\n    <br>\r\n    <li><b>all(): Returns the database contents. (Object)</b></li>\r\n    <li><b>checkUpdates(): Checks for if the module is up to date. Returns a promise with data object. (Promise: Object)</b></li>\r\n    <br>\r\n    <li><b>removeGuild(guildID): Fully removes the guild from database. (Boolean)</b></li>\r\n    <li><b>removeUser(memberID, guildID): Removes the user from database. (Boolean)</b></li>\r\n    <br>\r\n    <li><b>clearStorage(): Clears the storage file. (Boolean)</b></li>\r\n    <li><b>kill(): Kills the Leveling instance. (Leveling Instance)</b></li>\r\n    <li><b>init(): Starts the module. (Promise: Boolean)</b></li>\r\n</ul>\r\n\r\n## Module Properties\r\n<ul>\r\n<li><b>Leveling.version: Returns the module version. (Boolean)</b></li>\r\n<li><b>Leveling.options: Returns the options object that you put in the Constructor (Object)</b></li>\r\n<li><b>Leveling.LevelingError: Returns the error class that this module is using. (Class)</b></li>\r\n<li><b>Leveling.ready: Module ready status. (Boolean)</b></li>\r\n<li><b>Leveling.errored: Module errored status. (Boolean)</b></li>\r\n<li><b>Leveling.interval: Database checking interval. (NodeJS.Timeout)</b></li>\r\n<li><b>Leveling.errors: Module errors object. (Object)</b></li>\r\n</ul>\r\n\r\n## Module Events\r\n<ul>\r\n<li><b>Leveling.on('levelUp'): Emits when someone's reached a new level.</b></li>\r\n<li><b>Leveling.on('setLevel'): Emits when you set the level to someone.</b></li>\r\n<li><b>Leveling.on('addLevel'): Emits when you add levels to someone.</b></li>\r\n<li><b>Leveling.on('setXP'): Emits when you set the XP to someone.</b></li>\r\n<li><b>Leveling.on('addXP'): Emits when you add the XP to someone.</b></li>\r\n<li><b>Leveling.on('setTotalXP'): Emits when you set the total XP to someone.</b></li>\r\n<li><b>Leveling.on('addTotalXP'): Emits when you add the total XP to someone.</b></li>\r\n</ul>\r\n\r\n## Changelog\r\n<b>1.0.0</b>\r\n<ul>\r\n    <li><b>The first version of the module: added leveling methods, events, LevelingError class and type defenitions.</b></li>\r\n</ul>\r\n<b>1.0.1</b>\r\n<ul>\r\n    <li><b>Code optimization.</b></li>\r\n    <li><b>Fixed typos.</b></li>\r\n</ul>\r\n<b>1.0.2</b>\r\n<ul>\r\n    <li><b>Code optimization.</b></li>\r\n    <li><b>Fixed typos.</b></li>\r\n    <li><b>Fixed bugs.</b></li>\r\n    <li><b>Added an events example, updated and fixed other examples.</b></li>\r\n    <li><b>Now every event is returning a guild ID and user ID with other properties and 'levelUp' event is also returns a guild ID.</b></li>\r\n</ul>\r\n\r\n## Useful Links\r\n<ul>\r\n<li><b><a href = \"https://www.npmjs.com/package/discord-leveling-super\">NPM</a></b></li>\r\n<li><b><a href = \"https://github.com/shadowplay1/discord-leveling-super\">Github</a></b></li>\r\n<li><b><a href = \"https://github.com/shadowplay1/discord-leveling-super/tree/main/examples\">Examples</a></b></li>\r\n<li><b><a href = \"https://discord.gg/afUTRzfb\">Discord Server</a></b></li>\r\n</ul>\r\n<b>If you found a bug, have any questions or need help, join the <a href = \"https://discord.gg/4pWKq8vUnb\">Support Server</a>.</b>\r\n<br>\r\n<b>Module Created by ShadowPlay.</b>\r\n\r\n# Thanks for using Discord Leveling Super ♥",
+                    "path": "info/general/1.0.2-welcome.md"
+                }
+            }
+        }
+    },
+    "classes": [
+        {
+            "name": "Leveling",
+            "construct": {
+                "name": "Leveling",
+                "description": "The Leveling class.",
+                "params": [
+                    {
+                        "name": "client",
+                        "description": "Discord Bot Client.",
+                        "type": [
+                            [
+                                [
+                                    "Client"
+                                ]
+                            ]
+                        ]
+                    },
+                    {
+                        "name": "options",
+                        "description": "Constructor options object.",
+                        "type": [
+                            [
+                                [
+                                    "Object"
+                                ]
+                            ]
+                        ]
+                    },
+                    {
+                        "name": "options.storagePath",
+                        "description": "Full path to a JSON file. Default: './leveling.json'.",
+                        "type": [
+                            [
+                                [
+                                    "String"
+                                ]
+                            ]
+                        ]
+                    },
+                    {
+                        "name": "options.checkStorage",
+                        "description": "Checks the if database file exists and if it has errors. Default: true",
+                        "type": [
+                            [
+                                [
+                                    "Boolean"
+                                ]
+                            ]
+                        ]
+                    },
+                    {
+                        "name": "options.xp",
+                        "description": "Amount of XP that user will receive after sending a message. Default: 5.",
+                        "type": [
+                            [
+                                [
+                                    "Number"
+                                ]
+                            ]
+                        ]
+                    },
+                    {
+                        "name": "options.status",
+                        "description": "You can enable or disable the leveling system using this option. Default: true.",
+                        "type": [
+                            [
+                                [
+                                    "Boolean"
+                                ]
+                            ]
+                        ]
+                    },
+                    {
+                        "name": "options.maxXP",
+                        "description": "Amount of XP that user will totally need to reach the next level. This value will double for each level. Default: 300.",
+                        "type": [
+                            [
+                                [
+                                    "Number"
+                                ]
+                            ]
+                        ]
+                    },
+                    {
+                        "name": "options.lockedChannels",
+                        "description": "Array of channel IDs that won't give XP to users. Default: [].",
+                        "type": [
+                            [
+                                [
+                                    "Array",
+                                    "<"
+                                ],
+                                [
+                                    "String",
+                                    ">"
+                                ]
+                            ]
+                        ]
+                    },
+                    {
+                        "name": "options.ignoredGuilds",
+                        "description": "Array of guilds on which none of the members will be given XP. Default: [].",
+                        "type": [
+                            [
+                                [
+                                    "Array",
+                                    "<"
+                                ],
+                                [
+                                    "String",
+                                    ">"
+                                ]
+                            ]
+                        ]
+                    },
+                    {
+                        "name": "options.multiplier",
+                        "description": "XP multiplier. Default: 1.",
+                        "type": [
+                            [
+                                [
+                                    "Boolean"
+                                ]
+                            ]
+                        ]
+                    },
+                    {
+                        "name": "options.filter",
+                        "description": "Callback function that must return a boolean value, it will add XP only to authors of filtered messages. Default: null.",
+                        "type": [
+                            [
+                                [
+                                    "FilterFunction"
+                                ]
+                            ]
+                        ]
+                    },
+                    {
+                        "name": "options.updateCountdown",
+                        "description": "Checks for if storage file exists in specified time (in ms). Default: 1000.",
+                        "type": [
+                            [
+                                [
+                                    "Number"
+                                ]
+                            ]
+                        ]
+                    },
+                    {
+                        "name": "options.updater",
+                        "description": "Update Checker options object.",
+                        "type": [
+                            [
+                                [
+                                    "Object"
+                                ]
+                            ]
+                        ]
+                    },
+                    {
+                        "name": "options.updater.checkUpdates",
+                        "description": "Sends the update state message in console on start. Default: true.",
+                        "type": [
+                            [
+                                [
+                                    "Boolean"
+                                ]
+                            ]
+                        ]
+                    },
+                    {
+                        "name": "options.updater.upToDateMessage",
+                        "description": "Sends the message in console on start if module is up to date. Default: true.",
+                        "type": [
+                            [
+                                [
+                                    "Boolean"
+                                ]
+                            ]
+                        ]
+                    },
+                    {
+                        "name": "options.errorHandler",
+                        "description": "Error Handler options object.",
+                        "type": [
+                            [
+                                [
+                                    "Object"
+                                ]
+                            ]
+                        ]
+                    },
+                    {
+                        "name": "options.errorHandler.handleErrors",
+                        "description": "Handles all errors on startup. Default: true.",
+                        "type": [
+                            [
+                                [
+                                    "Boolean"
+                                ]
+                            ]
+                        ]
+                    },
+                    {
+                        "name": "options.errorHandler.attempts",
+                        "description": "Amount of attempts to load the module. Use 'null' for infinity attempts. Default: 5.",
+                        "type": [
+                            [
+                                [
+                                    "Number"
+                                ]
+                            ]
+                        ]
+                    },
+                    {
+                        "name": "options.errorHandler.time",
+                        "description": "Time between every attempt to start the module (in ms). Default: 3000.",
+                        "type": [
+                            [
+                                [
+                                    "Number"
+                                ]
+                            ]
+                        ]
+                    }
+                ]
+            },
+            "props": [
+                {
+                    "name": "ready",
+                    "description": "Module ready status.",
+                    "nullable": true,
+                    "type": [
+                        [
+                            [
+                                "Boolean"
+                            ]
+                        ]
+                    ],
+                    "meta": {
+                        "line": 39,
+                        "file": "index.js",
+                        "path": "../discord-leveling-super1/src"
+                    }
+                },
+                {
+                    "name": "errored",
+                    "description": "Leveling errored status.",
+                    "nullable": true,
+                    "type": [
+                        [
+                            [
+                                "Boolean"
+                            ]
+                        ]
+                    ],
+                    "meta": {
+                        "line": 44,
+                        "file": "index.js",
+                        "path": "../discord-leveling-super1/src"
+                    }
+                },
+                {
+                    "name": "version",
+                    "description": "Module version.",
+                    "type": [
+                        [
+                            [
+                                "String"
+                            ]
+                        ]
+                    ],
+                    "meta": {
+                        "line": 49,
+                        "file": "index.js",
+                        "path": "../discord-leveling-super1/src"
+                    }
+                },
+                {
+                    "name": "docs",
+                    "description": "Link to the module's documentation website.",
+                    "type": [
+                        [
+                            [
+                                "String"
+                            ]
+                        ]
+                    ],
+                    "meta": {
+                        "line": 54,
+                        "file": "index.js",
+                        "path": "../discord-leveling-super1/src"
+                    }
+                },
+                {
+                    "name": "options",
+                    "description": "Constructor options object.",
+                    "type": [
+                        [
+                            [
+                                "LevelingOptions"
+                            ]
+                        ]
+                    ],
+                    "meta": {
+                        "line": 59,
+                        "file": "index.js",
+                        "path": "../discord-leveling-super1/src"
+                    }
+                },
+                {
+                    "name": "interval",
+                    "description": "Database checking interval.",
+                    "nullable": true,
+                    "type": [
+                        [
+                            [
+                                "NodeJSTimeout"
+                            ]
+                        ]
+                    ],
+                    "meta": {
+                        "line": 64,
+                        "file": "index.js",
+                        "path": "../discord-leveling-super1/src"
+                    }
+                },
+                {
+                    "name": "errors",
+                    "description": "Leveling errors object.",
+                    "type": [
+                        [
+                            [
+                                "Object"
+                            ]
+                        ]
+                    ],
+                    "meta": {
+                        "line": 69,
+                        "file": "index.js",
+                        "path": "../discord-leveling-super1/src"
+                    }
+                },
+                {
+                    "name": "client",
+                    "description": "Discord Bot Client.",
+                    "type": [
+                        [
+                            [
+                                "Client"
+                            ]
+                        ]
+                    ],
+                    "meta": {
+                        "line": 74,
+                        "file": "index.js",
+                        "path": "../discord-leveling-super1/src"
+                    }
+                }
+            ],
+            "methods": [
+                {
+                    "name": "checkUpdates",
+                    "description": "Checks for if the module is up to date.",
+                    "async": true,
+                    "returns": {
+                        "types": [
+                            [
+                                [
+                                    "Promise",
+                                    "<"
+                                ],
+                                [
+                                    "VersionData",
+                                    ">"
+                                ]
+                            ]
+                        ],
+                        "description": "This method will show is the module updated, latest version and installed version."
+                    },
+                    "meta": {
+                        "line": 82,
+                        "file": "index.js",
+                        "path": "../discord-leveling-super1/src"
+                    }
+                },
+                {
+                    "name": "all",
+                    "description": "Fetches the entire database.",
+                    "returns": {
+                        "types": [
+                            [
+                                [
+                                    "Object"
+                                ]
+                            ]
+                        ],
+                        "description": "Database contents"
+                    },
+                    "meta": {
+                        "line": 99,
+                        "file": "index.js",
+                        "path": "../discord-leveling-super1/src"
+                    }
+                },
+                {
+                    "name": "clearStorage",
+                    "description": "Clears the storage file.",
+                    "returns": {
+                        "types": [
+                            [
+                                [
+                                    "Boolean"
+                                ]
+                            ]
+                        ],
+                        "description": "If cleared successfully: true; else: false"
+                    },
+                    "meta": {
+                        "line": 106,
+                        "file": "index.js",
+                        "path": "../discord-leveling-super1/src"
+                    }
+                },
+                {
+                    "name": "rank",
+                    "description": "Fetches the user's rank.",
+                    "params": [
+                        {
+                            "name": "guildID",
+                            "description": "Guild ID",
+                            "type": [
+                                [
+                                    [
+                                        "String"
+                                    ]
+                                ]
+                            ]
+                        },
+                        {
+                            "name": "memberID",
+                            "description": "Member ID",
+                            "type": [
+                                [
+                                    [
+                                        "String"
+                                    ]
+                                ]
+                            ]
+                        }
+                    ],
+                    "returns": {
+                        "types": [
+                            [
+                                [
+                                    "RankData"
+                                ]
+                            ]
+                        ],
+                        "description": "User's rank."
+                    },
+                    "meta": {
+                        "line": 117,
+                        "file": "index.js",
+                        "path": "../discord-leveling-super1/src"
+                    }
+                },
+                {
+                    "name": "leaderboard",
+                    "description": "Shows a level leaderboard for your server",
+                    "params": [
+                        {
+                            "name": "guildID",
+                            "description": "Guild ID",
+                            "type": [
+                                [
+                                    [
+                                        "String"
+                                    ]
+                                ]
+                            ]
+                        }
+                    ],
+                    "returns": {
+                        "types": [
+                            [
+                                [
+                                    "Array",
+                                    "<"
+                                ],
+                                [
+                                    "LeaderboardData",
+                                    ">"
+                                ]
+                            ]
+                        ],
+                        "description": "Sorted leaderboard array"
+                    },
+                    "meta": {
+                        "line": 137,
+                        "file": "index.js",
+                        "path": "../discord-leveling-super1/src"
+                    }
+                },
+                {
+                    "name": "setLevel",
+                    "description": "Sets the level to specified user.",
+                    "params": [
+                        {
+                            "name": "level",
+                            "description": "New level.",
+                            "type": [
+                                [
+                                    [
+                                        "Number"
+                                    ]
+                                ],
+                                [
+                                    [
+                                        "String"
+                                    ]
+                                ]
+                            ]
+                        },
+                        {
+                            "name": "guildID",
+                            "description": "Guild ID.",
+                            "type": [
+                                [
+                                    [
+                                        "String"
+                                    ]
+                                ]
+                            ]
+                        },
+                        {
+                            "name": "memberID",
+                            "description": "Member ID.",
+                            "type": [
+                                [
+                                    [
+                                        "String"
+                                    ]
+                                ]
+                            ]
+                        }
+                    ],
+                    "returns": {
+                        "types": [
+                            [
+                                [
+                                    "RankData"
+                                ]
+                            ]
+                        ],
+                        "description": "Data object."
+                    },
+                    "meta": {
+                        "line": 155,
+                        "file": "index.js",
+                        "path": "../discord-leveling-super1/src"
+                    }
+                },
+                {
+                    "name": "addLevel",
+                    "description": "Adds the level to specified user.",
+                    "params": [
+                        {
+                            "name": "xp",
+                            "description": "Amount of levels to add.",
+                            "type": [
+                                [
+                                    [
+                                        "Number"
+                                    ]
+                                ],
+                                [
+                                    [
+                                        "String"
+                                    ]
+                                ]
+                            ]
+                        },
+                        {
+                            "name": "guildID",
+                            "description": "Guild ID.",
+                            "type": [
+                                [
+                                    [
+                                        "String"
+                                    ]
+                                ]
+                            ]
+                        },
+                        {
+                            "name": "memberID",
+                            "description": "Member ID.",
+                            "type": [
+                                [
+                                    [
+                                        "String"
+                                    ]
+                                ]
+                            ]
+                        }
+                    ],
+                    "returns": {
+                        "types": [
+                            [
+                                [
+                                    "RankData"
+                                ]
+                            ]
+                        ],
+                        "description": "Data object."
+                    },
+                    "meta": {
+                        "line": 227,
+                        "file": "index.js",
+                        "path": "../discord-leveling-super1/src"
+                    }
+                },
+                {
+                    "name": "setXP",
+                    "description": "Sets the XP to specified user.",
+                    "params": [
+                        {
+                            "name": "xp",
+                            "description": "Amount of XP to set.",
+                            "type": [
+                                [
+                                    [
+                                        "Number"
+                                    ]
+                                ],
+                                [
+                                    [
+                                        "String"
+                                    ]
+                                ]
+                            ]
+                        },
+                        {
+                            "name": "guildID",
+                            "description": "Guild ID.",
+                            "type": [
+                                [
+                                    [
+                                        "String"
+                                    ]
+                                ]
+                            ]
+                        },
+                        {
+                            "name": "memberID",
+                            "description": "Member ID.",
+                            "type": [
+                                [
+                                    [
+                                        "String"
+                                    ]
+                                ]
+                            ]
+                        }
+                    ],
+                    "returns": {
+                        "types": [
+                            [
+                                [
+                                    "RankData"
+                                ]
+                            ]
+                        ],
+                        "description": "Data object."
+                    },
+                    "meta": {
+                        "line": 299,
+                        "file": "index.js",
+                        "path": "../discord-leveling-super1/src"
+                    }
+                },
+                {
+                    "name": "addXP",
+                    "description": "Adds the XP to specified user.",
+                    "params": [
+                        {
+                            "name": "xp",
+                            "description": "Amount of XP to add.",
+                            "type": [
+                                [
+                                    [
+                                        "Number"
+                                    ]
+                                ],
+                                [
+                                    [
+                                        "String"
+                                    ]
+                                ]
+                            ]
+                        },
+                        {
+                            "name": "guildID",
+                            "description": "Guild ID.",
+                            "type": [
+                                [
+                                    [
+                                        "String"
+                                    ]
+                                ]
+                            ]
+                        },
+                        {
+                            "name": "memberID",
+                            "description": "Member ID.",
+                            "type": [
+                                [
+                                    [
+                                        "String"
+                                    ]
+                                ]
+                            ]
+                        }
+                    ],
+                    "returns": {
+                        "types": [
+                            [
+                                [
+                                    "RankData"
+                                ]
+                            ]
+                        ],
+                        "description": "Data object."
+                    },
+                    "meta": {
+                        "line": 370,
+                        "file": "index.js",
+                        "path": "../discord-leveling-super1/src"
+                    }
+                },
+                {
+                    "name": "setTotalXP",
+                    "description": "Sets the total XP to specified user.",
+                    "params": [
+                        {
+                            "name": "xp",
+                            "description": "Amount of XP to set.",
+                            "type": [
+                                [
+                                    [
+                                        "Number"
+                                    ]
+                                ],
+                                [
+                                    [
+                                        "String"
+                                    ]
+                                ]
+                            ]
+                        },
+                        {
+                            "name": "guildID",
+                            "description": "Guild ID.",
+                            "type": [
+                                [
+                                    [
+                                        "String"
+                                    ]
+                                ]
+                            ]
+                        },
+                        {
+                            "name": "memberID",
+                            "description": "Member ID.",
+                            "type": [
+                                [
+                                    [
+                                        "String"
+                                    ]
+                                ]
+                            ]
+                        }
+                    ],
+                    "returns": {
+                        "types": [
+                            [
+                                [
+                                    "RankData"
+                                ]
+                            ]
+                        ],
+                        "description": "Data object."
+                    },
+                    "meta": {
+                        "line": 442,
+                        "file": "index.js",
+                        "path": "../discord-leveling-super1/src"
+                    }
+                },
+                {
+                    "name": "addTotalXP",
+                    "description": "Adds the total XP to specified user.",
+                    "params": [
+                        {
+                            "name": "xp",
+                            "description": "Amount of XP to add.",
+                            "type": [
+                                [
+                                    [
+                                        "Number"
+                                    ]
+                                ],
+                                [
+                                    [
+                                        "String"
+                                    ]
+                                ]
+                            ]
+                        },
+                        {
+                            "name": "guildID",
+                            "description": "Guild ID.",
+                            "type": [
+                                [
+                                    [
+                                        "String"
+                                    ]
+                                ]
+                            ]
+                        },
+                        {
+                            "name": "memberID",
+                            "description": "Member ID.",
+                            "type": [
+                                [
+                                    [
+                                        "String"
+                                    ]
+                                ]
+                            ]
+                        }
+                    ],
+                    "returns": {
+                        "types": [
+                            [
+                                [
+                                    "RankData"
+                                ]
+                            ]
+                        ],
+                        "description": "Data object."
+                    },
+                    "meta": {
+                        "line": 514,
+                        "file": "index.js",
+                        "path": "../discord-leveling-super1/src"
+                    }
+                },
+                {
+                    "name": "removeGuild",
+                    "description": "Fully removes the guild from database.",
+                    "params": [
+                        {
+                            "name": "guildID",
+                            "description": "Guild ID",
+                            "type": [
+                                [
+                                    [
+                                        "String"
+                                    ]
+                                ]
+                            ]
+                        }
+                    ],
+                    "returns": {
+                        "types": [
+                            [
+                                [
+                                    "Boolean"
+                                ]
+                            ]
+                        ],
+                        "description": "If cleared successfully: true; else: false"
+                    },
+                    "meta": {
+                        "line": 584,
+                        "file": "index.js",
+                        "path": "../discord-leveling-super1/src"
+                    }
+                },
+                {
+                    "name": "removeUser",
+                    "description": "Removes the user from database.",
+                    "params": [
+                        {
+                            "name": "memberID",
+                            "description": "Member ID",
+                            "type": [
+                                [
+                                    [
+                                        "String"
+                                    ]
+                                ]
+                            ]
+                        },
+                        {
+                            "name": "guildID",
+                            "description": "Guild ID",
+                            "type": [
+                                [
+                                    [
+                                        "String"
+                                    ]
+                                ]
+                            ]
+                        }
+                    ],
+                    "returns": {
+                        "types": [
+                            [
+                                [
+                                    "Boolean"
+                                ]
+                            ]
+                        ],
+                        "description": "If cleared successfully: true; else: false"
+                    },
+                    "meta": {
+                        "line": 601,
+                        "file": "index.js",
+                        "path": "../discord-leveling-super1/src"
+                    }
+                },
+                {
+                    "name": "multipleXP",
+                    "description": "Sets an XP multiplier for specified user.",
+                    "params": [
+                        {
+                            "name": "multiplier",
+                            "description": "XP Multiplier.",
+                            "type": [
+                                [
+                                    [
+                                        "Number"
+                                    ]
+                                ]
+                            ]
+                        },
+                        {
+                            "name": "memberID",
+                            "description": "Member ID.",
+                            "type": [
+                                [
+                                    [
+                                        "String"
+                                    ]
+                                ]
+                            ]
+                        },
+                        {
+                            "name": "guildID",
+                            "description": "Guild ID.",
+                            "type": [
+                                [
+                                    [
+                                        "String"
+                                    ]
+                                ]
+                            ]
+                        }
+                    ],
+                    "returns": {
+                        "types": [
+                            [
+                                [
+                                    "RankData"
+                                ]
+                            ]
+                        ],
+                        "description": "Data object."
+                    },
+                    "meta": {
+                        "line": 618,
+                        "file": "index.js",
+                        "path": "../discord-leveling-super1/src"
+                    }
+                },
+                {
+                    "name": "kill",
+                    "description": "Kills the Leveling instance.",
+                    "returns": {
+                        "types": [
+                            [
+                                [
+                                    "Leveling"
+                                ]
+                            ]
+                        ],
+                        "description": "Leveling instance."
+                    },
+                    "meta": {
+                        "line": 662,
+                        "file": "index.js",
+                        "path": "../discord-leveling-super1/src"
+                    }
+                },
+                {
+                    "name": "init",
+                    "description": "Starts the module.",
+                    "returns": {
+                        "types": [
+                            [
+                                [
+                                    "Promise",
+                                    "<("
+                                ],
+                                [
+                                    "true",
+                                    "|"
+                                ],
+                                [
+                                    "Error",
+                                    ")>"
+                                ]
+                            ]
+                        ],
+                        "description": "If started successfully: true; else: Error instance."
+                    },
+                    "meta": {
+                        "line": 675,
+                        "file": "index.js",
+                        "path": "../discord-leveling-super1/src"
+                    }
+                },
+                {
+                    "name": "_init",
+                    "description": "Initializates the module.",
+                    "access": "private",
+                    "returns": {
+                        "types": [
+                            [
+                                [
+                                    "Promise",
+                                    "<("
+                                ],
+                                [
+                                    "true",
+                                    "|"
+                                ],
+                                [
+                                    "Error",
+                                    ")>"
+                                ]
+                            ]
+                        ],
+                        "description": "If started successfully: true; else: Error instance."
+                    },
+                    "meta": {
+                        "line": 730,
+                        "file": "index.js",
+                        "path": "../discord-leveling-super1/src"
+                    }
+                }
+            ],
+            "meta": {
+                "line": 33,
+                "file": "index.js",
+                "path": "../discord-leveling-super1/src"
+            }
+        },
+        {
+            "name": "LevelingError",
+            "description": "LevelingError class.",
+            "construct": {
+                "name": "LevelingError",
+                "description": "Creates an 'LevelingError' error instance.",
+                "params": [
+                    {
+                        "name": "message",
+                        "description": "Error message.",
+                        "type": [
+                            [
+                                [
+                                    "String"
+                                ]
+                            ],
+                            [
+                                [
+                                    "Error"
+                                ]
+                            ]
+                        ]
+                    }
+                ]
+            },
+            "props": [
+                {
+                    "name": "name",
+                    "description": "Error name.",
+                    "type": [
+                        [
+                            [
+                                "string"
+                            ]
+                        ]
+                    ],
+                    "meta": {
+                        "line": 19,
+                        "file": "LevelingError.js",
+                        "path": "../discord-leveling-super1/src"
+                    }
+                }
+            ],
+            "meta": {
+                "line": 4,
+                "file": "LevelingError.js",
+                "path": "../discord-leveling-super1/src"
+            }
+        }
+    ],
+    "interfaces": [],
+    "typedefs": [
+        {
+            "name": "VersionData",
+            "type": [
+                [
+                    [
+                        "Object"
+                    ]
+                ]
+            ],
+            "props": [
+                {
+                    "name": "updated",
+                    "description": "If the module updated",
+                    "type": [
+                        [
+                            [
+                                "Boolean"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "installedVersion",
+                    "description": "Version of module that you have installed",
+                    "type": [
+                        [
+                            [
+                                "installedVersion"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "packageVersion",
+                    "description": "Latest version of the module.",
+                    "type": [
+                        [
+                            [
+                                "packageVersion"
+                            ]
+                        ]
+                    ]
+                }
+            ],
+            "meta": {
+                "line": 933,
+                "file": "index.js",
+                "path": "../discord-leveling-super1/src"
+            }
+        },
+        {
+            "name": "RankData",
+            "type": [
+                [
+                    [
+                        "Object"
+                    ]
+                ]
+            ],
+            "props": [
+                {
+                    "name": "level",
+                    "description": "User's level",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "xp",
+                    "description": "User's amount of XP.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "totalXP",
+                    "description": "User's total amount of XP.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "maxXP",
+                    "description": "How much XP in total the user need to reach the next level.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "difference",
+                    "description": "The difference between max XP and current amount of XP. It shows how much XP he need to reach the next level.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "multiplier",
+                    "description": "XP Multiplier.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                }
+            ],
+            "meta": {
+                "line": 940,
+                "file": "index.js",
+                "path": "../discord-leveling-super1/src"
+            }
+        },
+        {
+            "name": "LeaderboardData",
+            "description": "Leaderboard data object.",
+            "type": [
+                [
+                    [
+                        "Object"
+                    ]
+                ]
+            ],
+            "props": [
+                {
+                    "name": "userID",
+                    "description": "User's ID.",
+                    "type": [
+                        [
+                            [
+                                "String"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "level",
+                    "description": "User's level.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "xp",
+                    "description": "User's amount of XP.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "totalXP",
+                    "description": "User's amount of total XP.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "maxXP",
+                    "description": "User's data object.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "user",
+                    "description": "User's data object.",
+                    "type": [
+                        [
+                            [
+                                "User"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "difference",
+                    "description": "User's amount of total XP.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "multiplier",
+                    "description": "XP Multiplier.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                }
+            ],
+            "meta": {
+                "line": 950,
+                "file": "index.js",
+                "path": "../discord-leveling-super1/src"
+            }
+        },
+        {
+            "name": "LevelingOptions",
+            "description": "Default Economy options.",
+            "type": [
+                [
+                    [
+                        "Object"
+                    ]
+                ]
+            ],
+            "props": [
+                {
+                    "name": "options",
+                    "description": "Constructor options object.",
+                    "type": [
+                        [
+                            [
+                                "Object"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "options.storagePath",
+                    "description": "Full path to a JSON file. Default: './leveling.json'.",
+                    "type": [
+                        [
+                            [
+                                "String"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "options.checkStorage",
+                    "description": "Checks the if database file exists and if it has errors. Default: true",
+                    "type": [
+                        [
+                            [
+                                "Boolean"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "options.xp",
+                    "description": "Amount of XP that user will receive after sending a message. Default: 5.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "options.status",
+                    "description": "You can enable or disable the leveling system using this option. Default: true.",
+                    "type": [
+                        [
+                            [
+                                "Boolean"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "options.maxXP",
+                    "description": "Amount of XP that user will totally need to reach the next level. This value will double for each level. Default: 300.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "options.lockedChannels",
+                    "description": "Array of channel IDs that won't give XP to users. Default: [].",
+                    "type": [
+                        [
+                            [
+                                "Array",
+                                "<"
+                            ],
+                            [
+                                "String",
+                                ">"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "options.ignoredGuilds",
+                    "description": "Array of guilds on which none of the members will be given XP. Default: [].",
+                    "type": [
+                        [
+                            [
+                                "Array",
+                                "<"
+                            ],
+                            [
+                                "String",
+                                ">"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "options.multiplier",
+                    "description": "XP multiplier. Default: 1.",
+                    "type": [
+                        [
+                            [
+                                "Boolean"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "options.filter",
+                    "description": "Callback function that must return a boolean value, it will add XP only to authors of filtered messages. Default: null.",
+                    "type": [
+                        [
+                            [
+                                "FilterFunction"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "options.updateCountdown",
+                    "description": "Checks for if storage file exists in specified time (in ms). Default: 1000.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "options.updater",
+                    "description": "Update Checker options object.",
+                    "type": [
+                        [
+                            [
+                                "Object"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "options.updater.checkUpdates",
+                    "description": "Sends the update state message in console on start. Default: true.",
+                    "type": [
+                        [
+                            [
+                                "Boolean"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "options.updater.upToDateMessage",
+                    "description": "Sends the message in console on start if module is up to date. Default: true.",
+                    "type": [
+                        [
+                            [
+                                "Boolean"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "options.errorHandler",
+                    "description": "Error Handler options object.",
+                    "type": [
+                        [
+                            [
+                                "Object"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "options.errorHandler.handleErrors",
+                    "description": "Handles all errors on startup. Default: true.",
+                    "type": [
+                        [
+                            [
+                                "Boolean"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "options.errorHandler.attempts",
+                    "description": "Amount of attempts to load the module. Use 'null' for infinity attempts. Default: 5.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "options.errorHandler.time",
+                    "description": "Time between every attempt to start the module (in ms). Default: 3000.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                }
+            ],
+            "meta": {
+                "line": 962,
+                "file": "index.js",
+                "path": "../discord-leveling-super1/src"
+            }
+        },
+        {
+            "name": "FilterFunction",
+            "type": [
+                [
+                    [
+                        "function"
+                    ]
+                ]
+            ],
+            "params": [
+                {
+                    "name": "msg",
+                    "type": [
+                        [
+                            [
+                                "Message"
+                            ]
+                        ]
+                    ]
+                }
+            ],
+            "returns": {
+                "types": [
+                    [
+                        [
+                            "Boolean"
+                        ]
+                    ]
+                ],
+                "description": "Boolean value."
+            },
+            "meta": {
+                "line": 984,
+                "file": "index.js",
+                "path": "../discord-leveling-super1/src"
+            }
+        }
+    ],
+    "externals": []
+}
