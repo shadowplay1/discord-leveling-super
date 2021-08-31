@@ -71,9 +71,9 @@
 - leveling.setLevel(xp, memberID, guildID)
 - leveling.addLevel(xp, memberID, guildID)
 
-+ leveling.totalXP.set(xp, memberID, guildID)
-+ leveling.totalXP.add(xp, memberID, guildID)
-+ leveling.totalXP.subtract(xp, memberID, guildID)
++ leveling.levels.set(xp, memberID, guildID)
++ leveling.levels.add(xp, memberID, guildID)
++ leveling.levels.subtract(xp, memberID, guildID)
 
 
 - leveling.rank(memberID, guildID)
