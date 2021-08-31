@@ -163,7 +163,7 @@ new Promise((resolve, reject) => {
                                 `&& mkdir docs\\${package.version}\\info\\general` +
 
                                 `&& mkdir docs\\${package.version}\\dist` +
-                                
+
                                 `&& mkdir docs\\${package.version}\\dist\\src` +
                                 `&& mkdir docs\\${package.version}\\dist\\src\\classes` +
                                 `&& mkdir docs\\${package.version}\\dist\\src\\managers` +
@@ -216,57 +216,57 @@ new Promise((resolve, reject) => {
                                             writeFile(`./docs/${package.version}/dist/src/index.js`, indexText, err => {
                                                 if (err) return reject(err)
 
-                                            const classesDir = readdirSync('./dist/src/classes')
-                                            const managersDir = readdirSync('./dist/src/managers')
-                                            const structuresDir = readdirSync('./dist/src/structures')
+                                                const classesDir = readdirSync('./dist/src/classes')
+                                                const managersDir = readdirSync('./dist/src/managers')
+                                                const structuresDir = readdirSync('./dist/src/structures')
 
-                                            for (let i of classesDir) {
-                                                const fileContent = readFileSync(`./dist/src/classes/${i}`).toString()
-                                                    .replaceAll('keyof LevelingEvents', 'String')
-                                                    .replaceAll('(...args: LevelingEvents[K][]) => void', 'Function')
-                                                    .replaceAll('LevelingEvents[K][]', 'any')
+                                                for (let i of classesDir) {
+                                                    const fileContent = readFileSync(`./dist/src/classes/${i}`).toString()
+                                                        .replaceAll('keyof LevelingEvents', 'String')
+                                                        .replaceAll('(...args: LevelingEvents[K][]) => void', 'Function')
+                                                        .replaceAll('LevelingEvents[K][]', 'any')
 
-                                                const textContent = getCodeWithInfo(fileContent)
+                                                    const textContent = getCodeWithInfo(fileContent)
 
-                                                writeFile(`./dist/src/classes/${i}`, textContent, err => {
-                                                    if (err) return reject(err)
-
-                                                    copyFile(`./dist/src/classes/${i}`, `./docs/${package.version}/dist/src/classes/${i}`, err => {
+                                                    writeFile(`./dist/src/classes/${i}`, textContent, err => {
                                                         if (err) return reject(err)
+
+                                                        copyFile(`./dist/src/classes/${i}`, `./docs/${package.version}/dist/src/classes/${i}`, err => {
+                                                            if (err) return reject(err)
+                                                        })
                                                     })
-                                                })
-                                            }
+                                                }
 
-                                            for (let i of managersDir) {
-                                                const fileContent = readFileSync(`./dist/src/managers/${i}`).toString()
-                                                    .replaceAll('keyof SettingsTypes', settingsArray.map(x => `'${x}'`).join(' | '))
-                                                    .replaceAll('SettingsTypes[K]', 'any')
-                                                    .replaceAll('keyof SettingsArrays', settingsArrays.map(x => `'${x}'`).join(' | '))
-                                                    .replaceAll('SettingsArrays[K]', 'any')
+                                                for (let i of managersDir) {
+                                                    const fileContent = readFileSync(`./dist/src/managers/${i}`).toString()
+                                                        .replaceAll('keyof SettingsTypes', settingsArray.map(x => `'${x}'`).join(' | '))
+                                                        .replaceAll('SettingsTypes[K]', 'any')
+                                                        .replaceAll('keyof SettingsArrays', settingsArrays.map(x => `'${x}'`).join(' | '))
+                                                        .replaceAll('SettingsArrays[K]', 'any')
 
-                                                const textContent = getCodeWithInfo(fileContent, true, true)
+                                                    const textContent = getCodeWithInfo(fileContent, true, true)
 
-                                                writeFile(`./dist/src/managers/${i}`, textContent, err => {
-                                                    if (err) return reject(err)
-
-                                                    copyFile(`./dist/src/managers/${i}`, `./docs/${package.version}/dist/src/managers/${i}`, err => {
+                                                    writeFile(`./dist/src/managers/${i}`, textContent, err => {
                                                         if (err) return reject(err)
+
+                                                        copyFile(`./dist/src/managers/${i}`, `./docs/${package.version}/dist/src/managers/${i}`, err => {
+                                                            if (err) return reject(err)
+                                                        })
                                                     })
-                                                })
-                                            }
+                                                }
 
-                                            for (let i of structuresDir) {
-                                                const fileContent = readFileSync(`./dist/src/structures/${i}`).toString()
-                                                const textContent = getCodeWithInfo(fileContent)
+                                                for (let i of structuresDir) {
+                                                    const fileContent = readFileSync(`./dist/src/structures/${i}`).toString()
+                                                    const textContent = getCodeWithInfo(fileContent)
 
-                                                writeFile(`./dist/src/structures/${i}`, textContent, err => {
-                                                    if (err) return reject(err)
-
-                                                    copyFile(`./dist/src/structures/${i}`, `./docs/${package.version}/dist/src/structures/${i}`, err => {
+                                                    writeFile(`./dist/src/structures/${i}`, textContent, err => {
                                                         if (err) return reject(err)
+
+                                                        copyFile(`./dist/src/structures/${i}`, `./docs/${package.version}/dist/src/structures/${i}`, err => {
+                                                            if (err) return reject(err)
+                                                        })
                                                     })
-                                                })
-                                            }
+                                                }
 
                                                 exec(
                                                     'mkdir github' +
@@ -298,90 +298,94 @@ new Promise((resolve, reject) => {
                                                                     copyFile('./build.js', './github/build.js', err => {
                                                                         if (err) return reject(err)
 
-                                                                        copyFile('./src/index.ts', './github/src/index.ts', err => {
+                                                                        copyFile('./build.bat', './github/build.bat', err => {
                                                                             if (err) return reject(err)
 
-                                                                            copyFile('./index.ts', './github/index.ts', err => {
+                                                                            copyFile('./src/index.ts', './github/src/index.ts', err => {
                                                                                 if (err) return reject(err)
 
-                                                                                copyFile('./index.js', './github/index.js', err => {
+                                                                                copyFile('./index.ts', './github/index.ts', err => {
                                                                                     if (err) return reject(err)
 
-                                                                                    copyFile('./tsconfig.json', './github/tsconfig.json', err => {
+                                                                                    copyFile('./index.js', './github/index.js', err => {
                                                                                         if (err) return reject(err)
 
-                                                                                        copyFile('./typedefs.js', './github/typedefs.js', err => {
+                                                                                        copyFile('./tsconfig.json', './github/tsconfig.json', err => {
                                                                                             if (err) return reject(err)
 
-                                                                                            copyFile('./dist/package.json', './github/package.json', err => {
+                                                                                            copyFile('./typedefs.js', './github/typedefs.js', err => {
                                                                                                 if (err) return reject(err)
 
-                                                                                                const interfacesDir = readdirSync('./dist/typings/interfaces')
-                                                                                                const classesDir = readdirSync('./dist/typings/classes')
-                                                                                                const managersDir = readdirSync('./dist/typings/managers')
+                                                                                                copyFile('./dist/package.json', './github/package.json', err => {
+                                                                                                    if (err) return reject(err)
 
-                                                                                                for (let i of interfacesDir) {
-                                                                                                    copyFile(`./dist/typings/interfaces/${i}`, `./github/typings/interfaces/${i}`, err => {
-                                                                                                        if (err) return reject(err)
-                                                                                                    })
-                                                                                                }
+                                                                                                    const interfacesDir = readdirSync('./dist/typings/interfaces')
+                                                                                                    const classesDir = readdirSync('./dist/typings/classes')
+                                                                                                    const managersDir = readdirSync('./dist/typings/managers')
 
-                                                                                                for (let i of classesDir) {
-                                                                                                    const fileContent = readFileSync(`./dist/typings/classes/${i}`).toString()
+                                                                                                    for (let i of interfacesDir) {
+                                                                                                        copyFile(`./dist/typings/interfaces/${i}`, `./github/typings/interfaces/${i}`, err => {
+                                                                                                            if (err) return reject(err)
+                                                                                                        })
+                                                                                                    }
 
-                                                                                                    writeFile(`./github/typings/classes/${i}`, fileContent, err => {
-                                                                                                        if (err) return reject(err)
-                                                                                                    })
-                                                                                                }
+                                                                                                    for (let i of classesDir) {
+                                                                                                        const fileContent = readFileSync(`./dist/typings/classes/${i}`).toString()
 
-                                                                                                for (let i of managersDir) {
-                                                                                                    const fileContent = readFileSync(`./dist/typings/managers/${i}`).toString()
+                                                                                                        writeFile(`./github/typings/classes/${i}`, fileContent, err => {
+                                                                                                            if (err) return reject(err)
+                                                                                                        })
+                                                                                                    }
 
-                                                                                                    writeFile(`./github/typings/managers/${i}`, fileContent, err => {
-                                                                                                        if (err) return reject(err)
-                                                                                                    })
-                                                                                                }
+                                                                                                    for (let i of managersDir) {
+                                                                                                        const fileContent = readFileSync(`./dist/typings/managers/${i}`).toString()
 
-
-                                                                                                const sourceClassesDir = readdirSync('./src/classes')
-                                                                                                const sourceManagersDir = readdirSync('./src/managers')
-                                                                                                const sourceStructuresDir = readdirSync('./src/structures')
-
-                                                                                                const docsDir = readdirSync('./info/general')
-                                                                                                const examplesDir = readdirSync('./moduleExamples')
-
-                                                                                                for (let i of sourceClassesDir) {
-                                                                                                    copyFile(`./src/classes/${i}`, `./github/src/classes/${i}`, err => {
-                                                                                                        if (err) return reject(err)
-                                                                                                    })
-                                                                                                }
-
-                                                                                                for (let i of sourceManagersDir) {
-                                                                                                    copyFile(`./src/managers/${i}`, `./github/src/managers/${i}`, err => {
-                                                                                                        if (err) return reject(err)
-                                                                                                    })
-                                                                                                }
-
-                                                                                                for (let i of sourceStructuresDir) {
-                                                                                                    copyFile(`./src/structures/${i}`, `./github/src/structures/${i}`, err => {
-                                                                                                        if (err) return reject(err)
-                                                                                                    })
-                                                                                                }
+                                                                                                        writeFile(`./github/typings/managers/${i}`, fileContent, err => {
+                                                                                                            if (err) return reject(err)
+                                                                                                        })
+                                                                                                    }
 
 
-                                                                                                for (let i of docsDir) {
-                                                                                                    if (i !== '1.0.2-welcome.md') copyFile(`./info/general/${i}`, `./docs/${package.version}/info/general/${i}`, err => {
-                                                                                                        if (err) return reject(err)
-                                                                                                    })
-                                                                                                }
+                                                                                                    const sourceClassesDir = readdirSync('./src/classes')
+                                                                                                    const sourceManagersDir = readdirSync('./src/managers')
+                                                                                                    const sourceStructuresDir = readdirSync('./src/structures')
 
-                                                                                                for (let i of examplesDir) {
-                                                                                                    copyFile(`./moduleExamples/${i}`, `./github/examples/${i}`, err => {
-                                                                                                        if (err) return reject(err)
+                                                                                                    const docsDir = readdirSync('./info/general')
+                                                                                                    const examplesDir = readdirSync('./moduleExamples')
 
-                                                                                                        resolve(true)
-                                                                                                    })
-                                                                                                }
+                                                                                                    for (let i of sourceClassesDir) {
+                                                                                                        copyFile(`./src/classes/${i}`, `./github/src/classes/${i}`, err => {
+                                                                                                            if (err) return reject(err)
+                                                                                                        })
+                                                                                                    }
+
+                                                                                                    for (let i of sourceManagersDir) {
+                                                                                                        copyFile(`./src/managers/${i}`, `./github/src/managers/${i}`, err => {
+                                                                                                            if (err) return reject(err)
+                                                                                                        })
+                                                                                                    }
+
+                                                                                                    for (let i of sourceStructuresDir) {
+                                                                                                        copyFile(`./src/structures/${i}`, `./github/src/structures/${i}`, err => {
+                                                                                                            if (err) return reject(err)
+                                                                                                        })
+                                                                                                    }
+
+
+                                                                                                    for (let i of docsDir) {
+                                                                                                        if (i !== '1.0.2-welcome.md') copyFile(`./info/general/${i}`, `./docs/${package.version}/info/general/${i}`, err => {
+                                                                                                            if (err) return reject(err)
+                                                                                                        })
+                                                                                                    }
+
+                                                                                                    for (let i of examplesDir) {
+                                                                                                        copyFile(`./moduleExamples/${i}`, `./github/examples/${i}`, err => {
+                                                                                                            if (err) return reject(err)
+
+                                                                                                            resolve(true)
+                                                                                                        })
+                                                                                                    }
+                                                                                                })
                                                                                             })
                                                                                         })
                                                                                     })
