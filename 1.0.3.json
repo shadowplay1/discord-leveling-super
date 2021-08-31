@@ -2,7 +2,7 @@
     "meta": {
         "generator": "0.10.0",
         "format": 20,
-        "date": 1630417243020
+        "date": 1630417863288
     },
     "custom": {
         "general": {
@@ -342,6 +342,9 @@
                 {
                     "name": "kill",
                     "description": "Kills the Leveling instance.",
+                    "emits": [
+                        "Leveling#event:destroy"
+                    ],
                     "returns": {
                         "types": [
                             [
@@ -358,7 +361,7 @@
                         "description": "Leveling instance."
                     },
                     "meta": {
-                        "line": 159,
+                        "line": 160,
                         "file": "index.js",
                         "path": "dist/src"
                     }
@@ -366,6 +369,9 @@
                 {
                     "name": "init",
                     "description": "Starts the module.",
+                    "emits": [
+                        "Leveling#event:ready"
+                    ],
                     "returns": {
                         "types": [
                             [
@@ -382,7 +388,7 @@
                         "description": "If started successfully: true; else: Error instance."
                     },
                     "meta": {
-                        "line": 181,
+                        "line": 183,
                         "file": "index.js",
                         "path": "dist/src"
                     }
@@ -407,7 +413,7 @@
                         "description": "If started successfully: true; else: Error instance."
                     },
                     "meta": {
-                        "line": 233,
+                        "line": 235,
                         "file": "index.js",
                         "path": "dist/src"
                     }
@@ -427,7 +433,7 @@
                         "description": "If successfully started: true."
                     },
                     "meta": {
-                        "line": 347,
+                        "line": 349,
                         "file": "index.js",
                         "path": "dist/src"
                     }
@@ -557,7 +563,7 @@
                         }
                     ],
                     "meta": {
-                        "line": 732,
+                        "line": 734,
                         "file": "index.js",
                         "path": "dist/src"
                     }
@@ -579,7 +585,7 @@
                         }
                     ],
                     "meta": {
-                        "line": 738,
+                        "line": 740,
                         "file": "index.js",
                         "path": "dist/src"
                     }
@@ -601,7 +607,7 @@
                         }
                     ],
                     "meta": {
-                        "line": 745,
+                        "line": 747,
                         "file": "index.js",
                         "path": "dist/src"
                     }
@@ -623,7 +629,7 @@
                         }
                     ],
                     "meta": {
-                        "line": 752,
+                        "line": 754,
                         "file": "index.js",
                         "path": "dist/src"
                     }
@@ -645,7 +651,7 @@
                         }
                     ],
                     "meta": {
-                        "line": 758,
+                        "line": 760,
                         "file": "index.js",
                         "path": "dist/src"
                     }
@@ -667,7 +673,7 @@
                         }
                     ],
                     "meta": {
-                        "line": 764,
+                        "line": 766,
                         "file": "index.js",
                         "path": "dist/src"
                     }
@@ -689,7 +695,7 @@
                         }
                     ],
                     "meta": {
-                        "line": 771,
+                        "line": 773,
                         "file": "index.js",
                         "path": "dist/src"
                     }
@@ -711,7 +717,7 @@
                         }
                     ],
                     "meta": {
-                        "line": 777,
+                        "line": 779,
                         "file": "index.js",
                         "path": "dist/src"
                     }
@@ -733,7 +739,7 @@
                         }
                     ],
                     "meta": {
-                        "line": 783,
+                        "line": 785,
                         "file": "index.js",
                         "path": "dist/src"
                     }
@@ -755,7 +761,7 @@
                         }
                     ],
                     "meta": {
-                        "line": 790,
+                        "line": 792,
                         "file": "index.js",
                         "path": "dist/src"
                     }
@@ -777,7 +783,7 @@
                         }
                     ],
                     "meta": {
-                        "line": 796,
+                        "line": 798,
                         "file": "index.js",
                         "path": "dist/src"
                     }
@@ -799,7 +805,7 @@
                         }
                     ],
                     "meta": {
-                        "line": 802,
+                        "line": 804,
                         "file": "index.js",
                         "path": "dist/src"
                     }
@@ -2064,6 +2070,9 @@
                 {
                     "name": "set",
                     "description": "Sets the XP for specified user.",
+                    "emits": [
+                        "Leveling#event:setLevel"
+                    ],
                     "params": [
                         {
                             "name": "level",
@@ -2125,7 +2134,7 @@
                         "description": "If set successfully: true, else: false."
                     },
                     "meta": {
-                        "line": 69,
+                        "line": 70,
                         "file": "LevelManager.js",
                         "path": "dist/src/managers"
                     }
@@ -2133,6 +2142,9 @@
                 {
                     "name": "add",
                     "description": "Adds the XP for specified user.",
+                    "emits": [
+                        "Leveling#event:addLevel"
+                    ],
                     "params": [
                         {
                             "name": "level",
@@ -2206,7 +2218,7 @@
                         "description": "If added successfully: true, else: false."
                     },
                     "meta": {
-                        "line": 100,
+                        "line": 102,
                         "file": "LevelManager.js",
                         "path": "dist/src/managers"
                     }
@@ -2214,6 +2226,9 @@
                 {
                     "name": "subtract",
                     "description": "Subtracts the XP for specified user.",
+                    "emits": [
+                        "Leveling#event:subtractLevel"
+                    ],
                     "params": [
                         {
                             "name": "level",
@@ -2275,7 +2290,7 @@
                         "description": "If subtracted successfully: true, else: false."
                     },
                     "meta": {
-                        "line": 131,
+                        "line": 134,
                         "file": "LevelManager.js",
                         "path": "dist/src/managers"
                     }
@@ -3270,6 +3285,9 @@
                 {
                     "name": "set",
                     "description": "Sets the XP for specified user.",
+                    "emits": [
+                        "Leveling#event:setTotalXP"
+                    ],
                     "params": [
                         {
                             "name": "totalXP",
@@ -3331,7 +3349,7 @@
                         "description": "If set successfully: true, else: false."
                     },
                     "meta": {
-                        "line": 69,
+                        "line": 70,
                         "file": "TotalXPManager.js",
                         "path": "dist/src/managers"
                     }
@@ -3339,6 +3357,9 @@
                 {
                     "name": "add",
                     "description": "Adds the XP for specified user.",
+                    "emits": [
+                        "Leveling#event:addTotalXP"
+                    ],
                     "params": [
                         {
                             "name": "totalXP",
@@ -3412,7 +3433,7 @@
                         "description": "If added successfully: true, else: false."
                     },
                     "meta": {
-                        "line": 100,
+                        "line": 102,
                         "file": "TotalXPManager.js",
                         "path": "dist/src/managers"
                     }
@@ -3420,6 +3441,9 @@
                 {
                     "name": "subtract",
                     "description": "Subtracts the XP for specified user.",
+                    "emits": [
+                        "Leveling#event:subtractTotalXP"
+                    ],
                     "params": [
                         {
                             "name": "totalXP",
@@ -3481,7 +3505,7 @@
                         "description": "If subtracted successfully: true, else: false."
                     },
                     "meta": {
-                        "line": 130,
+                        "line": 133,
                         "file": "TotalXPManager.js",
                         "path": "dist/src/managers"
                     }
@@ -4179,6 +4203,9 @@
                 {
                     "name": "set",
                     "description": "Sets the XP for specified user.",
+                    "emits": [
+                        "Leveling#event:setXP"
+                    ],
                     "params": [
                         {
                             "name": "xp",
@@ -4251,7 +4278,7 @@
                         "description": "If set successfully: true, else: false."
                     },
                     "meta": {
-                        "line": 70,
+                        "line": 71,
                         "file": "XPManager.js",
                         "path": "dist/src/managers"
                     }
@@ -4259,6 +4286,9 @@
                 {
                     "name": "add",
                     "description": "Adds the XP for specified user.",
+                    "emits": [
+                        "Leveling#event:addXP"
+                    ],
                     "params": [
                         {
                             "name": "xp",
@@ -4332,7 +4362,7 @@
                         "description": "If added successfully: true, else: false."
                     },
                     "meta": {
-                        "line": 102,
+                        "line": 104,
                         "file": "XPManager.js",
                         "path": "dist/src/managers"
                     }
@@ -4340,6 +4370,9 @@
                 {
                     "name": "subtract",
                     "description": "Subtracts the XP for specified user.",
+                    "emits": [
+                        "Leveling#event:subtractXP"
+                    ],
                     "params": [
                         {
                             "name": "xp",
@@ -4401,7 +4434,7 @@
                         "description": "If subtracted successfully: true, else: false."
                     },
                     "meta": {
-                        "line": 132,
+                        "line": 135,
                         "file": "XPManager.js",
                         "path": "dist/src/managers"
                     }
@@ -4567,7 +4600,7 @@
                 }
             ],
             "meta": {
-                "line": 162,
+                "line": 165,
                 "file": "XPManager.js",
                 "path": "dist/src/managers"
             }
@@ -4661,7 +4694,7 @@
                 }
             ],
             "meta": {
-                "line": 169,
+                "line": 172,
                 "file": "XPManager.js",
                 "path": "dist/src/managers"
             }
@@ -4767,7 +4800,7 @@
                 }
             ],
             "meta": {
-                "line": 180,
+                "line": 183,
                 "file": "XPManager.js",
                 "path": "dist/src/managers"
             }
@@ -4962,7 +4995,7 @@
                 }
             ],
             "meta": {
-                "line": 192,
+                "line": 195,
                 "file": "XPManager.js",
                 "path": "dist/src/managers"
             }
@@ -5006,7 +5039,7 @@
                 }
             ],
             "meta": {
-                "line": 209,
+                "line": 212,
                 "file": "XPManager.js",
                 "path": "dist/src/managers"
             }
@@ -5062,7 +5095,7 @@
                 }
             ],
             "meta": {
-                "line": 215,
+                "line": 218,
                 "file": "XPManager.js",
                 "path": "dist/src/managers"
             }
@@ -5158,7 +5191,7 @@
                 }
             ],
             "meta": {
-                "line": 222,
+                "line": 225,
                 "file": "XPManager.js",
                 "path": "dist/src/managers"
             }
@@ -5220,7 +5253,7 @@
                 }
             ],
             "meta": {
-                "line": 232,
+                "line": 235,
                 "file": "XPManager.js",
                 "path": "dist/src/managers"
             }
@@ -5314,7 +5347,7 @@
                 }
             ],
             "meta": {
-                "line": 240,
+                "line": 243,
                 "file": "XPManager.js",
                 "path": "dist/src/managers"
             }
@@ -5430,7 +5463,7 @@
                 }
             ],
             "meta": {
-                "line": 251,
+                "line": 254,
                 "file": "XPManager.js",
                 "path": "dist/src/managers"
             }
@@ -5524,7 +5557,7 @@
                 }
             ],
             "meta": {
-                "line": 264,
+                "line": 267,
                 "file": "XPManager.js",
                 "path": "dist/src/managers"
             }
@@ -5644,7 +5677,7 @@
                 }
             ],
             "meta": {
-                "line": 275,
+                "line": 278,
                 "file": "XPManager.js",
                 "path": "dist/src/managers"
             }
@@ -5693,7 +5726,7 @@
                 }
             ],
             "meta": {
-                "line": 287,
+                "line": 290,
                 "file": "XPManager.js",
                 "path": "dist/src/managers"
             }
@@ -5765,7 +5798,7 @@
                 ]
             ],
             "meta": {
-                "line": 293,
+                "line": 296,
                 "file": "XPManager.js",
                 "path": "dist/src/managers"
             }
@@ -5803,7 +5836,7 @@
                 "description": "Boolean value."
             },
             "meta": {
-                "line": 301,
+                "line": 304,
                 "file": "XPManager.js",
                 "path": "dist/src/managers"
             }
