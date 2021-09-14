@@ -108,6 +108,21 @@ new Promise((resolve, reject) => {
             const errorLines = stdout.split('\n').slice(4)
             const error = errorLines[0]
 
+            if (!error) {
+                const buildDate = Date.now()
+                const timeTaken = ((buildDate - date) / 1000).toFixed(3)
+
+                removeBuild()
+
+                console.log()
+                console.log(`${colors.red}Build failed:${colors.cyan}`)
+                console.log(err)
+                console.log()
+                console.log(`${colors.yellow}An unexpected error has occured.`)
+                console.log(`Time taken: ${colors.green}${timeTaken}s${colors.yellow}.`)
+                console.log(`All build files were cleared.${colors.reset}`)
+            }
+
             const data = error.split('(')
             const file = data[0]
 
@@ -137,6 +152,7 @@ new Promise((resolve, reject) => {
             const modulePackage = package
             modulePackage.scripts = {
                 test: 'echo "ok" && exit 0',
+                buildfiles: 'tsc',
                 postinstall: 'node install.js'
             }
 
@@ -418,7 +434,7 @@ new Promise((resolve, reject) => {
     const buildDate = Date.now()
     const timeTaken = ((buildDate - date) / 1000).toFixed(3)
 
-    //removeBuild()
+    removeBuild()
 
     console.log()
     console.log(`${colors.red}Build failed:${colors.cyan}`)

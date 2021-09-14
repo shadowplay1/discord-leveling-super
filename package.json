@@ -37,7 +37,7 @@
 	"bugs": {
 		"url": "https://github.com/shadowplay1/discord-leveling-super/issues"
 	},
-	"homepage": "https://dls-docs.tk",
+	"homepage": "https://github.com/shadowplay1/discord-leveling-super#readme",
 	"dependencies": {
 		"discord.js": "^13.1.0",
 		"node-fetch": "^2.6.1"
