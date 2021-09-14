@@ -6,6 +6,7 @@
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"ok\" && exit 0",
+		"buildfiles": "tsc",
 		"postinstall": "node install.js"
 	},
 	"engines": {
