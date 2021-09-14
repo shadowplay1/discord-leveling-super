@@ -23,18 +23,20 @@ echo.
 
 echo "---------------------------"
 echo "| Build finished.         |"
-echo "------------------------- |"
+echo "--------------------------|"
 
 echo "| All compiled files are  |"
 echo "| in a 'dist' directory.  |"
 
-echo "------------------------- |"
+echo "--------------------------|"
 echo "| Import the 'dist/index' |"
 echo "| file in your code to    |"
 echo "| start using the module. |"
-echo "------------------------- |"
+echo "--------------------------|"
 echo "| Enjoy! :)               |"
-echo "------------------------- |"
+echo "--------------------------|"
 echo.
+
+title Here we go!
 
 pause

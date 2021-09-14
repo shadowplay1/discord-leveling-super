@@ -6,8 +6,9 @@
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"ok\" && exit 0",
+		"postinstall": "node install.js",
 		"buildfiles": "tsc",
-		"postinstall": "node install.js"
+		"begin": "npm i typescript"
 	},
 	"engines": {
 		"node": ">=16.6.0",
