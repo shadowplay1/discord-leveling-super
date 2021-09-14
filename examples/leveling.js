@@ -10,7 +10,7 @@ const bot = new Client({
 });
 
 const prefix = '!';
-const Leveling = require('../src/index');
+const Leveling = require('discord-leveling-super');
 
 const leveling = new Leveling(bot, {
     storagePath: './leveling.json', // Full path to a JSON file. Default: './leveling.json'.
