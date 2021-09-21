@@ -1,3 +1,8 @@
+# Just a build file. 
+# Here it is! A build.sh
+# file! As you asked.
+
+echo "Thanks for using Discord Leveling Super!"
 node build.js
 
 
@@ -18,3 +23,5 @@ echo "| start using the module. |"
 echo "--------------------------|"
 echo "| Enjoy! :)               |"
 echo "--------------------------|"
+
+echo "Here we go!" 
