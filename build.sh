@@ -2,11 +2,18 @@
 # Here it is! A build.sh
 # file! As you asked.
 
+# Why tf github says
+# "other" in languages
+# instead of "shell" and
+# "batchfile" when I put
+# this file in the repo?
+
+# bruhhhh
 echo "Thanks for using Discord Leveling Super!"
 node build.js
 
 
-echo "Thanks for using Discord Leveling Super!"
+# echo "Thanks for using Discord Leveling Super!"
 
 
 echo "---------------------------"
@@ -24,7 +31,7 @@ echo "--------------------------|"
 echo "| Enjoy! :)               |"
 echo "--------------------------|"
 
-echo "Here we go!" aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaqqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa a
+echo "Here we go!" # aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaqqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa a
 
 echo "-------------------------"
 echo "Enjoy the module!" 
