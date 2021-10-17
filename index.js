@@ -17,7 +17,9 @@ const colors = {
 }
 
 function moduleVersion(moduleName) {
-    const modulePath = `./node_modules/${moduleName}/package.json`
+    const modulePath = __dirname.includes('\\')
+        ? __dirname.split('\\').slice(0, -1).join('\\') + `\\${moduleName}`
+        : __dirname.split('/').slice(0, -1).join('/') + `/${moduleName}`
 
     if (!modulePackage.dependencies) return {
         status: false,

@@ -412,9 +412,7 @@ class Leveling extends Emitter {
 
         this.ranks = new RanksManager(this.options, this.client)
 
-        const clientType = this.utils.typeOf(this.client)
-
-        if(clientType !== 'Client') {
+        if(!this.client.on) {
             console.log(new LevelingError(errors.invalidClient))
             process.exit(1)
         }

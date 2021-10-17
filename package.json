@@ -1,6 +1,6 @@
 {
 	"name": "discord-leveling-super",
-	"version": "1.0.3",
+	"version": "1.0.4",
 	"description": "Easy and customizable leveling framework for your Discord bot.",
 	"types": "./typings/Leveling.d.ts",
 	"main": "index.js",

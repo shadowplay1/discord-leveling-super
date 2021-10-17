@@ -10,7 +10,7 @@ const bot = new Client({
 });
 
 const prefix = '!';
-const Leveling = require('discord-leveling-super');
+const Leveling = require('../src/index');
 
 const leveling = new Leveling(bot, {
     storagePath: './leveling.json', // Full path to a JSON file. Default: './leveling.json'.
@@ -89,7 +89,7 @@ leveling.on('destroy', () => {
     console.log('Leveling was destroyed.')
 })
 
-bot.on('message', async message => {
+bot.on('messageCreate', async message => {
     if (message.content.startsWith(prefix + 'help')) {
         return message.channel.send(
             `Commands:
@@ -121,7 +121,7 @@ ${prefix}leaderboard (${prefix}lb)`
 
     if (message.content.startsWith(prefix + 'leaderboard') || message.content.startsWith(prefix + 'lb')) {
         const ranks = leveling.ranks.leaderboard(message.guild.id)
-        const leaderboard = ranks.map((x, i) => `**${i + 1}** - **${x.userData.tag}** ${x.user ? '' : '(X)'} - Level **${x.level}**, **${x.xp}** XP`).join('\n')
+        const leaderboard = ranks.map((x, i) => `**${i + 1}** - **${x.user ? x.userData.tag : `~~${x.userData.tag}~~`}** - Level **${x.level}**, **${x.xp}** XP`).join('\n')
 
         return message.channel.send(leaderboard)
     }

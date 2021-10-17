@@ -17,7 +17,9 @@ const colors = {
 }
 
 function moduleVersion(moduleName: string) {
-    const modulePath = `./node_modules/${moduleName}/package.json`
+    const modulePath = __dirname.includes('\\')
+        ? __dirname.split('\\').slice(0, -1).join('\\') + `\\${moduleName}`
+        : __dirname.split('/').slice(0, -1).join('/') + `/${moduleName}`
 
     if (!modulePackage.dependencies) return {
         status: false,
@@ -56,7 +58,7 @@ function start() {
     if (nodeVersionNumbers[0] < 16 && nodeVersionNumbers[1] < 6) return sendError(errors.oldNodeVersion + process.version)
     if (djsVersion.error) return sendError(djsVersion.error)
 
-    const djsVersionNumbers = djsVersion.version.split('.').map((x: string) => Number(x))
+    const djsVersionNumbers = djsVersion.version.split('.').map(x => Number(x))
     if (djsVersionNumbers[0] < 13 && djsVersionNumbers[1] < 1) return sendError(errors.oldDJSVersion + djsVersion.version)
 
     const Leveling = require('./src/index')
