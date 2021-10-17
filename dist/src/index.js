@@ -355,8 +355,7 @@ class Leveling extends Emitter_1.default {
         this.levels = new LevelManager_1.default(this.options);
         this.totalXP = new TotalXPManager_1.default(this.options);
         this.ranks = new RanksManager_1.default(this.options, this.client);
-        const clientType = this.utils.typeOf(this.client);
-        if (clientType !== 'Client') {
+        if (!this.client.on) {
             console.log(new LevelingError_1.default(Errors_1.default.invalidClient));
             process.exit(1);
         }

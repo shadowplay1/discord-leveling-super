@@ -37,6 +37,12 @@
     <li><b>... and many more!</b></li>
     <b>Here's the changes you need to make in your code:</b>
 </ul>
+<b>1.0.4</b>
+<ul>
+    <li><b>Fixed startup issues.</b></li>
+    <li><b>TypeScript Examples!</b></li>
+    <li><b>Code optimization.</b></li>
+</ul>
 
 ```diff
 - leveling.checkUpdates()
@@ -71,9 +77,9 @@
 - leveling.setLevel(xp, memberID, guildID)
 - leveling.addLevel(xp, memberID, guildID)
 
-+ leveling.levels.set(xp, memberID, guildID)
-+ leveling.levels.add(xp, memberID, guildID)
-+ leveling.levels.subtract(xp, memberID, guildID)
++ leveling.totalXP.set(xp, memberID, guildID)
++ leveling.totalXP.add(xp, memberID, guildID)
++ leveling.totalXP.subtract(xp, memberID, guildID)
 
 
 - leveling.rank(memberID, guildID)
