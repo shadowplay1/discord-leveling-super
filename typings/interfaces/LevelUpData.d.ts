@@ -1,6 +1,6 @@
 import {
     Channel, Message,
-    MessageAttachment, MessageEmbed, MessageOptions, User
+    AttachmentBuilder, EmbedBuilder, MessageOptions, User
 } from 'discord.js'
 
 declare interface LevelUpData {
@@ -35,5 +35,5 @@ declare interface LevelUpData {
      * @param {String} msg Message string, embed, attachment or message options.
      * @param {String} channel Channel or it's ID.
      */
-    sendMessage(msg: string | MessageEmbed | MessageAttachment | MessageOptions, channel?: string | Channel): Promise<Message>
+    sendMessage(msg: string | EmbedBuilder | AttachmentBuilder | MessageOptions, channel?: string | Channel): Promise<Message>
 }

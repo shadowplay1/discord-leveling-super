@@ -1,12 +1,3 @@
-// This file was generated automatically!
-// I'm not responsible for the quality of this code!
-
-// The module is made in TypeScript.
-// See the source code here:
-// https://github.com/shadowplay1/discord-leveling-super
-
-// Thanks!
-
 import { LevelingOptions } from "../../typings/interfaces/LevelingOptions";
 import FetchManager from '../managers/FetchManager';
 /**

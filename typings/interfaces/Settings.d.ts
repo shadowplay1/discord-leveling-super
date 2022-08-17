@@ -3,7 +3,7 @@ import { Message } from 'discord.js'
 type FilterFunction = (msg?: Message) => boolean
 
 export interface SettingsTypes {
-    xp: number
+    xp: number | [number, number]
     maxXP: number
     multiplier: number
     status: boolean

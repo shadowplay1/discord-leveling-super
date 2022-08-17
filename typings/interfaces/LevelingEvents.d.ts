@@ -15,13 +15,27 @@ declare interface LevelingEvents {
     subtractLevel: LevelData
 
     setXP: LevelData
-    addXP: XPData
+    addXP: XPData & {
+
+        /**
+         * How much XP the user gained after sending a message
+         */
+        gainedXP: number
+    }
+
     subtractXP: LevelData
 
     setTotalXP: LevelData
-    addTotalXP: XPData,
+    addTotalXP: XPData & {
+
+        /**
+         * How much XP the user gained after sending a message
+         */
+        gainedXP: number
+    },
+
     subtractTotalXP: LevelData,
-    
+
     ready: void,
     destroy: void
 }

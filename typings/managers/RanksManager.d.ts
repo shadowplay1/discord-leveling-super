@@ -1,12 +1,3 @@
-// This file was generated automatically!
-// I'm not responsible for the quality of this code!
-
-// The module is made in TypeScript.
-// See the source code here:
-// https://github.com/shadowplay1/discord-leveling-super
-
-// Thanks!
-
 import { Client, Guild, GuildMember, User } from 'discord.js';
 import { LevelingOptions } from '../../typings/interfaces/LevelingOptions';
 import { RankData } from '../../typings/interfaces/RankData';

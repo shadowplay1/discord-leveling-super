@@ -25,9 +25,10 @@ export interface LevelingOptions {
     updateCountdown?: number
 
     /**
-     * Amount of XP that user will receive after sending a message. Default: 5.
+     * Amount of XP that user will receive after sending a message. 
+     * Array of [min, max] is possible for a random XP per message. Default: 5.
      */
-    xp?: number
+    xp?: number | [number, number]
 
     /**
      * Amount of XP that user will need to reach the next level. 
