@@ -10,7 +10,7 @@ Welcome to the `discord-leveling-super v1.0.3` documentation.
 
 ## 📂 | Installation
 <b>Note:</br><b>
-<b>Node.js 16.6.0+ and Discord.js 13.1.0+ is required.</b><br>
+<b>Node.js >=16.9.0 and Discord.js >=14.0.1 is required.</b><br>
 ```console
 npm i discord-leveling-super
 yarn add discord-leveling-super

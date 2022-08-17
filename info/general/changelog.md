@@ -7,23 +7,27 @@
 
 ## ⏰ | Changelog
 
+<b>1.0.5</b>
+<ul>
+    <li><b>Fixed bugs.</b></li>
+    <li><b>Discord.js v14 support</b></li>
+    <li><b>Now "options.xp" is accepting a number or an array of numbers [min, max] XP values. Every time user sends a message, a random number of XP between `min` and `max` values will be added to a user.</b></li>
+    <li><b>Added a new `gainedXP` property `addXP` and `addTotalXP` events that indicates how much XP the user gained.</b></li>
+</ul>
+
+
+<b>1.0.4</b>
+<ul>
+    <li><b>Fixed startup issues.</b></li>
+    <li><b>TypeScript Examples!</b></li>
+    <li><b>Code optimization.</b></li>
+</ul>
+
 <b>1.0.0</b>
 <ul>
     <li><b>The first version of the module: added leveling methods, events, LevelingError class and type defenitions.</b></li>
 </ul>
-<b>1.0.1</b>
-<ul>
-    <li><b>Code optimization.</b></li>
-    <li><b>Fixed typos.</b></li>
-</ul>
-<b>1.0.2</b>
-<ul>
-    <li><b>Code optimization.</b></li>
-    <li><b>Fixed typos.</b></li>
-    <li><b>Fixed bugs.</b></li>
-    <li><b>Added an events example, updated and fixed other examples.</b></li>
-    <li><b>Now every event is returning a guild ID and user ID with other properties and 'levelUp' event is also returns a guild ID.</b></li>
-</ul>
+
 <b>1.0.3</b>
 <ul>
     <li><b>Full rewrite on TypeScript.</b></li>
@@ -33,15 +37,24 @@
     <li><b>Added managers.</b></li>
     <li><b>Added a new Database Manager.</b></li>
     <li><b>Now you can setup the module on different guilds using the brand new Settings Manager.</b></li>
-    <li><b>Now this module has a <a href="https://dls-docs.tk">documentation website</a>!</b></li>
+    <li><b>Now this module has a <a href="https://dls-docs.js.org">documentation website</a>!</b></li>
     <li><b>... and many more!</b></li>
     <b>Here's the changes you need to make in your code:</b>
 </ul>
-<b>1.0.4</b>
+
+<b>1.0.2</b>
 <ul>
-    <li><b>Fixed startup issues.</b></li>
-    <li><b>TypeScript Examples!</b></li>
     <li><b>Code optimization.</b></li>
+    <li><b>Fixed typos.</b></li>
+    <li><b>Fixed bugs.</b></li>
+    <li><b>Added an events example, updated and fixed other examples.</b></li>
+    <li><b>Now every event is returning a guild ID and user ID with other properties and 'levelUp' event is also returns a guild ID.</b></li>
+</ul>
+
+<b>1.0.1</b>
+<ul>
+    <li><b>Code optimization.</b></li>
+    <li><b>Fixed typos.</b></li>
 </ul>
 
 ```diff
