@@ -75,7 +75,7 @@ class RanksManager {
      * @param {String | Guild} guild Guild or it's ID
      * @returns {LeaderboardData[]} Sorted leaderboard array.
      */
-    leaderboard(guild: string | Guild): LeaderboardData[] {
+    public leaderboard(guild: string | Guild): LeaderboardData[] {
         const isGuild = guild instanceof Guild
 
         if (typeof guild !== 'string' && !isGuild) throw new LevelingError(errors.invalidTypes.guild + typeof guild)

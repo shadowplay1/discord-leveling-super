@@ -1,46 +1,50 @@
 {
-	"name": "discord-leveling-super",
-	"version": "1.0.4",
-	"description": "Easy and customizable leveling framework for your Discord bot.",
-	"types": "./typings/Leveling.d.ts",
-	"main": "index.js",
-	"scripts": {
-		"test": "echo \"ok\" && exit 0",
-		"postinstall": "node install.js",
-		"buildfiles": "tsc",
-		"begin": "npm i typescript"
-	},
-	"engines": {
-		"node": ">=16.6.0",
-		"npm": ">=7.0.0"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/shadowplay1/discord-leveling-super.git"
-	},
-	"keywords": [
-		"discord",
-		"bot",
-		"discord.js",
-		"leveling",
-		"discord-leveling",
-		"discord-leveling-super",
-		"ranks",
-		"ranking",
-		"discord-ranks",
-		"discord-js",
-		"super",
-		"rank",
-		"shadowplay"
-	],
-	"author": "shadowplay",
-	"license": "MIT",
-	"bugs": {
-		"url": "https://github.com/shadowplay1/discord-leveling-super/issues"
-	},
-	"homepage": "https://github.com/shadowplay1/discord-leveling-super#readme",
-	"dependencies": {
-		"discord.js": "^13.2.0",
-		"node-fetch": "^2.6.1"
-	}
+  "name": "discord-leveling-super",
+  "version": "1.0.5",
+  "description": "Easy and customizable leveling framework for your Discord bot.",
+  "types": "./typings/Leveling.d.ts",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"ok\" && exit 0",
+    "start": "ts-node bot.ts",
+    "buildfiles": "tsc",
+    "build": "node build.js",
+    "docgen": "node docgen.js",
+    "postinstall": "node install.js",
+    "begin": "npm i typescript"
+  },
+  "engines": {
+    "node": ">=16.6.0",
+    "npm": ">=7.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shadowplay1/discord-leveling-super.git"
+  },
+  "keywords": [
+    "discord",
+    "bot",
+    "discord.js",
+    "leveling",
+    "discord-leveling",
+    "discord-leveling-super",
+    "ranks",
+    "ranking",
+    "discord-ranks",
+    "discord-js",
+    "super",
+    "rank",
+    "shadowplay"
+  ],
+  "author": "shadowplay",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/shadowplay1/discord-leveling-super/issues"
+  },
+  "homepage": "https://github.com/shadowplay1/discord-leveling-super#readme",
+  "dependencies": {
+    "discord.js": "^14.2.0",
+    "node-fetch": "^2.6.7",
+    "typescript": "^4.7.4"
+  }
 }

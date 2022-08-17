@@ -66,7 +66,7 @@ class UtilsManager {
     * Checks for if the module is up to date.
     * @returns {Promise<VersionData>} This method will show is the module updated, latest version and installed version.
     */
-    async checkUpdates(): Promise<UpdateData> {
+    public async checkUpdates(): Promise<UpdateData> {
         const version = require('../../package.json').version
 
         const packageData = await fetch('https://registry.npmjs.com/discord-leveling-super')
@@ -89,7 +89,7 @@ class UtilsManager {
     * Fetches the entire database.
     * @returns {Object} Database contents
     */
-    all(): object {
+    public all(): object {
         return this.fetcher.fetchAll()
     }
 
@@ -99,7 +99,7 @@ class UtilsManager {
      * @param {any} data Any data to write
      * @returns {Boolean} If successfully written: true; else: false.
      */
-    write(path: string, data: any): boolean {
+    public write(path: string, data: any): boolean {
         if (!path) return false
         if (!data) return false
 
@@ -114,7 +114,7 @@ class UtilsManager {
      * Clears the storage file.
      * @returns {Boolean} If cleared successfully: true; else: false
      */
-    clearStorage(): boolean {
+    public clearStorage(): boolean {
         const data = this.all()
         const stringData = String(data)
 
@@ -129,7 +129,7 @@ class UtilsManager {
     * @param {String} guildID Guild ID
     * @returns {Boolean} If cleared successfully: true; else: false
     */
-    removeGuild(guildID: string): boolean {
+    public removeGuild(guildID: string): boolean {
         const data = this.fetcher.fetchAll()
         const guild = data[guildID]
 
@@ -146,7 +146,7 @@ class UtilsManager {
      * @param {String} guildID Guild ID
      * @returns {Boolean} If cleared successfully: true; else: false
      */
-    removeUser(memberID: string, guildID: string): boolean {
+    public removeUser(memberID: string, guildID: string): boolean {
         const data = this.fetcher.fetchAll()
 
         const guild = data[guildID]
@@ -167,7 +167,7 @@ class UtilsManager {
      * @param {RankData} object Custom rank object to set.
      * @returns {Boolean} If reset is successful: true; else: false.
      */
-    reset(memberID: string, guildID: string, object?: RankData): boolean {
+    public reset(memberID: string, guildID: string, object?: RankData): boolean {
         const dataObject = DefaultObject
 
         if (!guildID) return false
@@ -196,7 +196,7 @@ class UtilsManager {
      * @param {LevelData} options Rank object to use.
      * @returns {LevelData} Rank object with specified values.
      */
-    getRankObject(options?: LevelData): LevelData {
+    public getRankObject(options?: LevelData): LevelData {
         const isDefined = (val: any) => val !== undefined ? val : false
 
         if (!options) return {
@@ -229,7 +229,7 @@ class UtilsManager {
      * @param {any} item The item to get the type of.
      * @returns {String} Type or instance of the item.
      */
-    typeOf(item: any): string {
+    public typeOf(item: any): string {
         return item === null ?
             'null' :
             item === undefined ?
@@ -244,7 +244,7 @@ class UtilsManager {
     * @param {any} item The item to check.
     * @returns {Boolean} Is the item object or not.
     */
-    isObject(item: any): boolean {
+    public isObject(item: any): boolean {
         return !Array.isArray(item)
             && typeof item == 'object'
             && item !== null
@@ -256,7 +256,7 @@ class UtilsManager {
      * @param {LevelingOptions} levelingOptions Leveling options object to check.
      * @returns {LevelingOptions} Fixed Leveling options object.
     */
-    checkOptions(options: CheckerOptions = {}, levelingOptions: LevelingOptions): LevelingOptions {
+    public checkOptions(options: CheckerOptions = {}, levelingOptions: LevelingOptions): LevelingOptions {
         const unset = (obj: object, key: String) => {
             const keys = key.split('.')
             let tmp = obj
@@ -289,10 +289,10 @@ class UtilsManager {
             }
             for (let i of keys) {
                 if (levelingOptions[i] == undefined) {
-
                     output[i] = DefaultOptions[i]
                     if (!options.ignoreUnspecifiedOptions) problems.push(`options.${i} is not specified.`)
                 }
+
                 else {
                     output[i] = levelingOptions[i]
                 }
@@ -312,9 +312,9 @@ class UtilsManager {
 
                 if (typeof output[i] !== typeof DefaultOptions[i]) {
                     if (!options.ignoreInvalidTypes) {
-                        if (i == 'workAmount') {
+                        if (i == 'xp') {
                             if (typeof output[i] !== 'number' && !Array.isArray(output[i])) {
-                                problems.push(`options.${i} is not a ${i == 'workAmount' ? 'number or array' : typeof DefaultOptions[i]}. Received type: ${typeof output[i]}.`)
+                                problems.push(`options.${i} is not a ${i == 'xp' ? 'number or array' : typeof DefaultOptions[i]}. Received type: ${typeof output[i]}.`)
                                 output[i] = DefaultOptions[i]
                             }
 

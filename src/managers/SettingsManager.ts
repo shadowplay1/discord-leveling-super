@@ -70,7 +70,7 @@ class SettingsManager {
      * @param {String} guild Guild or it's ID.
      * @returns {SettingsTypes[K]} The setting from the database.
      */
-    get<K extends keyof SettingsTypes>(key: K, guild: string | Guild): SettingsTypes[K] {
+    public get<K extends keyof SettingsTypes>(key: K, guild: string | Guild): SettingsTypes[K] {
         const isGuild = guild instanceof Guild
 
         if (typeof guild !== 'string' && !isGuild) throw new LevelingError(errors.invalidTypes.guild + typeof guild)
@@ -95,7 +95,7 @@ class SettingsManager {
      * @param {String} guild Guild or it's ID.
      * @returns {SettingsTypes} The server settings object.
      */
-    set<K extends keyof SettingsTypes>(key: K, value: SettingsTypes[K], guild: string | Guild): SettingsTypes {
+    public set<K extends keyof SettingsTypes>(key: K, value: SettingsTypes[K], guild: string | Guild): SettingsTypes {
         const isGuild = guild instanceof Guild
 
         if (value == undefined) throw new LevelingError(errors.invalidTypes.value + typeof value)
@@ -124,7 +124,7 @@ class SettingsManager {
     * @param {String} guild Guild or it's ID.
     * @returns {SettingsTypes} The server settings object.
     */
-    push<K extends keyof SettingsArrays>(key: K, value: SettingsArrays[K], guild: string | Guild): SettingsTypes {
+    public push<K extends keyof SettingsArrays>(key: K, value: SettingsArrays[K], guild: string | Guild): SettingsTypes {
         const isGuild = guild instanceof Guild
 
         if (value == undefined) throw new LevelingError(errors.invalidTypes.value + typeof value)
@@ -156,7 +156,7 @@ class SettingsManager {
     * @param {String} guild Guild or it's ID.
     * @returns {SettingsTypes} The server settings object.
     */
-    unpush<K extends keyof SettingsArrays>(key: K, value: any, guild: string | Guild): SettingsTypes {
+    public unpush<K extends keyof SettingsArrays>(key: K, value: any, guild: string | Guild): SettingsTypes {
         const isGuild = guild instanceof Guild
 
         if (typeof key !== 'string') throw new LevelingError(errors.databaseManager.invalidTypes.key + typeof key)
@@ -189,7 +189,7 @@ class SettingsManager {
      * @param {String} guild Guild or it's ID.
      * @returns {SettingsTypes} The server settings object.
      */
-    remove<K extends keyof SettingsTypes>(key: K, guild: string | Guild): SettingsTypes {
+    public remove<K extends keyof SettingsTypes>(key: K, guild: string | Guild): SettingsTypes {
         const isGuild = guild instanceof Guild
 
         if (typeof key !== 'string') throw new LevelingError(errors.databaseManager.invalidTypes.key + typeof key)
@@ -208,7 +208,7 @@ class SettingsManager {
      * @param {String} guild Guild or it's ID.
      * @returns {SettingsTypes} The server settings object.
      */
-    all(guild: string | Guild): SettingsTypes {
+    public all(guild: string | Guild): SettingsTypes {
 
         const isGuild = guild instanceof Guild
         if (typeof guild !== 'string' && !isGuild) throw new LevelingError(errors.invalidTypes.guild + typeof guild)
@@ -238,7 +238,7 @@ class SettingsManager {
      * @param {String} guild Guild or it's ID.
      * @returns {SettingsTypes} The server settings object.
      */
-    reset(guild: string | Guild): SettingsTypes {
+    public reset(guild: string | Guild): SettingsTypes {
         const isGuild = guild instanceof Guild
         if (typeof guild !== 'string' && !isGuild) throw new LevelingError(errors.invalidTypes.guild + typeof guild)
 

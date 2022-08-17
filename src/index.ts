@@ -2,7 +2,7 @@ import { promisify } from 'util'
 import { readFileSync, writeFileSync, existsSync } from 'fs'
 
 import {
-    Client, MessageAttachment, MessageEmbed,
+    Client, AttachmentBuilder, EmbedBuilder,
     Channel, MessagePayload, MessageOptions,
     TextChannel
 } from 'discord.js'
@@ -166,7 +166,7 @@ class Leveling extends Emitter {
         this.interval = null
 
         this.version = modulePackage.version
-        this.docs = 'https://dls-docs.tk'
+        this.docs = 'https://dls-docs.js.org'
 
         this.database = null
         this.fetcher = null
@@ -187,7 +187,7 @@ class Leveling extends Emitter {
     * @fires Leveling#destroy
     * @returns {Leveling | boolean} Leveling instance.
     */
-    kill(): Leveling | boolean {
+    public kill(): Leveling | boolean {
         if (!this.ready) return false
 
         clearInterval(this.interval)
@@ -217,7 +217,7 @@ class Leveling extends Emitter {
     * @fires Leveling#ready
     * @returns {Promise<Boolean>} If started successfully: true; else: Error instance.
     */
-    init(): Promise<boolean | void> {
+    public init(): Promise<boolean | void> {
         let attempt = 0
         let attempts = this.options?.errorHandler?.attempts == 0 ? Infinity : this.options?.errorHandler?.attempts
 
@@ -279,7 +279,7 @@ class Leveling extends Emitter {
      * @returns {Promise<boolean>} If started successfully: true; else: Error instance.
      * @private
      */
-    _init(): Promise<boolean> {
+    private _init(): Promise<boolean> {
         const storagePath = this.options.storagePath || './leveling.json'
         const updateCountdown = this.options.updateCountdown
         const isFileExist = existsSync(storagePath)
@@ -312,33 +312,33 @@ class Leveling extends Emitter {
                     if (!version.updated) {
 
                         console.log('\n\n')
-                        console.log(colors.green + '╔═══════════════════════════════════════════════════════════╗')
-                        console.log(colors.green + '║ @ discord-leveling-super                           - [] X ║')
-                        console.log(colors.green + '║═══════════════════════════════════════════════════════════║')
-                        console.log(colors.yellow + `║                  The module is ${colors.red}out of date!${colors.yellow}               ║`)
-                        console.log(colors.magenta + '║                   New version is available!               ║')
-                        console.log(colors.blue + `║                        ${version.installedVersion} --> ${version.packageVersion}                    ║`)
-                        console.log(colors.cyan + '║          Run "npm i discord-leveling-super@latest"        ║')
-                        console.log(colors.cyan + '║                         to update!                        ║')
-                        console.log(colors.white + '║                View the full changelog here:              ║')
-                        console.log(colors.red + '║  https://dls-docs.tk/#/docs/main/stable/general/changelog ║')
-                        console.log(colors.green + '╚═══════════════════════════════════════════════════════════╝\x1b[37m')
+                        console.log(colors.green + '╔═══════════════════════════════════════════════════════════════╗')
+                        console.log(colors.green + '║ @ discord-leveling-super                               - [] X ║')
+                        console.log(colors.green + '║═══════════════════════════════════════════════════════════════║')
+                        console.log(colors.yellow + `║                  The module is ${colors.red}out of date!${colors.yellow}                   ║`)
+                        console.log(colors.magenta + '║                   New version is available!                   ║')
+                        console.log(colors.blue + `║                        ${version.installedVersion} --> ${version.packageVersion}                        ║`)
+                        console.log(colors.cyan + '║          Run "npm i discord-leveling-super@latest"            ║')
+                        console.log(colors.cyan + '║                         to update!                            ║')
+                        console.log(colors.white + '║                View the full changelog here:                  ║')
+                        console.log(colors.red + '║  https://dls-docs.js.org/#/docs/main/stable/general/changelog ║')
+                        console.log(colors.green + '╚═══════════════════════════════════════════════════════════════╝\x1b[37m')
                         console.log('\n\n')
 
                     } else {
                         if (this.options?.updater?.upToDateMessage) {
 
                             console.log('\n\n')
-                            console.log(colors.green + '╔═══════════════════════════════════════════════════════════╗')
-                            console.log(colors.green + '║ @ discord-leveling-super                           - [] X ║')
-                            console.log(colors.green + '║═══════════════════════════════════════════════════════════║')
-                            console.log(colors.yellow + `║                   The module is ${colors.cyan}up of date!${colors.yellow}               ║`)
-                            console.log(colors.magenta + '║                   No updates are available.               ║')
-                            console.log(colors.blue + `║                   Current version is ${version.packageVersion}.               ║`)
-                            console.log(colors.cyan + '║                            Enjoy!                         ║')
-                            console.log(colors.white + '║                View the full changelog here:              ║')
-                            console.log(colors.red + '║  https://dls-docs.tk/#/docs/main/stable/general/changelog ║')
-                            console.log(colors.green + '╚═══════════════════════════════════════════════════════════╝\x1b[37m')
+                            console.log(colors.green + '╔═══════════════════════════════════════════════════════════════╗')
+                            console.log(colors.green + '║ @ discord-leveling-super                               - [] X ║')
+                            console.log(colors.green + '║═══════════════════════════════════════════════════════════════║')
+                            console.log(colors.yellow + `║                   The module is ${colors.cyan}up of date!${colors.yellow}                   ║`)
+                            console.log(colors.magenta + '║                   No updates are available.                   ║')
+                            console.log(colors.blue + `║                   Current version is ${version.packageVersion}.                   ║`)
+                            console.log(colors.cyan + '║                            Enjoy!                             ║')
+                            console.log(colors.white + '║                View the full changelog here:                  ║')
+                            console.log(colors.red + '║  https://dls-docs.js.org/#/docs/main/stable/general/changelog ║')
+                            console.log(colors.green + '╚═══════════════════════════════════════════════════════════════╝\x1b[37m')
                             console.log('\n\n')
 
                         }
@@ -399,7 +399,7 @@ class Leveling extends Emitter {
      * @returns {Boolean} If successfully started: true.
      * @private
      */
-    start(): boolean {
+    public start(): boolean {
         this.utils = new UtilsManager(this.options, this.client)
         this.database = new DatabaseManager(this.options)
         this.fetcher = new FetchManager(this.options)
@@ -412,7 +412,7 @@ class Leveling extends Emitter {
 
         this.ranks = new RanksManager(this.options, this.client)
 
-        if(!this.client.on) {
+        if (!this.client.on) {
             console.log(new LevelingError(errors.invalidClient))
             process.exit(1)
         }
@@ -495,7 +495,7 @@ class Leveling extends Emitter {
                         + '\n]'
                     )
                 }
-                const invalidChannels = lockedChannelsArray.filter(x => x.length !== 18)
+                const invalidChannels = lockedChannelsArray.filter(x => x.length !== 18 && x.length !== 19)
                 if (invalidChannels.length) return console.log(new LevelingError(errors.lockedChannels.invalidChannels(invalidChannels)))
 
 
@@ -528,7 +528,7 @@ class Leveling extends Emitter {
                         + '\n]'
                     )
                 }
-                const invalidUsers = ignoredUsersArray.filter(x => x.length !== 18)
+                const invalidUsers = ignoredUsersArray.filter(x => x.length !== 18 && x.length !== 19)
                 if (invalidUsers.length && ignoredUsers.length) return console.log(new LevelingError(errors.ignoredUsers.invalidUsers(ignoredUsers)))
 
                 for (let i of ignoredGuilds) {
@@ -560,7 +560,8 @@ class Leveling extends Emitter {
                         + '\n]'
                     )
                 }
-                const invalidGuilds = ignoredGuildsArray.filter(x => x.length !== 18)
+
+                const invalidGuilds = ignoredGuildsArray.filter(x => x.length !== 18 && x.length !== 19)
                 if (invalidGuilds.length && ignoredGuilds.length) throw new LevelingError(errors.ignoredGuilds.invalidGuilds(invalidGuilds))
 
                 const levelingStatus = options.status
@@ -594,9 +595,10 @@ class Leveling extends Emitter {
                     const userXP = this.database.fetch(`${guildID}.${memberID}.xp`)
                     const userMaxXP = this.database.fetch(`${guildID}.${memberID}.maxXP`)
 
-                    const settingsXP = this.settings.get('xp', guildID)
+                    const settingsEXP = this.settings.get('xp', guildID)
+                    const settingsXP = Array.isArray(settingsEXP) ? Math.floor(Math.random() * (settingsEXP[1] - settingsEXP[0] + 1)) + settingsEXP[0] : settingsEXP
 
-                    const xp = options.xp
+                    const xp = Array.isArray(options.xp) ? Math.floor(Math.random() * (options.xp[1] - options.xp[0] + 1)) + options.xp[0] : options.xp
                     const multiplier = memberMultiplier == 1 ? options.multiplier : memberMultiplier
 
                     const memberXP = xp * multiplier
@@ -624,7 +626,7 @@ class Leveling extends Emitter {
                             maxXP: newMaxXP,
                             multiplier,
 
-                            sendMessage: (msg: string | MessageEmbed | MessageAttachment | MessageOptions, channel?: string | Channel | TextChannel) => {
+                            sendMessage: (msg: string | EmbedBuilder | AttachmentBuilder | MessageOptions, channel?: string | Channel | TextChannel) => {
                                 const type = this.utils.typeOf(msg)
 
                                 let messageOptions: string | MessagePayload | MessageOptions
@@ -641,18 +643,18 @@ class Leveling extends Emitter {
                                         messageOptions = msg as MessageOptions
                                         break
 
-                                    case 'MessageEmbed':
+                                    case 'EmbedBuilder':
                                         messageOptions = {
                                             embeds: [
-                                                msg as MessageEmbed
+                                                msg as EmbedBuilder
                                             ]
                                         }
                                         break
 
-                                    case 'MessageAttachment':
+                                    case 'AttachmentBuilder':
                                         messageOptions = {
                                             files: [
-                                                messageOptions as MessageAttachment
+                                                messageOptions as AttachmentBuilder
                                             ]
                                         }
                                         break
@@ -683,7 +685,7 @@ class Leveling extends Emitter {
 
                                     if (!textChannel) throw new LevelingError(errors.sendMessage.channelNotFound)
 
-                                    textChannel.send(messageOptions)
+                                    return textChannel.send(messageOptions)
                                 }
 
                                 return message.channel.send(messageOptions)
@@ -693,6 +695,7 @@ class Leveling extends Emitter {
                 }
             }
         })
+
         return true
     }
 }

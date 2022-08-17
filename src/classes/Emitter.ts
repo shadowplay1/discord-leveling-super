@@ -8,6 +8,7 @@ const emitter = new EventEmitter()
  * @private
  */
 class Emitter {
+    
     /**
     * Simple Leveling event emitter with only important emitter methods.
     * @private
@@ -43,4 +44,5 @@ class Emitter {
         return emitter.emit(event, ...args)
     }
 }
+
 export = Emitter

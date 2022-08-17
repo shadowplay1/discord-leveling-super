@@ -37,7 +37,7 @@ class TotalXPManager extends Emitter {
      * @param {String | Guild} guild Guild or it's ID.
      * @returns {Number} Amount of total XP.
      */
-    get(member: string | GuildMember | User, guild: string | Guild): number {
+    public get(member: string | GuildMember | User, guild: string | Guild): number {
         const isUser = member instanceof GuildMember || member instanceof User
         const isGuild = guild instanceof Guild
 
@@ -59,7 +59,7 @@ class TotalXPManager extends Emitter {
      * @param {String | Guild} guild Guild or it's ID.
      * @returns {Boolean} If set successfully: true, else: false.
      */
-    set(totalXP: number, member: string | GuildMember | User, guild: string | Guild): boolean {
+    public set(totalXP: number, member: string | GuildMember | User, guild: string | Guild): boolean {
         const isUser = member instanceof GuildMember || member instanceof User
         const isGuild = guild instanceof Guild
 
@@ -95,7 +95,7 @@ class TotalXPManager extends Emitter {
      * @param {Boolean} onMessage The value will be true if the method was called on 'messageCreate' bot event.
      * @returns {Boolean} If added successfully: true, else: false.
      */
-    add(totalXP: number, member: string | GuildMember | User, guild: string | Guild, onMessage: boolean = false): boolean {
+    public add(totalXP: number, member: string | GuildMember | User, guild: string | Guild, onMessage: boolean = false): boolean {
         const isUser = member instanceof GuildMember || member instanceof User
         const isGuild = guild instanceof Guild
 
@@ -112,6 +112,7 @@ class TotalXPManager extends Emitter {
             userID: user,
             xp: userData.xp,
             level: userData.level,
+            gainedXP: totalXP,
             totalXP: userData.totalXP + totalXP,
             maxXP: userData.maxXP,
             difference: userData.difference,
@@ -130,7 +131,7 @@ class TotalXPManager extends Emitter {
      * @param {String | Guild} guild Guild or it's ID.
      * @returns {Boolean} If subtracted successfully: true, else: false.
      */
-    subtract(totalXP: number, member: string | GuildMember | User, guild: string | Guild): boolean {
+    public subtract(totalXP: number, member: string | GuildMember | User, guild: string | Guild): boolean {
         const isUser = member instanceof GuildMember || member instanceof User
         const isGuild = guild instanceof Guild
 

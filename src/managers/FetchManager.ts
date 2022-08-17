@@ -34,7 +34,7 @@ class FetchManager {
      * @param {String | Guild} guild Guild or it's ID.
      * @returns {Number} Amount of XP.
      */
-    fetchXP(member: string | GuildMember | User, guild: string | Guild): number {
+    public fetchXP(member: string | GuildMember | User, guild: string | Guild): number {
         const data = this.fetchAll()
 
         const isUser = member instanceof GuildMember || member instanceof User
@@ -60,7 +60,7 @@ class FetchManager {
     * @param {String | Guild} guild Guild or it's ID.
     * @returns {Number} Amount of XP.
     */
-    fetchTotalXP(member: string | GuildMember | User, guild: string | Guild): number {
+    public fetchTotalXP(member: string | GuildMember | User, guild: string | Guild): number {
         const data = this.fetchAll()
 
         const isUser = member instanceof GuildMember || member instanceof User
@@ -86,7 +86,7 @@ class FetchManager {
     * @param {String | Guild} guild Guild or it's ID.
     * @returns {Number} Amount of XP.
     */
-    fetchLevels(member: string | GuildMember | User, guild: string | Guild): number {
+    public fetchLevels(member: string | GuildMember | User, guild: string | Guild): number {
         const data = this.fetchAll()
 
         const isUser = member instanceof GuildMember || member instanceof User
@@ -112,7 +112,7 @@ class FetchManager {
     * @param {String | Guild} guild Guild or it's ID.
     * @returns {Number} Amount of XP.
     */
-    fetchMaxXP(member: string | GuildMember | User, guild: string | Guild): number {
+    public fetchMaxXP(member: string | GuildMember | User, guild: string | Guild): number {
         const data = this.fetchAll()
 
         const isUser = member instanceof GuildMember || member instanceof User
@@ -138,7 +138,7 @@ class FetchManager {
     * @param {String | Guild} guild Guild or it's ID.
     * @returns {Number} Amount of XP.
     */
-    fetchDifference(member: string | GuildMember | User, guild: string | Guild): number {
+    public fetchDifference(member: string | GuildMember | User, guild: string | Guild): number {
         const data = this.fetchAll()
 
         const isUser = member instanceof GuildMember || member instanceof User
@@ -162,7 +162,7 @@ class FetchManager {
     * Fetches the entire database.
     * @returns {Object} Database contents
     */
-    fetchAll(): object {
+    public fetchAll(): object {
         const isFileExisting = existsSync(this.storagePath)
 
         if (!isFileExisting) writeFileSync(this.storagePath, '{}')

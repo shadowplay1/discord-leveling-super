@@ -37,7 +37,7 @@ class LevelManager extends Emitter {
      * @param {String | Guild} guild Guild or it's ID.
      * @returns {Number} Amount of levels.
      */
-    get(member: string | GuildMember | User, guild: string | Guild): number {
+    public get(member: string | GuildMember | User, guild: string | Guild): number {
         const isUser = member instanceof GuildMember || member instanceof User
         const isGuild = guild instanceof Guild
 
@@ -59,7 +59,7 @@ class LevelManager extends Emitter {
      * @param {String | Guild} guild Guild or it's ID.
      * @returns {Boolean} If set successfully: true, else: false.
      */
-    set(level: number, member: string | GuildMember | User, guild: string | Guild): boolean {
+    public set(level: number, member: string | GuildMember | User, guild: string | Guild): boolean {
         const isUser = member instanceof GuildMember || member instanceof User
         const isGuild = guild instanceof Guild
 
@@ -95,7 +95,7 @@ class LevelManager extends Emitter {
      * @param {Boolean} onMessage The value will be true if the method was called on 'messageCreate' bot event.
      * @returns {Boolean} If added successfully: true, else: false.
      */
-    add(level: number, member: string | GuildMember | User, guild: string | Guild, onMessage: boolean = false): boolean {
+    public add(level: number, member: string | GuildMember | User, guild: string | Guild, onMessage: boolean = false): boolean {
         const isUser = member instanceof GuildMember || member instanceof User
         const isGuild = guild instanceof Guild
 
@@ -107,7 +107,7 @@ class LevelManager extends Emitter {
 
         const userData: LevelData = this.database.fetch(`${botGuild}.${user}`)
 
-        if(!onMessage) this.emit('addLevel', {
+        if (!onMessage) this.emit('addLevel', {
             guildID: botGuild,
             userID: user,
             xp: userData.xp,
@@ -130,7 +130,7 @@ class LevelManager extends Emitter {
      * @param {String | Guild} guild Guild or it's ID.
      * @returns {Boolean} If subtracted successfully: true, else: false.
      */
-    subtract(level: number, member: string | GuildMember | User, guild: string | Guild): boolean {
+    public subtract(level: number, member: string | GuildMember | User, guild: string | Guild): boolean {
         const isUser = member instanceof GuildMember || member instanceof User
         const isGuild = guild instanceof Guild
 

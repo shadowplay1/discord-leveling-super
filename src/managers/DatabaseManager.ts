@@ -40,7 +40,7 @@ class DatabaseManager {
      * @param {String} key The key in database.
      * @returns {string[]} An array with all keys in database or 'null' if nothing found.
      */
-    keyList(key: string): string[] {
+    public keyList(key: string): string[] {
         const storageData = this.fetcher.fetchAll()
         const data = this.fetch(key)
 
@@ -57,7 +57,7 @@ class DatabaseManager {
      * @param {any} value Any data to set in property.
      * @returns {Boolean} If set successfully: true; else: false
      */
-    set(key: string, value: any): boolean {
+    public set(key: string, value: any): boolean {
         if (!key) return false
         if (typeof key !== 'string') throw new LevelingError(errors.databaseManager.invalidTypes.key + typeof key)
         if (value == undefined) return false
@@ -71,7 +71,7 @@ class DatabaseManager {
      * @param {Number} value Any number to add.
      * @returns {Boolean} If added successfully: true; else: false
      */
-    add(key: string, value: number): boolean {
+    public add(key: string, value: number): boolean {
         const data = this.parser.parse(key)
 
         if (!key) return false
@@ -92,7 +92,7 @@ class DatabaseManager {
      * @param {Number} value Any number to subtract.
      * @returns {Boolean} If set successfully: true; else: false
      */
-    subtract(key: string, value: number): boolean {
+    public subtract(key: string, value: number): boolean {
         const data = this.parser.parse(key)
 
         if (!key) return false
@@ -112,7 +112,7 @@ class DatabaseManager {
      * @param {String} key The key in database.
      * @returns {any | false} Value from the specified key or 'false' if failed to read or 'null' if nothing found.
      */
-    fetch(key: string): any | false {
+    public fetch(key: string): any | false {
         if (!key) return false
         if (typeof key !== 'string') throw new LevelingError(errors.databaseManager.invalidTypes.key + typeof key)
 
@@ -124,7 +124,7 @@ class DatabaseManager {
      * @param {String} key The key in database.
      * @returns {Boolean} If cleared: true; else: false.
      */
-    remove(key: string): boolean {
+    public remove(key: string): boolean {
         if (!key) return false
         if (typeof key !== 'string') throw new LevelingError(errors.databaseManager.invalidTypes.key + typeof key)
 
@@ -137,7 +137,7 @@ class DatabaseManager {
      * @param {any} value The key in database.
      * @returns {Boolean} If cleared: true; else: false.
      */
-    push(key: string, value: any): boolean {
+    public push(key: string, value: any): boolean {
         if (!key) return false
         if (value == undefined) return false
         if (typeof key !== 'string') throw new LevelingError(errors.databaseManager.invalidTypes.key + typeof key)
@@ -155,7 +155,7 @@ class DatabaseManager {
      * @param {Number} index The index in the array.
      * @returns {Boolean} If cleared: true; else: false.
      */
-    removeElement(key: string, index: number): boolean {
+    public removeElement(key: string, index: number): boolean {
         if (!key) return false
         if (index == undefined) return false
         if (typeof key !== 'string') throw new LevelingError(errors.databaseManager.invalidTypes.key + typeof key)
@@ -171,7 +171,7 @@ class DatabaseManager {
     * Fetches the entire database.
     * @returns {Object} Database contents
     */
-    all(): object {
+    public all(): object {
         return this.fetcher.fetchAll()
     }
 }
