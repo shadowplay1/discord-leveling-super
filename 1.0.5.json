@@ -2,7 +2,7 @@
     "meta": {
         "generator": "0.10.0",
         "format": 20,
-        "date": 1660749583440
+        "date": 1660749739557
     },
     "custom": {
         "general": {
@@ -542,6 +542,272 @@
                         "line": 37,
                         "file": "Emitter.js",
                         "path": "dist/src/classes"
+                    }
+                }
+            ],
+            "events": [
+                {
+                    "name": "ready",
+                    "description": "Emits when the module is ready.",
+                    "params": [
+                        {
+                            "name": "data",
+                            "description": "Void event.",
+                            "type": [
+                                [
+                                    [
+                                        "void"
+                                    ]
+                                ]
+                            ]
+                        }
+                    ],
+                    "meta": {
+                        "line": 719,
+                        "file": "index.js",
+                        "path": "dist/src"
+                    }
+                },
+                {
+                    "name": "destroy",
+                    "description": "Emits when the module is destroyed.",
+                    "params": [
+                        {
+                            "name": "data",
+                            "description": "Void event.",
+                            "type": [
+                                [
+                                    [
+                                        "void"
+                                    ]
+                                ]
+                            ]
+                        }
+                    ],
+                    "meta": {
+                        "line": 725,
+                        "file": "index.js",
+                        "path": "dist/src"
+                    }
+                },
+                {
+                    "name": "levelUp",
+                    "description": "Emits when someone's got the next level.",
+                    "params": [
+                        {
+                            "name": "data",
+                            "description": "Level up data object.",
+                            "type": [
+                                [
+                                    [
+                                        "LevelUpData"
+                                    ]
+                                ]
+                            ]
+                        }
+                    ],
+                    "meta": {
+                        "line": 732,
+                        "file": "index.js",
+                        "path": "dist/src"
+                    }
+                },
+                {
+                    "name": "setLevel",
+                    "description": "Emits when someone's set the level.",
+                    "params": [
+                        {
+                            "name": "data",
+                            "description": "Level data object.",
+                            "type": [
+                                [
+                                    [
+                                        "LevelData"
+                                    ]
+                                ]
+                            ]
+                        }
+                    ],
+                    "meta": {
+                        "line": 739,
+                        "file": "index.js",
+                        "path": "dist/src"
+                    }
+                },
+                {
+                    "name": "addLevel",
+                    "description": "Emits when someone's added the levels.",
+                    "params": [
+                        {
+                            "name": "data",
+                            "description": "Level data object.",
+                            "type": [
+                                [
+                                    [
+                                        "XPData"
+                                    ]
+                                ]
+                            ]
+                        }
+                    ],
+                    "meta": {
+                        "line": 745,
+                        "file": "index.js",
+                        "path": "dist/src"
+                    }
+                },
+                {
+                    "name": "subtractLevel",
+                    "description": "Emits when someone's subtracted the levels.",
+                    "params": [
+                        {
+                            "name": "data",
+                            "description": "Level data object.",
+                            "type": [
+                                [
+                                    [
+                                        "LevelData"
+                                    ]
+                                ]
+                            ]
+                        }
+                    ],
+                    "meta": {
+                        "line": 751,
+                        "file": "index.js",
+                        "path": "dist/src"
+                    }
+                },
+                {
+                    "name": "setXP",
+                    "description": "Emits when someone's set the XP.",
+                    "params": [
+                        {
+                            "name": "data",
+                            "description": "Level data object.",
+                            "type": [
+                                [
+                                    [
+                                        "LevelData"
+                                    ]
+                                ]
+                            ]
+                        }
+                    ],
+                    "meta": {
+                        "line": 758,
+                        "file": "index.js",
+                        "path": "dist/src"
+                    }
+                },
+                {
+                    "name": "addXP",
+                    "description": "Emits when someone's add the XP.",
+                    "params": [
+                        {
+                            "name": "data",
+                            "description": "Level data object.",
+                            "type": [
+                                [
+                                    [
+                                        "XPData"
+                                    ]
+                                ]
+                            ]
+                        }
+                    ],
+                    "meta": {
+                        "line": 764,
+                        "file": "index.js",
+                        "path": "dist/src"
+                    }
+                },
+                {
+                    "name": "subtractXP",
+                    "description": "Emits when someone's subtracted the XP.",
+                    "params": [
+                        {
+                            "name": "data",
+                            "description": "Level data object.",
+                            "type": [
+                                [
+                                    [
+                                        "LevelData"
+                                    ]
+                                ]
+                            ]
+                        }
+                    ],
+                    "meta": {
+                        "line": 770,
+                        "file": "index.js",
+                        "path": "dist/src"
+                    }
+                },
+                {
+                    "name": "setTotalXP",
+                    "description": "Emits when someone's set the total XP.",
+                    "params": [
+                        {
+                            "name": "data",
+                            "description": "Level data object.",
+                            "type": [
+                                [
+                                    [
+                                        "LevelData"
+                                    ]
+                                ]
+                            ]
+                        }
+                    ],
+                    "meta": {
+                        "line": 777,
+                        "file": "index.js",
+                        "path": "dist/src"
+                    }
+                },
+                {
+                    "name": "addTotalXP",
+                    "description": "Emits when someone's added the total XP.",
+                    "params": [
+                        {
+                            "name": "data",
+                            "description": "Level data object.",
+                            "type": [
+                                [
+                                    [
+                                        "XPData"
+                                    ]
+                                ]
+                            ]
+                        }
+                    ],
+                    "meta": {
+                        "line": 783,
+                        "file": "index.js",
+                        "path": "dist/src"
+                    }
+                },
+                {
+                    "name": "subtractTotalXP",
+                    "description": "Emits when someone's subtracted the total XP.",
+                    "params": [
+                        {
+                            "name": "data",
+                            "description": "Level data object.",
+                            "type": [
+                                [
+                                    [
+                                        "LevelData"
+                                    ]
+                                ]
+                            ]
+                        }
+                    ],
+                    "meta": {
+                        "line": 789,
+                        "file": "index.js",
+                        "path": "dist/src"
                     }
                 }
             ],
@@ -4145,6 +4411,1293 @@
         }
     ],
     "interfaces": [],
-    "typedefs": [],
+    "typedefs": [
+        {
+            "name": "VersionData",
+            "type": [
+                [
+                    [
+                        "Object"
+                    ]
+                ]
+            ],
+            "props": [
+                {
+                    "name": "updated",
+                    "description": "Is the module updated.",
+                    "type": [
+                        [
+                            [
+                                "Boolean"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "installedVersion",
+                    "description": "Version of module that you have installed.",
+                    "type": [
+                        [
+                            [
+                                "installedVersion"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "packageVersion",
+                    "description": "Latest version of the module.",
+                    "type": [
+                        [
+                            [
+                                "packageVersion"
+                            ]
+                        ]
+                    ]
+                }
+            ],
+            "meta": {
+                "line": 566,
+                "file": "index.js",
+                "path": "dist/src"
+            }
+        },
+        {
+            "name": "RankData",
+            "type": [
+                [
+                    [
+                        "Object"
+                    ]
+                ]
+            ],
+            "props": [
+                {
+                    "name": "userData",
+                    "description": "User's data object.",
+                    "type": [
+                        [
+                            [
+                                "UserData"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "level",
+                    "description": "User's level",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "xp",
+                    "description": "User's amount of XP.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "totalXP",
+                    "description": "User's total amount of XP.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "maxXP",
+                    "description": "How much XP in total the user need to reach the next level.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "difference",
+                    "description": "The difference between max XP and current amount of XP. It shows how much XP he need to reach the next level.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "multiplier",
+                    "description": "XP Multiplier.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                }
+            ],
+            "meta": {
+                "line": 573,
+                "file": "index.js",
+                "path": "dist/src"
+            }
+        },
+        {
+            "name": "LeaderboardData",
+            "description": "Leaderboard data object.",
+            "type": [
+                [
+                    [
+                        "Object"
+                    ]
+                ]
+            ],
+            "props": [
+                {
+                    "name": "userID",
+                    "description": "User's ID.",
+                    "type": [
+                        [
+                            [
+                                "String"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "level",
+                    "description": "User's level.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "xp",
+                    "description": "User's amount of XP.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "totalXP",
+                    "description": "User's amount of total XP.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "maxXP",
+                    "description": "User's data object.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "user",
+                    "description": "User's data object.",
+                    "type": [
+                        [
+                            [
+                                "User"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "difference",
+                    "description": "User's amount of total XP.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "multiplier",
+                    "description": "XP Multiplier.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                }
+            ],
+            "meta": {
+                "line": 584,
+                "file": "index.js",
+                "path": "dist/src"
+            }
+        },
+        {
+            "name": "LevelingOptions",
+            "description": "Default Leveling options.",
+            "type": [
+                [
+                    [
+                        "Object"
+                    ]
+                ]
+            ],
+            "props": [
+                {
+                    "name": "storagePath",
+                    "description": "Full path to a JSON file. Default: './leveling.json'.",
+                    "optional": true,
+                    "default": "'./leveling.json'",
+                    "type": [
+                        [
+                            [
+                                "String"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "checkStorage",
+                    "description": "Checks the if database file exists and if it has errors. Default: true",
+                    "optional": true,
+                    "default": true,
+                    "type": [
+                        [
+                            [
+                                "Boolean"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "ignoreBots",
+                    "description": "If true, every message from bots won't give them XP. Default: true.",
+                    "optional": true,
+                    "default": true,
+                    "type": [
+                        [
+                            [
+                                "Boolean"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "xp",
+                    "description": "Amount of XP that user will receive after sending a message. Default: 5.",
+                    "optional": true,
+                    "default": 5,
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "status",
+                    "description": "You can enable or disable the leveling system using this option. Default: true.",
+                    "optional": true,
+                    "default": true,
+                    "type": [
+                        [
+                            [
+                                "Boolean"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "maxXP",
+                    "description": "Amount of XP that user will totally need to reach the next level. This value will double for each level. Default: 300.",
+                    "optional": true,
+                    "default": 300,
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "lockedChannels",
+                    "description": "Array of channel IDs that won't give XP to users. Default: [].",
+                    "optional": true,
+                    "default": "[]",
+                    "type": [
+                        [
+                            [
+                                "Array",
+                                "<"
+                            ],
+                            [
+                                "String",
+                                ">"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "ignoredGuilds",
+                    "description": "Array of guilds on which none of the members will be given XP. Default: [].",
+                    "optional": true,
+                    "default": "[]",
+                    "type": [
+                        [
+                            [
+                                "Array",
+                                "<"
+                            ],
+                            [
+                                "String",
+                                ">"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "multiplier",
+                    "description": "XP multiplier. Default: 1.",
+                    "optional": true,
+                    "default": 1,
+                    "type": [
+                        [
+                            [
+                                "Boolean"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "filter",
+                    "description": "Callback function that must return a boolean value, it will add XP only to authors of filtered messages. Default: null.",
+                    "optional": true,
+                    "default": "() => true",
+                    "type": [
+                        [
+                            [
+                                "FilterFunction"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "updateCountdown",
+                    "description": "Checks for if storage file exists in specified time (in ms). Default: 1000.",
+                    "optional": true,
+                    "default": 1000,
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "updater",
+                    "description": "Update Checker options object.",
+                    "optional": true,
+                    "type": [
+                        [
+                            [
+                                "UpdaterOptions"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "errorHandler",
+                    "description": "Error Handler options object.",
+                    "optional": true,
+                    "type": [
+                        [
+                            [
+                                "ErrorHandlerOptions"
+                            ]
+                        ]
+                    ]
+                }
+            ],
+            "meta": {
+                "line": 596,
+                "file": "index.js",
+                "path": "dist/src"
+            }
+        },
+        {
+            "name": "UpdaterOptions",
+            "description": "Updatee options object.",
+            "type": [
+                [
+                    [
+                        "Object"
+                    ]
+                ]
+            ],
+            "props": [
+                {
+                    "name": "checkUpdates",
+                    "description": "Sends the update state message in console on start. Default: true.",
+                    "optional": true,
+                    "default": true,
+                    "type": [
+                        [
+                            [
+                                "Boolean"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "upToDateMessage",
+                    "description": "Sends the message in console on start if module is up to date. Default: true.",
+                    "optional": true,
+                    "default": true,
+                    "type": [
+                        [
+                            [
+                                "Boolean"
+                            ]
+                        ]
+                    ]
+                }
+            ],
+            "meta": {
+                "line": 613,
+                "file": "index.js",
+                "path": "dist/src"
+            }
+        },
+        {
+            "name": "ErrorHandlerOptions",
+            "type": [
+                [
+                    [
+                        "Object"
+                    ]
+                ]
+            ],
+            "props": [
+                {
+                    "name": "handleErrors",
+                    "description": "Handles all errors on startup. Default: true.",
+                    "optional": true,
+                    "default": true,
+                    "type": [
+                        [
+                            [
+                                "Boolean"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "attempts",
+                    "description": "Amount of attempts to load the module. Use 0 for infinity attempts. Default: 5.",
+                    "optional": true,
+                    "default": 5,
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "time",
+                    "description": "Time between every attempt to start the module (in ms). Default: 3000.",
+                    "optional": true,
+                    "default": 3000,
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                }
+            ],
+            "meta": {
+                "line": 619,
+                "file": "index.js",
+                "path": "dist/src"
+            }
+        },
+        {
+            "name": "CheckerOptions",
+            "description": "Options object for an 'Leveling.utils.checkOptions' method.",
+            "type": [
+                [
+                    [
+                        "Object"
+                    ]
+                ]
+            ],
+            "props": [
+                {
+                    "name": "ignoreInvalidTypes",
+                    "description": "Allows the method to ignore the options with invalid types. Default: false.",
+                    "optional": true,
+                    "default": false,
+                    "type": [
+                        [
+                            [
+                                "Boolean"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "ignoreUnspecifiedOptions",
+                    "description": "Allows the method to ignore the unspecified  Default: false.",
+                    "optional": true,
+                    "default": false,
+                    "type": [
+                        [
+                            [
+                                "Boolean"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "ignoreInvalidOptions",
+                    "description": "Allows the method to ignore the unexisting  Default: false.",
+                    "optional": true,
+                    "default": false,
+                    "type": [
+                        [
+                            [
+                                "Boolean"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "showProblems",
+                    "description": "Allows the method to show all the problems in the console. Default: false.",
+                    "optional": true,
+                    "default": false,
+                    "type": [
+                        [
+                            [
+                                "Boolean"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "sendLog",
+                    "description": "Allows the method to send the result in the console. Default: false.",
+                    "optional": true,
+                    "default": false,
+                    "type": [
+                        [
+                            [
+                                "Boolean"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "sendSuccessLog",
+                    "description": "Allows the method to send the result if no problems were found. Default: false.",
+                    "optional": true,
+                    "default": false,
+                    "type": [
+                        [
+                            [
+                                "Boolean"
+                            ]
+                        ]
+                    ]
+                }
+            ],
+            "meta": {
+                "line": 626,
+                "file": "index.js",
+                "path": "dist/src"
+            }
+        },
+        {
+            "name": "UserData",
+            "description": "User data object.",
+            "type": [
+                [
+                    [
+                        "Object"
+                    ]
+                ]
+            ],
+            "props": [
+                {
+                    "name": "id",
+                    "description": "User's ID.",
+                    "type": [
+                        [
+                            [
+                                "String"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "username",
+                    "description": "User's username.",
+                    "type": [
+                        [
+                            [
+                                "String"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "tag",
+                    "description": "User's tag.",
+                    "type": [
+                        [
+                            [
+                                "String"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "discriminator",
+                    "description": "User's discriminator.",
+                    "type": [
+                        [
+                            [
+                                "String"
+                            ]
+                        ]
+                    ]
+                }
+            ],
+            "meta": {
+                "line": 636,
+                "file": "index.js",
+                "path": "dist/src"
+            }
+        },
+        {
+            "name": "LevelData",
+            "type": [
+                [
+                    [
+                        "Object"
+                    ]
+                ]
+            ],
+            "props": [
+                {
+                    "name": "xp",
+                    "description": "User's amount of XP.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "totalXP",
+                    "description": "User's total amount of XP.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "level",
+                    "description": "User's level.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "maxXP",
+                    "description": "How much XP in total the user need to reach the next level.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "difference",
+                    "description": "The difference between max XP and current amount of XP. It shows how much XP he need to reach the next level.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "multiplier",
+                    "description": "User's XP multiplier.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "onMessage",
+                    "description": "The value will be true if the event was called on 'messageCreate' bot event.",
+                    "type": [
+                        [
+                            [
+                                "Boolean"
+                            ]
+                        ]
+                    ]
+                }
+            ],
+            "meta": {
+                "line": 644,
+                "file": "index.js",
+                "path": "dist/src"
+            }
+        },
+        {
+            "name": "XPData",
+            "type": [
+                [
+                    [
+                        "Object"
+                    ]
+                ]
+            ],
+            "props": [
+                {
+                    "name": "guildID",
+                    "description": "Guild ID.",
+                    "type": [
+                        [
+                            [
+                                "String"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "userID",
+                    "description": "User ID.",
+                    "type": [
+                        [
+                            [
+                                "String"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "xp",
+                    "description": "User's amount of XP.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "totalXP",
+                    "description": "User's total amount of XP.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "level",
+                    "description": "User's level.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "maxXP",
+                    "description": "How much XP in total the user need to reach the next level.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "difference",
+                    "description": "The difference between max XP and current amount of XP. It shows how much XP he need to reach the next level.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "multiplier",
+                    "description": "User's XP multiplier.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "onMessage",
+                    "description": "The value will be true if the event was called on 'messageCreate' bot event.",
+                    "type": [
+                        [
+                            [
+                                "Boolean"
+                            ]
+                        ]
+                    ]
+                }
+            ],
+            "meta": {
+                "line": 655,
+                "file": "index.js",
+                "path": "dist/src"
+            }
+        },
+        {
+            "name": "LevelUpData",
+            "type": [
+                [
+                    [
+                        "Object"
+                    ]
+                ]
+            ],
+            "props": [
+                {
+                    "name": "guildID",
+                    "description": "Guild ID.",
+                    "type": [
+                        [
+                            [
+                                "String"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "user",
+                    "description": "The user that reached a new level.",
+                    "type": [
+                        [
+                            [
+                                "User"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "level",
+                    "description": "New level.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "maxXP",
+                    "description": "How much XP in total the user need to reach the next level.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "difference",
+                    "description": "The difference between max XP and current amount of XP. It shows how much XP he need to reach the next level.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "multiplier",
+                    "description": "User's XP multiplier.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "onMessage",
+                    "description": "The value will be true if the event was called on 'messageCreate' bot event.",
+                    "type": [
+                        [
+                            [
+                                "Boolean"
+                            ]
+                        ]
+                    ]
+                }
+            ],
+            "meta": {
+                "line": 668,
+                "file": "index.js",
+                "path": "dist/src"
+            }
+        },
+        {
+            "name": "SettingsTypes",
+            "type": [
+                [
+                    [
+                        "Object"
+                    ]
+                ]
+            ],
+            "props": [
+                {
+                    "name": "xp",
+                    "description": "Amount of XP that user will receive after sending a message.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "maxXP",
+                    "description": "Amount of XP that user will totally need to reach the next level. This value will double for each level.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "multiplier",
+                    "description": "XP multiplier.",
+                    "type": [
+                        [
+                            [
+                                "Number"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "status",
+                    "description": "You can enable or disable the leveling system using this option.",
+                    "type": [
+                        [
+                            [
+                                "Boolean"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "ignoredUsers",
+                    "description": "Array of user IDs that won't give XP.",
+                    "type": [
+                        [
+                            [
+                                "Array",
+                                "<"
+                            ],
+                            [
+                                "String",
+                                ">"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "lockedChannels",
+                    "description": "Array of channel IDs that won't give XP to users.",
+                    "type": [
+                        [
+                            [
+                                "Array",
+                                "<"
+                            ],
+                            [
+                                "String",
+                                ">"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "ignoreBots",
+                    "description": "If true, every message from bots won't give them XP.",
+                    "type": [
+                        [
+                            [
+                                "Boolean"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "filter",
+                    "description": "Callback function that must return a boolean value, it will add XP only to authors of filtered messages.",
+                    "type": [
+                        [
+                            [
+                                "String"
+                            ]
+                        ],
+                        [
+                            [
+                                "FilterFunction"
+                            ]
+                        ]
+                    ]
+                }
+            ],
+            "meta": {
+                "line": 679,
+                "file": "index.js",
+                "path": "dist/src"
+            }
+        },
+        {
+            "name": "SettingsArrays",
+            "type": [
+                [
+                    [
+                        "Object"
+                    ]
+                ]
+            ],
+            "props": [
+                {
+                    "name": "ignoredUsers",
+                    "description": "Array of user IDs that won't give XP.",
+                    "type": [
+                        [
+                            [
+                                "Array",
+                                "<"
+                            ],
+                            [
+                                "String",
+                                ">"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "lockedChannels",
+                    "description": "Array of channel IDs that won't give XP to users.",
+                    "type": [
+                        [
+                            [
+                                "Array",
+                                "<"
+                            ],
+                            [
+                                "String",
+                                ">"
+                            ]
+                        ]
+                    ]
+                }
+            ],
+            "meta": {
+                "line": 691,
+                "file": "index.js",
+                "path": "dist/src"
+            }
+        },
+        {
+            "name": "SendMessage",
+            "description": "A function that will send a specified message to a specified channel.",
+            "type": [
+                [
+                    [
+                        "function"
+                    ]
+                ]
+            ],
+            "params": [
+                {
+                    "name": "msg",
+                    "description": "Message string, embed, attachment or message options.",
+                    "type": [
+                        [
+                            [
+                                "String"
+                            ]
+                        ],
+                        [
+                            [
+                                "MessageEmbed"
+                            ]
+                        ],
+                        [
+                            [
+                                "MessageAttachment"
+                            ]
+                        ],
+                        [
+                            [
+                                "MessageOptions"
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "name": "channel",
+                    "description": "Channel or it's ID.",
+                    "type": [
+                        [
+                            [
+                                "String"
+                            ]
+                        ],
+                        [
+                            [
+                                "Channel"
+                            ]
+                        ]
+                    ]
+                }
+            ],
+            "returns": [
+                [
+                    [
+                        "Promise",
+                        "<"
+                    ],
+                    [
+                        "Message",
+                        ">"
+                    ]
+                ]
+            ],
+            "meta": {
+                "line": 697,
+                "file": "index.js",
+                "path": "dist/src"
+            }
+        },
+        {
+            "name": "FilterFunction",
+            "description": "Filter function that accepts a message;\rit must return a boolean value and it will add XP\ronly to authors of filtered messages.;\rUse 'null' to disable the filter. Default: '() => true'.",
+            "type": [
+                [
+                    [
+                        "function"
+                    ]
+                ]
+            ],
+            "params": [
+                {
+                    "name": "msg",
+                    "type": [
+                        [
+                            [
+                                "Message"
+                            ]
+                        ]
+                    ]
+                }
+            ],
+            "returns": {
+                "types": [
+                    [
+                        [
+                            "Boolean"
+                        ]
+                    ]
+                ],
+                "description": "Boolean value."
+            },
+            "meta": {
+                "line": 705,
+                "file": "index.js",
+                "path": "dist/src"
+            }
+        }
+    ],
     "externals": []
 }
