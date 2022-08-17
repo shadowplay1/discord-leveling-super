@@ -1,12 +1,3 @@
-// This file was generated automatically!
-// I'm not responsible for the quality of this code!
-
-// The module is made in TypeScript.
-// See the source code here:
-// https://github.com/shadowplay1/discord-leveling-super
-
-// Thanks!
-
 "use strict";
 const SettingsArray = [
     'xp',
@@ -57,7 +48,7 @@ const LevelingErrors = {
     },
     sendMessage: {
         invalidTypes: {
-            msg: 'The message must be a string or an object with message options or instance of MessageEmbed or MessageAttachment. Received type: ',
+            msg: 'The message must be a string or an object with message options or instance of EmbedBuilder or AttachmentBuilder. Received type: ',
             channel: 'The channel must be a string. Received type: ',
         },
         channelNotFound: 'Cannot find the specified channel.',

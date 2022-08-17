@@ -1,12 +1,3 @@
-// This file was generated automatically!
-// I'm not responsible for the quality of this code!
-
-// The module is made in TypeScript.
-// See the source code here:
-// https://github.com/shadowplay1/discord-leveling-super
-
-// Thanks!
-
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };

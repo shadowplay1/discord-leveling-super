@@ -1,18 +1,3 @@
-// This file was generated automatically!
-// I'm not responsible for the quality of this code!
-
-// The module is made in TypeScript.
-// See the source code here:
-// https://github.com/shadowplay1/discord-leveling-super
-
-// Thanks!
-
-const {
-    Message, GuildMember, User,
-    MessageEmbed, MessageAttachment, Guild,
-    MessageOptions, Channel, TextChannel
-} = require('discord.js')
-
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -142,7 +127,7 @@ class Leveling extends Emitter_1.default {
         this.errored = false;
         this.interval = null;
         this.version = package_json_1.default.version;
-        this.docs = 'https://dls-docs.tk';
+        this.docs = 'https://dls-docs.js.org';
         this.database = null;
         this.fetcher = null;
         this.settings = null;
@@ -266,32 +251,32 @@ class Leveling extends Emitter_1.default {
                     const version = await this.utils.checkUpdates();
                     if (!version.updated) {
                         console.log('\n\n');
-                        console.log(colors.green + '╔═══════════════════════════════════════════════════════════╗');
-                        console.log(colors.green + '║ @ discord-leveling-super                           - [] X ║');
-                        console.log(colors.green + '║═══════════════════════════════════════════════════════════║');
-                        console.log(colors.yellow + `║                  The module is ${colors.red}out of date!${colors.yellow}               ║`);
-                        console.log(colors.magenta + '║                   New version is available!               ║');
-                        console.log(colors.blue + `║                        ${version.installedVersion} --> ${version.packageVersion}                    ║`);
-                        console.log(colors.cyan + '║          Run "npm i discord-leveling-super@latest"        ║');
-                        console.log(colors.cyan + '║                         to update!                        ║');
-                        console.log(colors.white + '║                View the full changelog here:              ║');
-                        console.log(colors.red + '║  https://dls-docs.tk/#/docs/main/stable/general/changelog ║');
-                        console.log(colors.green + '╚═══════════════════════════════════════════════════════════╝\x1b[37m');
+                        console.log(colors.green + '╔═══════════════════════════════════════════════════════════════╗');
+                        console.log(colors.green + '║ @ discord-leveling-super                               - [] X ║');
+                        console.log(colors.green + '║═══════════════════════════════════════════════════════════════║');
+                        console.log(colors.yellow + `║                  The module is ${colors.red}out of date!${colors.yellow}                   ║`);
+                        console.log(colors.magenta + '║                   New version is available!                   ║');
+                        console.log(colors.blue + `║                        ${version.installedVersion} --> ${version.packageVersion}                        ║`);
+                        console.log(colors.cyan + '║          Run "npm i discord-leveling-super@latest"            ║');
+                        console.log(colors.cyan + '║                         to update!                            ║');
+                        console.log(colors.white + '║                View the full changelog here:                  ║');
+                        console.log(colors.red + '║  https://dls-docs.js.org/#/docs/main/stable/general/changelog ║');
+                        console.log(colors.green + '╚═══════════════════════════════════════════════════════════════╝\x1b[37m');
                         console.log('\n\n');
                     }
                     else {
                         if (this.options?.updater?.upToDateMessage) {
                             console.log('\n\n');
-                            console.log(colors.green + '╔═══════════════════════════════════════════════════════════╗');
-                            console.log(colors.green + '║ @ discord-leveling-super                           - [] X ║');
-                            console.log(colors.green + '║═══════════════════════════════════════════════════════════║');
-                            console.log(colors.yellow + `║                   The module is ${colors.cyan}up of date!${colors.yellow}               ║`);
-                            console.log(colors.magenta + '║                   No updates are available.               ║');
-                            console.log(colors.blue + `║                   Current version is ${version.packageVersion}.               ║`);
-                            console.log(colors.cyan + '║                            Enjoy!                         ║');
-                            console.log(colors.white + '║                View the full changelog here:              ║');
-                            console.log(colors.red + '║  https://dls-docs.tk/#/docs/main/stable/general/changelog ║');
-                            console.log(colors.green + '╚═══════════════════════════════════════════════════════════╝\x1b[37m');
+                            console.log(colors.green + '╔═══════════════════════════════════════════════════════════════╗');
+                            console.log(colors.green + '║ @ discord-leveling-super                               - [] X ║');
+                            console.log(colors.green + '║═══════════════════════════════════════════════════════════════║');
+                            console.log(colors.yellow + `║                   The module is ${colors.cyan}up of date!${colors.yellow}                   ║`);
+                            console.log(colors.magenta + '║                   No updates are available.                   ║');
+                            console.log(colors.blue + `║                   Current version is ${version.packageVersion}.                   ║`);
+                            console.log(colors.cyan + '║                            Enjoy!                             ║');
+                            console.log(colors.white + '║                View the full changelog here:                  ║');
+                            console.log(colors.red + '║  https://dls-docs.js.org/#/docs/main/stable/general/changelog ║');
+                            console.log(colors.green + '╚═══════════════════════════════════════════════════════════════╝\x1b[37m');
                             console.log('\n\n');
                         }
                     }
@@ -417,7 +402,7 @@ class Leveling extends Emitter_1.default {
                             .join('\n')
                         + '\n]');
                 }
-                const invalidChannels = lockedChannelsArray.filter(x => x.length !== 18);
+                const invalidChannels = lockedChannelsArray.filter(x => x.length !== 18 && x.length !== 19);
                 if (invalidChannels.length)
                     return console.log(new LevelingError_1.default(Errors_1.default.lockedChannels.invalidChannels(invalidChannels)));
                 for (let i of ignoredUsers) {
@@ -443,7 +428,7 @@ class Leveling extends Emitter_1.default {
                             .join('\n')
                         + '\n]');
                 }
-                const invalidUsers = ignoredUsersArray.filter(x => x.length !== 18);
+                const invalidUsers = ignoredUsersArray.filter(x => x.length !== 18 && x.length !== 19);
                 if (invalidUsers.length && ignoredUsers.length)
                     return console.log(new LevelingError_1.default(Errors_1.default.ignoredUsers.invalidUsers(ignoredUsers)));
                 for (let i of ignoredGuilds) {
@@ -469,7 +454,7 @@ class Leveling extends Emitter_1.default {
                             .join('\n')
                         + '\n]');
                 }
-                const invalidGuilds = ignoredGuildsArray.filter(x => x.length !== 18);
+                const invalidGuilds = ignoredGuildsArray.filter(x => x.length !== 18 && x.length !== 19);
                 if (invalidGuilds.length && ignoredGuilds.length)
                     throw new LevelingError_1.default(Errors_1.default.ignoredGuilds.invalidGuilds(invalidGuilds));
                 const levelingStatus = options.status;
@@ -492,8 +477,9 @@ class Leveling extends Emitter_1.default {
                     const memberMultiplier = this.database.fetch(`${guildID}.${memberID}.multiplier`);
                     const userXP = this.database.fetch(`${guildID}.${memberID}.xp`);
                     const userMaxXP = this.database.fetch(`${guildID}.${memberID}.maxXP`);
-                    const settingsXP = this.settings.get('xp', guildID);
-                    const xp = options.xp;
+                    const settingsEXP = this.settings.get('xp', guildID);
+                    const settingsXP = Array.isArray(settingsEXP) ? Math.floor(Math.random() * (settingsEXP[1] - settingsEXP[0] + 1)) + settingsEXP[0] : settingsEXP;
+                    const xp = Array.isArray(options.xp) ? Math.floor(Math.random() * (options.xp[1] - options.xp[0] + 1)) + options.xp[0] : options.xp;
                     const multiplier = memberMultiplier == 1 ? options.multiplier : memberMultiplier;
                     const memberXP = xp * multiplier;
                     const newLevel = level + 1;
@@ -525,14 +511,14 @@ class Leveling extends Emitter_1.default {
                                     case 'Object':
                                         messageOptions = msg;
                                         break;
-                                    case 'MessageEmbed':
+                                    case 'EmbedBuilder':
                                         messageOptions = {
                                             embeds: [
                                                 msg
                                             ]
                                         };
                                         break;
-                                    case 'MessageAttachment':
+                                    case 'AttachmentBuilder':
                                         messageOptions = {
                                             files: [
                                                 messageOptions
@@ -559,7 +545,7 @@ class Leveling extends Emitter_1.default {
                                     }
                                     if (!textChannel)
                                         throw new LevelingError_1.default(Errors_1.default.sendMessage.channelNotFound);
-                                    textChannel.send(messageOptions);
+                                    return textChannel.send(messageOptions);
                                 }
                                 return message.channel.send(messageOptions);
                             }

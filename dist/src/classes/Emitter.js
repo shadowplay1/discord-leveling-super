@@ -1,12 +1,3 @@
-// This file was generated automatically!
-// I'm not responsible for the quality of this code!
-
-// The module is made in TypeScript.
-// See the source code here:
-// https://github.com/shadowplay1/discord-leveling-super
-
-// Thanks!
-
 "use strict";
 const events_1 = require("events");
 const emitter = new events_1.EventEmitter();
@@ -22,7 +13,7 @@ class Emitter {
     constructor() { }
     /**
      * Listens to the event.
-     * @param {String} event Event name.
+     * @param {LevelingEvents} event Event name.
      * @param {Function} listener Listener function.
      */
     on(event, listener) {
@@ -31,7 +22,7 @@ class Emitter {
     }
     /**
      * Listens to the event only for once.
-     * @param {String} event Event name.
+     * @param {LevelingEvents} event Event name.
      * @param {Function} listener Listener function.
      */
     once(event, listener) {
@@ -40,8 +31,8 @@ class Emitter {
     }
     /**
      * Emits the event.
-     * @param {String} event Event name.
-     * @param {any} args Listener arguments.
+     * @param {LevelingEvents} event Event name.
+     * @param {Function} args Listener arguments.
      */
     emit(event, ...args) {
         return emitter.emit(event, ...args);
