@@ -1,951 +1,585 @@
-// eslint-disable-next-line
-const { Client, Message, User } = require('D:/dls-v2/node_modules/discord.js')
-const { readFileSync, writeFileSync, existsSync } = require('fs')
-const { promisify } = require('util')
-const { EventEmitter } = require('events')
-
-const LevelingError = require('./LevelingError')
-
-class Leveling extends EventEmitter {
-
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+const util_1 = require("util");
+const fs_1 = require("fs");
+const Emitter_1 = __importDefault(require("./classes/Emitter"));
+const LevelingError_1 = __importDefault(require("./classes/LevelingError"));
+const Errors_1 = __importDefault(require("./structures/Errors"));
+const DefaultObject_1 = __importDefault(require("./structures/DefaultObject"));
+const UtilsManager_1 = __importDefault(require("./managers/UtilsManager"));
+const DatabaseManager_1 = __importDefault(require("./managers/DatabaseManager"));
+const FetchManager_1 = __importDefault(require("./managers/FetchManager"));
+const RanksManager_1 = __importDefault(require("./managers/RanksManager"));
+const XPManager_1 = __importDefault(require("./managers/XPManager"));
+const LevelManager_1 = __importDefault(require("./managers/LevelManager"));
+const TotalXPManager_1 = __importDefault(require("./managers/TotalXPManager"));
+const SettingsManager_1 = __importDefault(require("./managers/SettingsManager"));
+const package_json_1 = __importDefault(require("../package.json"));
+const colors = {
+    red: '\x1b[31m',
+    green: '\x1b[32m',
+    yellow: '\x1b[33m',
+    blue: '\x1b[34m',
+    magenta: '\x1b[35m',
+    cyan: '\x1b[36m',
+    white: '\x1b[37m',
+    reset: '\x1b[0m'
+};
+/**
+ * The Leveling class.
+ * @extends {Emitter}
+ */
+class Leveling extends Emitter_1.default {
+    /**
+     * Leveling options object.
+     * @type {LevelingOptions}
+     */
+    options;
+    /**
+     * Discord Bot Client
+     * @type {Client}
+     */
+    client;
+    /**
+     * Module ready status.
+     * @type {Boolean}
+     */
+    ready;
+    /**
+     * Module errored status.
+     * @type {Boolean}
+     */
+    errored;
+    /**
+     * Database checking interval.
+     * @type {NodeJS.Timeout}
+     */
+    interval;
+    /**
+    * Leveling error class.
+    * @type {LevelingError}
+    */
+    LevelingError;
+    /**
+     * Utils manager methods object.
+     * @type {UtilsManager}
+     */
+    utils;
+    /**
+     * Module version.
+     * @type {String}
+     */
+    version;
+    /**
+     * Link to the module's documentation website.
+     * @type {String}
+     */
+    docs;
+    /**
+    * Database manager methods object.
+    * @type {DatabaseManager}
+    */
+    database;
+    /**
+    * XP manager methods object.
+    * @type {FetchManager}
+    */
+    fetcher;
+    /**
+     * Settings manager methods class.
+     * @type {SettingsManager}
+     */
+    settings;
+    /**
+    * XP manager methods object.
+    * @type {XPManager}
+    */
+    xp;
+    /**
+    * Level manager methods object.
+    * @type {LevelManager}
+    */
+    levels;
+    /**
+    * Total XP manager methods object.
+    * @type {LevelManager}
+    */
+    totalXP;
+    /**
+    * Ranks manager methods object.
+    * @type {RanksManager}
+    */
+    ranks;
     /**
      * The Leveling class.
      * @param {Client} client Discord Bot Client.
-     * @param {Object} options Constructor options object.
-     * @param {String} options.storagePath Full path to a JSON file. Default: './leveling.json'.
-     * @param {Boolean} options.checkStorage Checks the if database file exists and if it has errors. Default: true
-     * @param {Number} options.xp Amount of XP that user will receive after sending a message. Default: 5.
-     * @param {Boolean} options.status You can enable or disable the leveling system using this option. Default: true.
-     * @param {Number} options.maxXP Amount of XP that user will totally need to reach the next level. This value will double for each level. Default: 300.
-     * @param {Array<String>} options.lockedChannels Array of channel IDs that won't give XP to users. Default: [].
-     * @param {Array<String>} options.ignoredGuilds Array of guilds on which none of the members will be given XP. Default: [].
-     * @param {Boolean} options.multiplier XP multiplier. Default: 1.
-     * @param {FilterFunction} options.filter Callback function that must return a boolean value, it will add XP only to authors of filtered messages. Default: null.
-     * @param {Number} options.updateCountdown Checks for if storage file exists in specified time (in ms). Default: 1000.
-     * @param {Object} options.updater Update Checker options object.
-     * @param {Boolean} options.updater.checkUpdates Sends the update state message in console on start. Default: true.
-     * @param {Boolean} options.updater.upToDateMessage Sends the message in console on start if module is up to date. Default: true.
-     * @param {Object} options.errorHandler Error Handler options object.
-     * @param {Boolean} options.errorHandler.handleErrors Handles all errors on startup. Default: true.
-     * @param {Number} options.errorHandler.attempts Amount of attempts to load the module. Use 'null' for infinity attempts. Default: 5.
-     * @param {Number} options.errorHandler.time Time between every attempt to start the module (in ms). Default: 3000.
+     * @param {LevelingOptions} options Leveling options object.
      */
     constructor(client, options = {}) {
-        super()
-        /**
-         * Module ready status.
-         * @type {?Boolean}
-         */
-        this.ready = false
-        /**
-         * Leveling errored status.
-         * @type {?Boolean}
-         */
-        this.errored = false
-        /**
-         * Module version.
-         * @type {String}
-         */
-        this.version = module.exports.version || require('../package.json').version
-        /**
-         * Link to the module's documentation website.
-         * @type {String}
-         */
-        this.docs = 'https://dls-docs.tk'
-        /**
-         * Constructor options object.
-         * @type {LevelingOptions}
-         */
-        this.options = options
-        /**
-         * Database checking interval.
-         * @type {?NodeJS.Timeout}
-         */
-        this.interval = null
-        /**
-         * Leveling errors object.
-         * @type {Object}
-         */
-        this.errors = require('./errors')
-        /**
-         * Discord Bot Client.
-         * @type {Client}
-         */
-        this.client = client
-
-        this.init()
+        super();
+        this.LevelingError = LevelingError_1.default;
+        this.utils = new UtilsManager_1.default(options, client);
+        this.options = this.utils.checkOptions(options.optionsChecker, options || {});
+        this.client = client;
+        this.ready = false;
+        this.errored = false;
+        this.interval = null;
+        this.version = package_json_1.default.version;
+        this.docs = 'https://dls-docs.js.org';
+        this.database = null;
+        this.fetcher = null;
+        this.settings = null;
+        this.xp = null;
+        this.levels = null;
+        this.totalXP = null;
+        this.ranks = null;
+        this.init();
     }
-    /**
-     * Checks for if the module is up to date.
-     * @returns {Promise<VersionData>} This method will show is the module updated, latest version and installed version.
-     */
-    async checkUpdates() {
-        const packageData = await require('node-fetch')('https://registry.npmjs.com/discord-leveling-super').then(text => text.json())
-        if (this.version == packageData['dist-tags']?.latest) return {
-            updated: true,
-            installedVersion: this.version,
-            packageVersion: packageData['dist-tags']?.latest || '1.0.0'
-        }
-        return {
-            updated: false,
-            installedVersion: this.version,
-            packageVersion: packageData['dist-tags']?.latest || '1.0.0'
-        }
-    }
-    /**
-    * Fetches the entire database.
-    * @returns {Object} Database contents
-    */
-    all() {
-        return JSON.parse(readFileSync(this.options.storagePath).toString())
-    }
-    /**
-     * Clears the storage file.
-     * @returns {Boolean} If cleared successfully: true; else: false
-     */
-    clearStorage() {
-        if (readFileSync(this.options.storagePath).toString() == '{}') return false
-        writeFileSync(this.options.storagePath, JSON.stringify({}), 'utf-8')
-        return true
-    }
-    /**
-     * Fetches the user's rank.
-     * @param {String} guildID Guild ID
-     * @param {String} memberID Member ID
-     * @returns {RankData} User's rank.
-     */
-    rank(memberID, guildID) {
-        if (!this.ready) throw new LevelingError(this.errors.notReady)
-        if (typeof memberID !== 'string') throw new LevelingError(this.errors.invalidTypes.memberID + typeof memberID)
-        if (typeof guildID !== 'string') throw new LevelingError(this.errors.invalidTypes.guildID + typeof guildID)
-        let obj = JSON.parse(readFileSync(this.options.storagePath).toString())
-        if (!obj[guildID]) obj[guildID] = {}
-        return obj[guildID][memberID] || {
-            xp: null,
-            totalXP: null,
-            level: null,
-            maxXP: null,
-            difference: null,
-            multiplier: null
-        }
-    }
-    /**
-     * Shows a level leaderboard for your server
-     * @param {String} guildID Guild ID
-     * @returns {LeaderboardData[]} Sorted leaderboard array
-     */
-    leaderboard(guildID) {
-        if (!this.ready) throw new LevelingError(this.errors.notReady)
-        if (typeof guildID !== 'string') throw new LevelingError(this.errors.invalidTypes.guildID + typeof guildID)
-        let serverData = this.all()[guildID]
-        if (!serverData) return []
-        let lb = []
-        let users = Object.keys(serverData)
-        let ranks = Object.values(serverData)
-        for (let i in users) lb.push({ userID: users[i], xp: ranks[i].xp, totalXP: ranks[i].totalXP, level: ranks[i].level, maxXP: ranks[i].maxXP, difference: ranks[i].difference, multiplier: ranks[i].multiplier, user: this.client.users.cache.get(users[i]) })
-        return lb.sort((a, b) => b.totalXP - a.totalXP).filter(x => !isNaN(x.totalXP))
-    }
-    /**
-     * Sets the level to specified user.
-     * @param {Number | String} level New level.
-     * @param {String} guildID Guild ID.
-     * @param {String} memberID Member ID.
-     * @returns {RankData} Data object.
-     */
-    setLevel(level, memberID, guildID) {
-        if (!this.ready) throw new LevelingError(this.errors.notReady)
-        if (typeof guildID !== 'string') throw new LevelingError(this.errors.invalidTypes.guildID + typeof guildID)
-        if (typeof memberID !== 'string') throw new LevelingError(this.errors.invalidTypes.memberID + typeof memberID)
-        if (typeof level !== 'number' && typeof level !== 'string') throw new LevelingError(this.errors.invalidTypes.level + typeof level)
-        const ranks = this.rank(memberID, guildID)
-        const obj = JSON.parse(readFileSync(this.options.storagePath).toString())
-        if (!obj[guildID]) {
-            obj[guildID] = {}
-            obj[guildID][memberID] = {
-                xp: 0,
-                totalXP: 0,
-                level: Number(level),
-                maxXP: this.options.maxXP,
-                difference: this.options.maxXP,
-                multiplier: this.options.multiplier
-            }
-            this.emit('setLevel', {
-                userID: memberID,
-                guildID,
-                xp: 0,
-                totalXP: 0,
-                level: Number(level),
-                maxXP: this.options.maxXP,
-                difference: this.options.maxXP,
-                multiplier: this.options.multiplier
-            })
-            writeFileSync(this.options.storagePath, JSON.stringify(obj, null, '\t'))
-            return {
-                xp: 0,
-                totalXP: 0,
-                level: Number(level),
-                maxXP: this.options.maxXP,
-                difference: this.options.maxXP,
-                multiplier: this.options.multiplier
-            }
-        }
-        obj[guildID][memberID] = {
-            xp: ranks.xp,
-            totalXP: ranks.totalXP,
-            level: Number(level),
-            maxXP: ranks.maxXP,
-            difference: ranks.maxXP - ranks.xp,
-            multiplier: ranks.multiplier
-        }
-        this.emit('setLevel', {
-            userID: memberID,
-            guildID,
-            xp: ranks.xp,
-            totalXP: ranks.totalXP,
-            level: Number(level),
-            maxXP: ranks.maxXP,
-            difference: ranks.maxXP - ranks.xp,
-            multiplier: ranks.multiplier
-        })
-        writeFileSync(this.options.storagePath, JSON.stringify(obj, null, '\t'))
-        return {
-            xp: ranks.xp,
-            totalXP: ranks.totalXP,
-            level,
-            maxXP: ranks.maxXP,
-            difference: ranks.maxXP - ranks.xp,
-            multiplier: ranks.multiplier
-        }
-    }
-    /**
-     * Adds the level to specified user.
-     * @param {Number | String} xp Amount of levels to add.
-     * @param {String} guildID Guild ID.
-     * @param {String} memberID Member ID.
-     * @returns {RankData} Data object.
-    */
-    addLevel(level, memberID, guildID) {
-        if (!this.ready) throw new LevelingError(this.errors.notReady)
-        if (typeof guildID !== 'string') throw new LevelingError(this.errors.invalidTypes.guildID + typeof guildID)
-        if (typeof memberID !== 'string') throw new LevelingError(this.errors.invalidTypes.memberID + typeof memberID)
-        if (typeof level !== 'number' && typeof level !== 'string') throw new LevelingError(this.errors.invalidTypes.level + typeof level)
-        const ranks = this.rank(memberID, guildID)
-        const obj = JSON.parse(readFileSync(this.options.storagePath).toString())
-        if (!obj[guildID]) {
-            obj[guildID] = {}
-            obj[guildID][memberID] = {
-                xp: 0,
-                totalXP: 0,
-                level: Number(level),
-                maxXP: this.options.maxXP,
-                difference: this.options.maxXP,
-                multiplier: this.options.multiplier
-            }
-            this.emit('addLevel', {
-                userID: memberID,
-                guildID,
-                xp: 0,
-                totalXP: 0,
-                level: Number(level),
-                maxXP: this.options.maxXP,
-                difference: this.options.maxXP,
-                multiplier: this.options.multiplier
-            })
-            writeFileSync(this.options.storagePath, JSON.stringify(obj, null, '\t'))
-            return {
-                xp: 0,
-                totalXP: 0,
-                level: Number(level),
-                maxXP: this.options.maxXP,
-                difference: this.options.maxXP,
-                multiplier: this.options.multiplier
-            }
-        }
-        obj[guildID][memberID] = {
-            xp: ranks.xp,
-            totalXP: ranks.totalXP,
-            level: Number(level) + ranks.level,
-            maxXP: ranks.maxXP,
-            difference: ranks.maxXP - ranks.xp,
-            multiplier: ranks.multiplier
-        }
-        this.emit('addLevel', {
-            userID: memberID,
-            guildID,
-            xp: ranks.xp,
-            totalXP: ranks.totalXP,
-            level: Number(level),
-            maxXP: ranks.maxXP,
-            difference: ranks.maxXP - ranks.xp,
-            multiplier: ranks.multiplier
-        })
-        writeFileSync(this.options.storagePath, JSON.stringify(obj, null, '\t'))
-        return {
-            xp: ranks.xp,
-            totalXP: ranks.totalXP,
-            level: Number(level) + ranks.level,
-            maxXP: ranks.maxXP,
-            difference: ranks.maxXP - ranks.xp,
-            multiplier: ranks.multiplier
-        }
-    }
-    /**
-     * Sets the XP to specified user.
-     * @param {Number | String} xp Amount of XP to set.
-     * @param {String} guildID Guild ID.
-     * @param {String} memberID Member ID.
-     * @returns {RankData} Data object.
-    */
-    setXP(xp, memberID, guildID) {
-        if (!this.ready) throw new LevelingError(this.errors.notReady)
-        if (typeof guildID !== 'string') throw new LevelingError(this.errors.invalidTypes.guildID + typeof guildID)
-        if (typeof memberID !== 'string') throw new LevelingError(this.errors.invalidTypes.memberID + typeof memberID)
-        if (typeof xp !== 'number' && typeof xp !== 'string') throw new LevelingError(this.errors.invalidTypes.xp + typeof xp)
-        const ranks = this.rank(memberID, guildID)
-        const obj = JSON.parse(readFileSync(this.options.storagePath).toString())
-        if (!obj[guildID]) {
-            obj[guildID] = {}
-            obj[guildID][memberID] = {
-                xp: Number(xp),
-                totalXP: 0,
-                level: 1,
-                maxXP: this.options.maxXP,
-                difference: this.options.maxXP,
-                multiplier: this.options.multiplier
-            }
-            this.emit('setXP', {
-                userID: memberID,
-                guildID,
-                xp: Number(xp),
-                totalXP: 0,
-                level: 1,
-                maxXP: this.options.maxXP,
-                difference: this.options.maxXP
-            })
-            writeFileSync(this.options.storagePath, JSON.stringify(obj, null, '\t'))
-            return {
-                xp: Number(xp),
-                totalXP: 0,
-                level: 1,
-                maxXP: this.options.maxXP,
-                difference: this.options.maxXP,
-                multiplier: this.options.multiplier
-            }
-        }
-        obj[guildID][memberID] = {
-            xp: Number(xp),
-            totalXP: ranks.totalXP,
-            level: ranks.level,
-            maxXP: ranks.maxXP,
-            difference: ranks.maxXP - Number(xp),
-            multiplier: ranks.multiplier
-        }
-        this.emit('setXP', {
-            userID: memberID,
-            guildID,
-            xp: Number(xp),
-            totalXP: ranks.totalXP,
-            level: ranks.level,
-            maxXP: ranks.maxXP,
-            difference: ranks.maxXP - Number(xp),
-            multiplier: ranks.multiplier
-        })
-        writeFileSync(this.options.storagePath, JSON.stringify(obj, null, '\t'))
-        return {
-            xp: Number(xp),
-            totalXP: ranks.totalXP,
-            level: ranks.level,
-            maxXP: ranks.maxXP,
-            difference: ranks.maxXP - Number(xp),
-            multiplier: ranks.multiplier
-        }
-    }
-    /**
-     * Adds the XP to specified user.
-     * @param {Number | String} xp  Amount of XP to add.
-     * @param {String} guildID Guild ID.
-     * @param {String} memberID Member ID.
-     * @returns {RankData} Data object.
-    */
-    addXP(xp, memberID, guildID) {
-        if (!this.ready) throw new LevelingError(this.errors.notReady)
-        if (typeof guildID !== 'string') throw new LevelingError(this.errors.invalidTypes.guildID + typeof guildID)
-        if (typeof memberID !== 'string') throw new LevelingError(this.errors.invalidTypes.memberID + typeof memberID)
-        if (typeof xp !== 'number' && typeof xp !== 'string') throw new LevelingError(this.errors.invalidTypes.xp + typeof xp)
-        const ranks = this.rank(memberID, guildID)
-        const obj = JSON.parse(readFileSync(this.options.storagePath).toString())
-        if (!obj[guildID]) {
-            obj[guildID] = {}
-            obj[guildID][memberID] = {
-                xp: Number(xp),
-                totalXP: 0,
-                level: 1,
-                maxXP: this.options.maxXP,
-                difference: this.options.maxXP,
-                multiplier: this.options.multiplier
-            }
-            this.emit('addXP', {
-                userID: memberID,
-                guildID,
-                xp: Number(xp),
-                totalXP: 0,
-                level: 1,
-                maxXP: this.options.maxXP,
-                difference: this.options.maxXP,
-                multiplier: this.options.multiplier
-            })
-            writeFileSync(this.options.storagePath, JSON.stringify(obj, null, '\t'))
-            return {
-                xp: Number(xp),
-                totalXP: 0,
-                level: 1,
-                maxXP: this.options.maxXP,
-                difference: this.options.maxXP,
-                multiplier: this.options.multiplier
-            }
-        }
-        obj[guildID][memberID] = {
-            xp: ranks.xp + Number(xp),
-            totalXP: ranks.totalXP,
-            level: ranks.level,
-            maxXP: ranks.maxXP,
-            difference: ranks.maxXP - xp,
-            multiplier: ranks.multiplier
-        }
-        this.emit('addXP', {
-            userID: memberID,
-            guildID,
-            xp: Number(xp),
-            totalXP: ranks.totalXP,
-            level: ranks.level,
-            maxXP: ranks.maxXP,
-            difference: ranks.maxXP - xp,
-            multiplier: ranks.multiplier
-        })
-        writeFileSync(this.options.storagePath, JSON.stringify(obj, null, '\t'))
-        return {
-            xp: ranks.xp + Number(xp),
-            totalXP: ranks.totalXP,
-            level: ranks.level,
-            maxXP: ranks.maxXP,
-            difference: ranks.maxXP - xp,
-            multiplier: ranks.multiplier
-        }
-    }
-    /**
-     * Sets the total XP to specified user.
-     * @param {Number | String} xp Amount of XP to set.
-     * @param {String} guildID Guild ID.
-     * @param {String} memberID Member ID.
-     * @returns {RankData} Data object.
-    */
-    setTotalXP(xp, memberID, guildID) {
-        if (!this.ready) throw new LevelingError(this.errors.notReady)
-        if (typeof guildID !== 'string') throw new LevelingError(this.errors.invalidTypes.guildID + typeof guildID)
-        if (typeof memberID !== 'string') throw new LevelingError(this.errors.invalidTypes.memberID + typeof memberID)
-        if (typeof xp !== 'number' && typeof xp !== 'string') throw new LevelingError(this.errors.invalidTypes.xp + typeof xp)
-        const ranks = this.rank(memberID, guildID)
-        const obj = JSON.parse(readFileSync(this.options.storagePath).toString())
-        if (!obj[guildID]) {
-            obj[guildID] = {}
-            obj[guildID][memberID] = {
-                xp: 0,
-                totalXP: Number(xp),
-                level: 1,
-                maxXP: this.options.maxXP,
-                difference: this.options.maxXP,
-                multiplier: this.options.multiplier
-            }
-            this.emit('setTotalXP', {
-                userID: memberID,
-                guildID,
-                xp: 0,
-                totalXP: Number(xp),
-                level: 1,
-                maxXP: this.options.maxXP,
-                difference: this.options.maxXP,
-                multiplier: this.options.multiplier
-            })
-            writeFileSync(this.options.storagePath, JSON.stringify(obj, null, '\t'))
-            return {
-                xp: 0,
-                totalXP: Number(xp),
-                level: 1,
-                maxXP: this.options.maxXP,
-                difference: this.options.maxXP,
-                multiplier: this.options.multiplier
-            }
-        }
-        obj[guildID][memberID] = {
-            xp: ranks.xp,
-            totalXP: Number(xp),
-            level: ranks.level,
-            maxXP: ranks.maxXP,
-            difference: ranks.maxXP - ranks.xp,
-            multiplier: ranks.multiplier
-        }
-        this.emit('setTotalXP', {
-            userID: memberID,
-            guildID,
-            xp: ranks.xp,
-            totalXP: Number(xp),
-            level: ranks.level,
-            maxXP: ranks.maxXP,
-            difference: ranks.maxXP - ranks.xp,
-            multiplier: ranks.multiplier
-        })
-        writeFileSync(this.options.storagePath, JSON.stringify(obj, null, '\t'))
-        return {
-            xp: ranks.xp,
-            totalXP: Number(xp),
-            level: ranks.level,
-            maxXP: ranks.maxXP,
-            difference: ranks.maxXP - ranks.xp,
-            multiplier: ranks.multiplier
-        }
-    }
-    /**
-     * Adds the total XP to specified user.
-     * @param {Number | String} xp Amount of XP to add.
-     * @param {String} guildID Guild ID.
-     * @param {String} memberID Member ID.
-     * @returns {RankData} Data object.
-    */
-    addTotalXP(xp, memberID, guildID) {
-        if (!this.ready) throw new LevelingError(this.errors.notReady)
-        if (typeof guildID !== 'string') throw new LevelingError(this.errors.invalidTypes.guildID + typeof guildID)
-        if (typeof memberID !== 'string') throw new LevelingError(this.errors.invalidTypes.memberID + typeof memberID)
-        if (typeof xp !== 'number' && typeof xp !== 'string') throw new LevelingError(this.errors.invalidTypes.xp + typeof xp)
-        const ranks = this.rank(memberID, guildID)
-        const obj = JSON.parse(readFileSync(this.options.storagePath).toString())
-        if (!obj[guildID]) {
-            obj[guildID] = {}
-            obj[guildID][memberID] = {
-                xp: 0,
-                totalXP: Number(xp),
-                level: 1,
-                maxXP: this.options.maxXP,
-                difference: this.options.maxXP,
-                multiplier: this.options.multiplier
-            }
-            this.emit('addTotalXP', {
-                userID: memberID,
-                guildID,
-                xp: 0,
-                totalXP: Number(xp),
-                level: 1,
-                maxXP: this.options.maxXP,
-                difference: this.options.maxXP,
-                multiplier: this.options.multiplier
-            })
-            writeFileSync(this.options.storagePath, JSON.stringify(obj, null, '\t'))
-            return {
-                xp: 0,
-                totalXP: Number(xp),
-                level: 1,
-                maxXP: this.options.maxXP,
-                difference: this.options.maxXP,
-                multiplier: this.options.multiplier
-            }
-        }
-        obj[guildID][memberID] = {
-            xp: ranks.xp,
-            totalXP: ranks.totalXP + Number(xp),
-            level: ranks.level,
-            maxXP: ranks.maxXP,
-            difference: ranks.maxXP - ranks.xp,
-            multiplier: ranks.multiplier
-        }
-        this.emit('addTotalXP', {
-            userID: memberID,
-            guildID,
-            xp: ranks.xp,
-            totalXP: Number(xp),
-            level: ranks.level,
-            maxXP: ranks.maxXP,
-            difference: ranks.maxXP - ranks.xp,
-            multiplier: ranks.multiplier
-        })
-        writeFileSync(this.options.storagePath, JSON.stringify(obj, null, '\t'))
-        return {
-            xp: ranks.xp,
-            totalXP: ranks.totalXP + Number(xp),
-            level: ranks.level,
-            maxXP: ranks.maxXP,
-            difference: ranks.maxXP - ranks.xp,
-            multiplier: ranks.multiplier
-        }
-    }
-    /**
-     * Fully removes the guild from database.
-     * @param {String} guildID Guild ID
-     * @returns {Boolean} If cleared successfully: true; else: false
-     */
-    removeGuild(guildID) {
-        if (!this.ready) throw new LevelingError(this.errors.notReady)
-        if (typeof guildID !== 'string') throw new LevelingError(this.errors.invalidTypes.guildID + typeof guildID)
-        const obj = JSON.parse(readFileSync(this.options.storagePath).toString())
-        if (!obj[guildID]) return false
-        obj[guildID] = {}
-        writeFileSync(this.options.storagePath, JSON.stringify(obj, null, '\t'))
-        const content = readFileSync(this.options.storagePath).toString()
-        writeFileSync(this.options.storagePath, JSON.stringify(JSON.parse(content.replace(`"${guildID}":{},`, ''))))
-        return true
-    }
-    /**
-     * Removes the user from database.
-     * @param {String} memberID Member ID
-     * @param {String} guildID Guild ID
-     * @returns {Boolean} If cleared successfully: true; else: false
-     */
-    removeUser(memberID, guildID) {
-        if (!this.ready) throw new LevelingError(this.errors.notReady)
-        if (typeof memberID !== 'string') throw new LevelingError(this.errors.invalidTypes.memberID + typeof memberID)
-        if (typeof guildID !== 'string') throw new LevelingError(this.errors.invalidTypes.guildID + typeof guildID)
-        const obj = JSON.parse(readFileSync(this.options.storagePath).toString())
-        if (!obj[guildID]?.[memberID] || !Object.keys(obj[guildID]?.[memberID]).length) return false
-        obj[guildID][memberID] = {}
-        writeFileSync(this.options.storagePath, JSON.stringify(obj, null, '\t'))
-        return true
-    }
-    /**
-     * Sets an XP multiplier for specified user.
-     * @param {Number} multiplier XP Multiplier.
-     * @param {String} memberID Member ID.
-     * @param {String} guildID Guild ID.
-     * @returns {RankData} Data object.
-     */
-    multipleXP(multiplier, memberID, guildID) {
-        if (!this.ready) throw new LevelingError(this.errors.notReady)
-        if (typeof guildID !== 'string') throw new LevelingError(this.errors.invalidTypes.guildID + typeof guildID)
-        if (typeof memberID !== 'string') throw new LevelingError(this.errors.invalidTypes.memberID + typeof memberID)
-        if (typeof multiplier !== 'number' && typeof multiplier !== 'string') throw new LevelingError(this.errors.invalidTypes.multiplier + typeof multiplier)
-        const ranks = this.rank(memberID, guildID)
-        if (ranks.multiplier == multiplier) return false
-        const obj = JSON.parse(readFileSync(this.options.storagePath).toString())
-        if (!obj[guildID]) {
-            obj[guildID] = {}
-            obj[guildID][memberID] = {
-                xp: 0,
-                totalXP: 0,
-                level: 1,
-                maxXP: this.options.maxXP,
-                difference: this.options.maxXP,
-                multiplier: multiplier
-            }
-            writeFileSync(this.options.storagePath, JSON.stringify(obj, null, '\t'))
-            return true
-        }
-        obj[guildID][memberID] = {
-            xp: ranks.xp,
-            totalXP: ranks.totalXP,
-            level: ranks.level,
-            maxXP: ranks.maxXP,
-            difference: ranks.maxXP,
-            multiplier: multiplier
-        }
-        writeFileSync(this.options.storagePath, JSON.stringify(obj, null, '\t'))
-        return {
-            xp: ranks.xp || 0,
-            totalXP: ranks.totalXP || 0,
-            level: ranks.level,
-            maxXP: ranks.maxXP,
-            difference: ranks.maxXP,
-            multiplier: multiplier
-        }
-    }
-    
     /**
     * Kills the Leveling instance.
-    * @returns {Leveling} Leveling instance.
+    * @fires Leveling#destroy
+    * @returns {Leveling | boolean} Leveling instance.
     */
     kill() {
-        clearInterval(this.interval)
-        this.interval = null
-        this.options = {}
-        this.ready = false
-        this.emit('destroy')
-        return this
+        if (!this.ready)
+            return false;
+        clearInterval(this.interval);
+        this.ready = false;
+        this.LevelingError = null;
+        this.interval = null;
+        this.utils = null;
+        this.database = null;
+        this.fetcher = null;
+        this.settings = null;
+        this.xp = null;
+        this.levels = null;
+        this.totalXP = null;
+        this.ranks = null;
+        this.emit('destroy');
+        return this;
     }
-
     /**
-     * Starts the module.
-     * @returns {Promise<true | Error>} If started successfully: true; else: Error instance.
-     */
+    * Starts the module.
+    * @fires Leveling#ready
+    * @returns {Promise<Boolean>} If started successfully: true; else: Error instance.
+    */
     init() {
-        this.LevelingError = LevelingError
-        if (!this.options) this.options = {}
-        typeof this.options.errorHandler == 'object' ? this.options.errorHandler : this.options.errorHandler = {}
-        this.options.errorHandler.handleErrors == undefined ? this.options.errorHandler.handleErrors = true : this.options.errorHandler?.handleErrors
-        this.options.errorHandler.attempts !== undefined ? this.options.errorHandler.attempts == null ? this.options.errorHandler.attempts = Infinity : this.options.errorHandler?.attempts : this.options.errorHandler.attempts = 5
-        this.options.errorHandler.time == undefined ? this.options.errorHandler.time = 5000 : this.options.errorHandler?.time
-        return this.options.errorHandler?.handleErrors ? this._init().catch(async err => {
-            let attempt = 0
-            // eslint-disable-next-line
-            if (!err instanceof LevelingError) this.errored = true
-            console.log('\x1b[31mFailed to start the module:\x1b[36m')
-            console.log(err)
-            if (err instanceof ReferenceError) {
-                this.errored = true
-                return console.log('\x1b[33mTip: Reference Errors are very important and serious errors and they cannot be handled.')
-            }
-            else console.log(`\x1b[35mRetrying in ${(this.options.errorHandler.time / 1000).toFixed(1)} seconds...`)
-            const check = () => new Promise(resolve => {
-                this._init().then(x => {
-                    if (x) {
-                        this.errored = false
-                        console.log('\x1b[32mStarted successfully! :)')
-                    }
-                    resolve(x)
-                }).catch(err => resolve(err))
-            })
-            const sleep = promisify(setTimeout)
-            let attempts = this.options.errorHandler.attempts == null ? Infinity : this.options.errorHandler.attempts
+        let attempt = 0;
+        let attempts = this.options?.errorHandler?.attempts == 0 ? Infinity : this.options?.errorHandler?.attempts;
+        const time = this.options?.errorHandler?.time;
+        const retryingTime = (time / 1000).toFixed(1);
+        const sleep = (0, util_1.promisify)(setTimeout);
+        const check = () => new Promise(resolve => {
+            this._init().then(x => {
+                if (x) {
+                    this.errored = false;
+                    this.ready = true;
+                    return console.log(`${colors.green}Started successfully! :)`);
+                }
+                resolve(x);
+            }).catch(err => resolve(err));
+        });
+        return this.options?.errorHandler?.handleErrors ? this._init().catch(async (err) => {
+            if (!(err instanceof LevelingError_1.default))
+                this.errored = true;
+            console.log(`${colors.red}Failed to start the module:${colors.cyan}`);
+            console.log(err);
+            if (err.message.includes('This module is supporting only Node.js v14 or newer.'))
+                process.exit(1);
+            else
+                console.log(`${colors.magenta}Retrying in ${retryingTime} seconds...${colors.reset}`);
             while (attempt < attempts && attempt !== -1) {
-                await sleep(this.options.errorHandler.time)
-                if (attempt < attempts) check().then(async res => {
-                    if (res.message) {
-                        attempt++
-                        console.log('\x1b[31mFailed to start the module:\x1b[36m')
-                        console.log(err)
-                        console.log(`\x1b[34mAttempt ${attempt}${attempts == Infinity ? '.' : `/${this.options.errorHandler.attempts}`}`)
-                        if (attempt == attempts) return console.log(`\x1b[32mFailed to start the module within ${this.options.errorHandler.attempts} attempts...`)
-                        console.log(`\x1b[35mRetrying in ${(this.options.errorHandler.time / 1000).toFixed(1)} seconds...`)
-                        await sleep(this.options.errorHandler.time)
-                        delete require.cache[require.resolve('./index.js')]
-                        check()
-                    } else {
-                        attempt = -1
-                    }
-                })
+                await sleep(time);
+                if (attempt < attempts)
+                    check().then(async (res) => {
+                        if (res.message) {
+                            attempt++;
+                            console.log(`${colors.red}Failed to start the module:${colors.cyan}`);
+                            console.log(err);
+                            console.log(`\x1b[34mAttempt ${attempt}${attempts == Infinity ? '.' : `/${attempts}`}`);
+                            if (attempt == attempts) {
+                                console.log(`${colors.green}Failed to start the module within ${attempts} attempts...${colors.reset}`);
+                                process.exit(1);
+                            }
+                            console.log(`${colors.magenta}Retrying in ${retryingTime} seconds...`);
+                            await sleep(time);
+                        }
+                        else
+                            attempt = -1;
+                    });
             }
-        }) : this._init()
+        }) : this._init();
     }
-
     /**
      * Initializates the module.
-     * @returns {Promise<true | Error>} If started successfully: true; else: Error instance.
+     * @returns {Promise<boolean>} If started successfully: true; else: Error instance.
      * @private
      */
     _init() {
-        return new Promise((resolve, reject) => {
+        const storagePath = this.options.storagePath || './leveling.json';
+        const updateCountdown = this.options.updateCountdown;
+        const isFileExist = (0, fs_1.existsSync)(storagePath);
+        return new Promise(async (resolve, reject) => {
             try {
-                if (Number(process.version.split('.')[0].slice(1)) < 14) return reject(new LevelingError(this.errors.oldNodeVersion + process.version))
-                if (!this.client) throw new LevelingError(this.errors.noClient)
-                if (this.errored) return
-                if (this.ready) return
-                this.options.storagePath = this.options.storagePath || './leveling.json'
-                if (!this.options.storagePath.endsWith('json') && !this.options.storagePath.endsWith('json/')) return reject(new LevelingError(this.errors.invalidStorage))
-                typeof this.options.errorHandler == 'object' ? this.options.errorHandler : this.options.errorHandler = {}
-                this.options.errorHandler.handleErrors == undefined ? this.options.errorHandler.handleErrors = true : this.options.errorHandler?.handleErrors
-                this.options.errorHandler.attempts == undefined ? this.options.errorHandler.attempts = 3 : this.options.errorHandler?.attempts
-                this.options.errorHandler.time == undefined ? this.options.errorHandler.time = 5000 : this.options.errorHandler?.time
-                if (this.options.checkStorage == undefined ? true : this.options.checkStorage) {
-                    if (!existsSync(this.options.storagePath)) writeFileSync(this.options.storagePath, '{}')
+                if (!this.client)
+                    return reject(new LevelingError_1.default(Errors_1.default.noClient));
+                if (this.errored)
+                    return;
+                if (this.ready)
+                    return;
+                if (this.options?.checkStorage) {
+                    if (!isFileExist)
+                        (0, fs_1.writeFileSync)(storagePath, '{}');
                     try {
-                        JSON.parse(readFileSync(this.options.storagePath).toString())
-                    } catch (err) {
-                        if (err.message.includes('Unexpected') && err.message.includes('JSON')) return reject(new LevelingError(this.errors.wrongStorageData))
-                        else return reject(err)
+                        if (storagePath.endsWith('package.json'))
+                            return reject(new LevelingError_1.default(Errors_1.default.reservedName('package.json')));
+                        if (storagePath.endsWith('package-lock.json'))
+                            return reject(new LevelingError_1.default(Errors_1.default.reservedName('package-lock.json')));
+                        const data = (0, fs_1.readFileSync)(storagePath);
+                        JSON.parse(data.toString());
+                    }
+                    catch (err) {
+                        if (err.message.includes('Unexpected') && err.message.includes('JSON'))
+                            return reject(new LevelingError_1.default(Errors_1.default.wrongStorageData));
+                        else
+                            reject(err);
                     }
                 }
-                /*this.options.dailyAmount == undefined || this.options.dailyAmount == null ? this.options.dailyAmount = 100 : this.options.dailyAmount = this.options.dailyAmount
-                this.options.updateCountdown == undefined || this.options.updateCountdown == null ? this.options.updateCountdown = 1000 : this.options.updateCountdown = this.options.updateCountdown
-                this.options.status == undefined ? this.options.status = true : this.options.status
-                this.options.lockedChannels == undefined ? this.options.lockedChannels = [] : this.options.lockedChannels
-                this.options.ignoredGuilds == undefined ? this.options.ignoredGuilds = [] : this.options.ignoredGuilds
-                this.options.filter == undefined ? this.options.filter = () => true : this.options.filter
-                this.options.xp == undefined || this.options.xp == null ? this.options.xp = 5 : this.options.xp = this.options.xp
-                this.options.maxXP == undefined || this.options.maxXP == null ? this.options.maxXP = 300 : this.options.maxXP = this.options.maxXP
-                this.options.checkStorage == undefined ? this.options.checkStorage = true : this.options.checkStorage
-                typeof this.options.updater == 'object' ? this.options.updater : this.options.updater = {}
-                typeof this.options.errorHandler == 'object' ? this.options.errorHandler : this.options.errorHandler = {}
-                this.options.errorHandler.handleErrors == undefined ? this.options.errorHandler.handleErrors = true : this.options.errorHandler?.handleErrors
-                this.options.errorHandler.attempts == undefined ? this.options.errorHandler.attempts = 5 : this.options.errorHandler?.attempts
-                this.options.errorHandler.time == undefined ? this.options.errorHandler.time = 3000 : this.options.errorHandler?.time
-                this.options.updater.checkUpdates == undefined ? this.options.updater.checkUpdates = true : this.options.updater?.checkUpdates
-                this.options.updater.upToDateMessage == undefined ? this.options.updater.upToDateMessage = true : this.options.updater?.upToDateMessage*/
                 if (this.options.updater?.checkUpdates) {
-                    this.checkUpdates().then(version => {
-                        const colors = {
-                            red: '\x1b[31m',
-                            green: '\x1b[32m',
-                            yellow: '\x1b[33m',
-                            blue: '\x1b[34m',
-                            magenta: '\x1b[35m',
-                            cyan: '\x1b[36m',
-                            white: '\x1b[37m',
+                    const version = await this.utils.checkUpdates();
+                    if (!version.updated) {
+                        console.log('\n\n');
+                        console.log(colors.green + '╔═══════════════════════════════════════════════════════════════╗');
+                        console.log(colors.green + '║ @ discord-leveling-super                               - [] X ║');
+                        console.log(colors.green + '║═══════════════════════════════════════════════════════════════║');
+                        console.log(colors.yellow + `║                  The module is ${colors.red}out of date!${colors.yellow}                   ║`);
+                        console.log(colors.magenta + '║                   New version is available!                   ║');
+                        console.log(colors.blue + `║                        ${version.installedVersion} --> ${version.packageVersion}                        ║`);
+                        console.log(colors.cyan + '║          Run "npm i discord-leveling-super@latest"            ║');
+                        console.log(colors.cyan + '║                         to update!                            ║');
+                        console.log(colors.white + '║                View the full changelog here:                  ║');
+                        console.log(colors.red + '║  https://dls-docs.js.org/#/docs/main/stable/general/changelog ║');
+                        console.log(colors.green + '╚═══════════════════════════════════════════════════════════════╝\x1b[37m');
+                        console.log('\n\n');
+                    }
+                    else {
+                        if (this.options?.updater?.upToDateMessage) {
+                            console.log('\n\n');
+                            console.log(colors.green + '╔═══════════════════════════════════════════════════════════════╗');
+                            console.log(colors.green + '║ @ discord-leveling-super                               - [] X ║');
+                            console.log(colors.green + '║═══════════════════════════════════════════════════════════════║');
+                            console.log(colors.yellow + `║                   The module is ${colors.cyan}up of date!${colors.yellow}                   ║`);
+                            console.log(colors.magenta + '║                   No updates are available.                   ║');
+                            console.log(colors.blue + `║                   Current version is ${version.packageVersion}.                   ║`);
+                            console.log(colors.cyan + '║                            Enjoy!                             ║');
+                            console.log(colors.white + '║                View the full changelog here:                  ║');
+                            console.log(colors.red + '║  https://dls-docs.js.org/#/docs/main/stable/general/changelog ║');
+                            console.log(colors.green + '╚═══════════════════════════════════════════════════════════════╝\x1b[37m');
+                            console.log('\n\n');
                         }
-                        if (!version.updated) {
-                            console.log('\n\n')
-                            console.log(colors.green + '----------------------------------------------------')
-                            console.log(colors.green + '| @ discord-leveling-super                  - [] X |')
-                            console.log(colors.green + '----------------------------------------------------')
-                            console.log(colors.yellow + `|             The module is ${colors.red}out of date!${colors.yellow}           |`)
-                            console.log(colors.magenta + '|             New version is available!            |')
-                            console.log(colors.blue + `|                   ${version.installedVersion} --> ${version.packageVersion}                |`)
-                            console.log(colors.cyan + '|     Run "npm i discord-leveling-super@latest"    |')
-                            console.log(colors.cyan + '|                     to update!                   |')
-                            console.log(colors.white + '|           View the full changelog here:          |')
-                            console.log(colors.red + '| https://npmjs.com/package/discord-leveling-super |')
-                            console.log(colors.green + '----------------------------------------------------\x1b[37m')
-                            console.log('\n\n')
-                        } else {
-                            if (this.options.updater?.upToDateMessage) {
-                                console.log('\n\n')
-                                console.log(colors.green + '----------------------------------------------------')
-                                console.log(colors.green + '| @ discord-leveling-super                  - [] X |')
-                                console.log(colors.green + '----------------------------------------------------')
-                                console.log(colors.yellow + `|            The module is ${colors.cyan}up to date!${colors.yellow}             |`)
-                                console.log(colors.magenta + '|           No updates are available.              |')
-                                console.log(colors.blue + `|            Currnet version is ${version.packageVersion}.             |`)
-                                console.log(colors.cyan + '|                     Enjoy!                       |')
-                                console.log(colors.white + '|          View the full changelog here:           |')
-                                console.log(colors.red + '| https://npmjs.com/package/discord-leveling-super |')
-                                console.log(colors.green + '----------------------------------------------------\x1b[37m')
-                                console.log('\n\n')
-                            }
-                        }
-                    })
+                    }
                 }
-                /*if (typeof this.options !== 'object') throw new LevelingError(this.errors.invalidTypes.constructorOptions.options + typeof this.options)
-                if (typeof this.options.updater !== 'object') throw new LevelingError(this.errors.invalidTypes.constructorOptions.updaterType + typeof this.options.updater)
-                if (typeof this.options.errorHandler !== 'object') throw new LevelingError(this.errors.invalidTypes.constructorOptions.errorHandlerType + typeof this.options.errorHandler)
-                if (typeof this.options.storagePath !== 'string') throw new LevelingError(this.errors.invalidTypes.constructorOptions.storagePath + typeof this.options.storagePath)
-                if (this.options.status && typeof this.options.status !== 'boolean') throw new LevelingError(this.errors.invalidTypes.constructorOptions.status + typeof this.options.status)
-                if (this.options.xp && typeof this.options.xp !== 'number' && this.options.xp !== 'string') throw new LevelingError(this.errors.invalidTypes.constructorOptions.xp + typeof this.options.xp)
-                if (this.options.maxXP && typeof this.options.maxXP !== 'number' && this.options.maxXP !== 'string') throw new LevelingError(this.errors.invalidTypes.constructorOptions.maxXP + typeof this.options.maxXP)
-                if (this.options.filter && typeof this.options.filter !== 'function') throw new LevelingError(this.errors.invalidTypes.constructorOptions.filter + typeof this.options.filter)
-                if (this.options.lockedChannels && !Array.isArray(this.options.lockedChannels)) throw new LevelingError(this.errors.invalidTypes.constructorOptions.lockedChannels + typeof this.options.lockedChannels)
-                if (this.options.errorHandler.attempts && typeof this.options.errorHandler.attempts !== 'number') throw new LevelingError(this.errors.invalidTypes.constructorOptions.errorHandler.attempts + typeof this.options.errorHandler.attempts)
-                if (this.options.errorHandler.time && typeof this.options.errorHandler.time !== 'number') throw new LevelingError(this.errors.invalidTypes.constructorOptions.errorHandler.time + typeof this.options.errorHandler.time)
-                if (this.options.errorHandler.handleErrors && typeof this.options.errorHandler.handleErrors !== 'boolean') throw new LevelingError(this.errors.invalidTypes.constructorOptions.errorHandler.handleErrors + typeof this.options.errorHandler.handleErrors)
-                if (this.options.updater.checkUpdates && typeof this.options.updater.checkUpdates !== 'boolean') throw new LevelingError(this.errors.invalidTypes.constructorOptions.updater.checkUpdates + typeof this.options.updater.checkUpdates)
-                if (this.options.updater.upToDateMessage && typeof this.options.updater.upToDateMessage !== 'boolean') throw new LevelingError(this.errors.invalidTypes.constructorOptions.updater.upToDateMessage + typeof this.options.updater.upToDateMessage)
-                this.options.xp = Number(this.options.xp)
-                this.options.maxXP = Number(this.options.maxXP)*/
-                if (this.options.checkStorage == undefined ? true : this.options.checkStorage) {
+                if (this.options?.checkStorage == undefined ? true : this.options?.checkStorage) {
+                    const storageExists = (0, fs_1.existsSync)(storagePath);
                     const interval = setInterval(() => {
-                        const storageExists = existsSync(this.options.storagePath)
                         if (!storageExists) {
                             try {
-                                writeFileSync(this.options.storagePath, '{}', 'utf-8')
-                            } catch (err) {
-                                throw new LevelingError(this.errors.notReady)
+                                if (storagePath?.endsWith('package.json'))
+                                    throw new LevelingError_1.default(Errors_1.default.reservedName('package.json'));
+                                if (storagePath?.endsWith('package-lock.json'))
+                                    throw new LevelingError_1.default(Errors_1.default.reservedName('package-lock.json'));
+                                (0, fs_1.writeFileSync)(storagePath, '{}', 'utf-8');
                             }
-                            console.log('\x1b[36mfailed to find a database file; created another one...\x1b[37m')
+                            catch (err) {
+                                throw new LevelingError_1.default(Errors_1.default.notReady);
+                            }
+                            console.log(`${colors.red}failed to find a database file; created another one...${colors.reset}`);
                         }
                         try {
-                            JSON.parse(readFileSync(this.options.storagePath).toString())
-                        } catch (err) {
-                            if (err.message.includes('Unexpected token') || err.message.includes('Unexpected end')) {
-                                throw new LevelingError(this.errors.wrongStorageData)
-                            }
+                            if (!storageExists)
+                                (0, fs_1.writeFileSync)(storagePath, '{}', 'utf-8');
+                            const data = (0, fs_1.readFileSync)(storagePath);
+                            JSON.parse(data.toString());
+                        }
+                        catch (err) {
+                            if (err.message.includes('Unexpected token') ||
+                                err.message.includes('Unexpected end'))
+                                reject(new LevelingError_1.default(Errors_1.default.wrongStorageData));
                             else {
-                                reject(err)
-                                throw err
+                                reject(err);
+                                throw err;
                             }
                         }
-                    }, this.options.updateCountdown)
-                    this.interval = interval
+                    }, updateCountdown);
+                    this.interval = interval;
                 }
-                this.ready = true
-                this.emit('ready')
-                return resolve(true)
-            } catch (err) {
-                this.errored = true
-                reject(err)
+                this.start();
+                this.ready = true;
+                this.emit('ready', undefined);
+                return resolve(true);
             }
-        }).then(() => {
-            this.client.on('message', async message => {
-                if (!this.options.lockedChannels.includes(message.channel.id)) {
-                    const guildID = message.guild.id
-                    const memberID = message.author.id
-                    const xpAmount = this.options.xp
-                    const { xp, totalXP, level, maxXP, multiplier } = this.rank(memberID, guildID)
-                    const messageXP = Array.isArray(xpAmount) ? Math.ceil(Math.random() * (Number(xpAmount[0]) - Number(xpAmount[1])) + Number(xpAmount[1])) : this.options.xp
-                    const obj = JSON.parse(readFileSync(this.options.storagePath).toString())
-                    if (!obj[guildID]) obj[guildID] = {}
-                    if (message.author.bot) return
-                    if (this.options.status == true) {
-                        if (!obj[guildID][memberID]) {
-                            obj[guildID][memberID] = {
-                                xp: 0,
-                                totalXP: 0,
-                                level: 1,
-                                maxXP: this.options.maxXP,
-                                difference: this.options.maxXP,
-                                multiplier: this.options.multiplier
-                            }
-                            writeFileSync(this.options.storagePath, JSON.stringify(obj, null, '\t'))
-                        }
-                        if (xp >= maxXP - 1 || ((xp + messageXP) * (multiplier || this.options.multiplier)) >= (maxXP - 1) && (!this.options.lockedChannels.includes(message.channel.id) && this.options.filter(message))) {
-                            this.emit('levelUp', {
-                                guildID,
-                                user: message.author,
-                                level: level + 1,
-                                maxXP: this.options.maxXP * (level + 1),
-                                sendMessage(msg, channel) {
-                                    if (channel) return this.client.channels.cache.get(channel).send(msg)
-                                    return message.channel.send(msg)
-                                },
-                                multiplier
-                            })
-                            obj[guildID][memberID] = {
-                                xp: 0,
-                                totalXP,
-                                level: level + 1,
-                                maxXP: this.options.maxXP * (level + 1),
-                                difference: this.options.maxXP * (level + 1),
-                                multiplier: this.options.multiplier
-                            }
-                            return writeFileSync(this.options.storagePath, JSON.stringify(obj, null, '\t'))
-                        }
-                        if (!this.options.lockedChannels.includes(message.channel.id) && this.options.filter(message)) {
-                            obj[guildID][memberID] = {
-                                xp: (xp + messageXP) * multiplier || this.options.multiplier,
-                                totalXP: (totalXP + messageXP) * multiplier || this.options.multiplier,
-                                level,
-                                maxXP,
-                                difference: maxXP - (xp + messageXP) * multiplier || this.options.multiplier,
-                                multiplier: this.options.multiplier
-                            }
-                            this.emit('addXP', {
-                                guildID: message.guild.id,
-                                userID: message.author.id,
-                                xp: (xp + messageXP) * multiplier || this.options.multiplier,
-                                totalXP: (totalXP + messageXP) * multiplier || this.options.multiplier,
-                                level,
-                                maxXP,
-                                difference: maxXP - (xp + messageXP) * multiplier || this.options.multiplier,
-                                multiplier: this.options.multiplier
-                            })
-                            writeFileSync(this.options.storagePath, JSON.stringify(obj, null, '\t'))
-                        }
+            catch (err) {
+                this.errored = true;
+                reject(err);
+            }
+        });
+    }
+    /**
+     * Starts all the managers.
+     * @returns {Boolean} If successfully started: true.
+     * @private
+     */
+    start() {
+        this.utils = new UtilsManager_1.default(this.options, this.client);
+        this.database = new DatabaseManager_1.default(this.options);
+        this.fetcher = new FetchManager_1.default(this.options);
+        this.settings = new SettingsManager_1.default(this.options, this.client);
+        this.xp = new XPManager_1.default(this.options);
+        this.levels = new LevelManager_1.default(this.options);
+        this.totalXP = new TotalXPManager_1.default(this.options);
+        this.ranks = new RanksManager_1.default(this.options, this.client);
+        if (!this.client.on) {
+            console.log(new LevelingError_1.default(Errors_1.default.invalidClient));
+            process.exit(1);
+        }
+        this.client.on('messageCreate', async (message) => {
+            if (this.ready) {
+                const data = this.fetcher.fetchAll();
+                const guildID = message.guild.id;
+                const memberID = message.author.id;
+                const settings = {
+                    xp: this.settings.get('xp', guildID),
+                    maxXP: this.settings.get('maxXP', guildID),
+                    multiplier: this.settings.get('multiplier', guildID),
+                    status: this.settings.get('status', guildID),
+                    ignoreBots: this.settings.get('ignoreBots', guildID),
+                    lockedChannels: this.settings.get('lockedChannels', guildID),
+                    ignoredUsers: this.settings.get('ignoredUsers', guildID),
+                    filter: this.settings.get('filter', guildID)
+                };
+                const filterFunction = (settings.filter || this.options.filter).toString();
+                const filter = filterFunction.includes('{') ?
+                    filterFunction.split('{').slice(1).join('').slice(0, -1) :
+                    'return ' + filterFunction.split('=>').slice(1).join('');
+                const options = {
+                    xp: settings.xp || this.options.xp,
+                    maxXP: settings.maxXP || this.options.maxXP,
+                    multiplier: settings.multiplier || this.options.multiplier,
+                    status: settings.status == null ? this.options.status : settings.status,
+                    ignoreBots: settings.ignoreBots == null ? this.options.ignoreBots : settings.ignoreBots,
+                    lockedChannels: settings.lockedChannels || this.options.lockedChannels,
+                    ignoredUsers: settings.ignoredUsers || this.options.ignoredUsers,
+                    filter: new Function('msg', filter)
+                };
+                const lockedChannelsArray = [];
+                const ignoredUsersArray = [];
+                const ignoredGuildsArray = [];
+                const lockedChannels = options.lockedChannels;
+                const ignoredUsers = options.ignoredUsers;
+                const ignoredGuilds = this.options.ignoredGuilds;
+                for (let i of lockedChannels) {
+                    const type = this.utils.typeOf(i);
+                    switch (type) {
+                        case 'String':
+                            lockedChannelsArray.push(i);
+                            break;
+                        default:
+                            lockedChannelsArray.push(i);
                     }
                 }
-            })
-        })
+                const invalidChannelTypes = lockedChannelsArray.filter(x => typeof x !== 'string');
+                if (invalidChannelTypes.length) {
+                    throw new LevelingError_1.default(Errors_1.default.lockedChannels.invalidTypes
+                        + '\n[\n'
+                        + lockedChannels
+                            .map((x) => {
+                            const type = this.utils.typeOf(x);
+                            const isOk = type == 'String' ? '(ok)' : '';
+                            return `  ${x} - ${type} ${isOk}`;
+                        })
+                            .join('\n')
+                        + '\n]');
+                }
+                const invalidChannels = lockedChannelsArray.filter(x => x.length !== 18 && x.length !== 19);
+                if (invalidChannels.length)
+                    return console.log(new LevelingError_1.default(Errors_1.default.lockedChannels.invalidChannels(invalidChannels)));
+                for (let i of ignoredUsers) {
+                    const type = this.utils.typeOf(i);
+                    switch (type) {
+                        case 'String':
+                            ignoredUsersArray.push(i);
+                            break;
+                        default:
+                            ignoredUsersArray.push(i);
+                    }
+                }
+                const invalidUserTypes = ignoredUsersArray.filter(x => typeof x !== 'string');
+                if (invalidUserTypes.length) {
+                    throw new LevelingError_1.default(Errors_1.default.ignoredUsers.invalidTypes
+                        + '\n[\n'
+                        + ignoredUsers
+                            .map((x) => {
+                            const type = this.utils.typeOf(x);
+                            const isOk = type == 'String' ? '(ok)' : '';
+                            return `  ${x} - ${type} ${isOk}`;
+                        })
+                            .join('\n')
+                        + '\n]');
+                }
+                const invalidUsers = ignoredUsersArray.filter(x => x.length !== 18 && x.length !== 19);
+                if (invalidUsers.length && ignoredUsers.length)
+                    return console.log(new LevelingError_1.default(Errors_1.default.ignoredUsers.invalidUsers(ignoredUsers)));
+                for (let i of ignoredGuilds) {
+                    const type = this.utils.typeOf(i);
+                    switch (type) {
+                        case 'String':
+                            ignoredGuildsArray.push(i);
+                            break;
+                        default:
+                            ignoredGuildsArray.push(i);
+                    }
+                }
+                const invalidGuildTypes = ignoredGuildsArray.filter(x => typeof x !== 'string');
+                if (invalidGuildTypes.length) {
+                    throw new LevelingError_1.default(Errors_1.default.ignoredGuilds.invalidTypes
+                        + '\n[\n'
+                        + ignoredGuilds
+                            .map((x) => {
+                            const type = this.utils.typeOf(x);
+                            const isOk = type == 'String' ? '(ok)' : '';
+                            return `  ${x} - ${type} ${isOk}`;
+                        })
+                            .join('\n')
+                        + '\n]');
+                }
+                const invalidGuilds = ignoredGuildsArray.filter(x => x.length !== 18 && x.length !== 19);
+                if (invalidGuilds.length && ignoredGuilds.length)
+                    throw new LevelingError_1.default(Errors_1.default.ignoredGuilds.invalidGuilds(invalidGuilds));
+                const levelingStatus = options.status;
+                const isFiltered = options.filter(message);
+                const isUserIgnored = ignoredUsersArray.includes(message.author.id);
+                const isLockedChannel = lockedChannelsArray.includes(message.channel.id);
+                const isGuildIgnored = ignoredGuildsArray.includes(message.guild.id);
+                const isBot = options.ignoreBots && message.author.bot;
+                const guildData = data[guildID];
+                let memberData = guildData?.[memberID];
+                if (levelingStatus && isFiltered &&
+                    !isLockedChannel && !isUserIgnored &&
+                    !isBot && !isGuildIgnored) {
+                    if (!memberData) {
+                        this.utils.reset(memberID, guildID);
+                        memberData = DefaultObject_1.default;
+                        return;
+                    }
+                    const level = this.database.fetch(`${guildID}.${memberID}.level`);
+                    const memberMultiplier = this.database.fetch(`${guildID}.${memberID}.multiplier`);
+                    const userXP = this.database.fetch(`${guildID}.${memberID}.xp`);
+                    const userMaxXP = this.database.fetch(`${guildID}.${memberID}.maxXP`);
+                    const settingsEXP = this.settings.get('xp', guildID);
+                    const settingsXP = Array.isArray(settingsEXP) ? Math.floor(Math.random() * (settingsEXP[1] - settingsEXP[0] + 1)) + settingsEXP[0] : settingsEXP;
+                    const xp = Array.isArray(options.xp) ? Math.floor(Math.random() * (options.xp[1] - options.xp[0] + 1)) + options.xp[0] : options.xp;
+                    const multiplier = memberMultiplier == 1 ? options.multiplier : memberMultiplier;
+                    const memberXP = xp * multiplier;
+                    const newLevel = level + 1;
+                    this.xp.add(memberXP, memberID, guildID, true);
+                    this.totalXP.add(memberXP, memberID, guildID, true);
+                    this.database.set(`${guildID}.${memberID}.difference`, (userMaxXP - userXP) - settingsXP);
+                    if (memberData.xp >= memberData.maxXP || memberXP > memberData.maxXP) {
+                        const newMaxXP = options.maxXP * newLevel;
+                        this.xp.set(0, memberID, guildID, true);
+                        this.levels.add(1, memberID, guildID, true);
+                        this.database.set(`${guildID}.${memberID}.maxXP`, newMaxXP);
+                        this.database.set(`${guildID}.${memberID}.difference`, newMaxXP);
+                        this.emit('levelUp', {
+                            guildID,
+                            user: message.author,
+                            level: newLevel,
+                            maxXP: newMaxXP,
+                            multiplier,
+                            sendMessage: (msg, channel) => {
+                                const type = this.utils.typeOf(msg);
+                                let messageOptions;
+                                let textChannel;
+                                switch (type) {
+                                    case 'String':
+                                        messageOptions = {
+                                            content: msg
+                                        };
+                                        break;
+                                    case 'Object':
+                                        messageOptions = msg;
+                                        break;
+                                    case 'EmbedBuilder':
+                                        messageOptions = {
+                                            embeds: [
+                                                msg
+                                            ]
+                                        };
+                                        break;
+                                    case 'AttachmentBuilder':
+                                        messageOptions = {
+                                            files: [
+                                                messageOptions
+                                            ]
+                                        };
+                                        break;
+                                    default:
+                                        throw new LevelingError_1.default(Errors_1.default.sendMessage.invalidTypes.msg + type);
+                                }
+                                if (channel) {
+                                    const channelType = this.utils.typeOf(channel);
+                                    switch (channelType) {
+                                        case 'String':
+                                            textChannel = this.client.channels.cache.get(channel);
+                                            break;
+                                        case 'Channel':
+                                            textChannel = channel;
+                                            break;
+                                        case 'TextChannel':
+                                            textChannel = channel;
+                                            break;
+                                        default:
+                                            throw new LevelingError_1.default(Errors_1.default.sendMessage.invalidTypes.channel + channelType);
+                                    }
+                                    if (!textChannel)
+                                        throw new LevelingError_1.default(Errors_1.default.sendMessage.channelNotFound);
+                                    return textChannel.send(messageOptions);
+                                }
+                                return message.channel.send(messageOptions);
+                            }
+                        });
+                    }
+                }
+            }
+        });
+        return true;
     }
 }
+module.exports = Leveling;
 
+// ---------------------------------------
+// Typedefs area starts here...
+// ---------------------------------------
 
 /**
  * @typedef {Object} VersionData
- * @property {Boolean} updated If the module updated
- * @property {installedVersion} installedVersion Version of module that you have installed
+ * @property {Boolean} updated Is the module updated.
+ * @property {installedVersion} installedVersion Version of module that you have installed.
  * @property {packageVersion} packageVersion Latest version of the module.
- */
+*/
 
 /**
  * @typedef {Object} RankData
+ * @property {UserData} userData User's data object.
  * @property {Number} level User's level
  * @property {Number} xp User's amount of XP.
  * @property {Number} totalXP User's total amount of XP.
  * @property {Number} maxXP How much XP in total the user need to reach the next level.
  * @property {Number} difference The difference between max XP and current amount of XP. It shows how much XP he need to reach the next level.
  * @property {Number} multiplier XP Multiplier.
- */
+*/
 
 /**
  * @typedef {Object} LeaderboardData Leaderboard data object.
@@ -957,38 +591,203 @@ class Leveling extends EventEmitter {
  * @property {User} user User's data object.
  * @property {Number} difference User's amount of total XP.
  * @property {Number} multiplier XP Multiplier.
+*/
+
+/**
+ * @typedef {Object} LevelingOptions Default Leveling options.
+ * @property {String} [storagePath='./leveling.json'] Full path to a JSON file. Default: './leveling.json'.
+ * @property {Boolean} [checkStorage=true] Checks the if database file exists and if it has errors. Default: true
+ * @property {Boolean} [ignoreBots=true] If true, every message from bots won't give them XP. Default: true.
+ * @property {Number} [xp=5] Amount of XP that user will receive after sending a message. Default: 5.
+ * @property {Boolean} [status=true] You can enable or disable the leveling system using this option. Default: true.
+ * @property {Number} [maxXP=300] Amount of XP that user will totally need to reach the next level. This value will double for each level. Default: 300.
+ * @property {String[]} [lockedChannels=[]] Array of channel IDs that won't give XP to users. Default: [].
+ * @property {String[]} [ignoredGuilds=[]] Array of guilds on which none of the members will be given XP. Default: [].
+ * @property {Boolean} [multiplier=1] XP multiplier. Default: 1.
+ * @property {FilterFunction} [filter=() => true] Callback function that must return a boolean value, it will add XP only to authors of filtered messages. Default: null.
+ * @property {Number} [updateCountdown=1000] Checks for if storage file exists in specified time (in ms). Default: 1000.
+ * @property {UpdaterOptions} [updater] Update Checker options object.
+ * @property {ErrorHandlerOptions} [errorHandler] Error Handler options object.
+*/
+
+/**
+ * @typedef {Object} UpdaterOptions Updatee options object.
+ * @property {Boolean} [checkUpdates=true] Sends the update state message in console on start. Default: true.
+ * @property {Boolean} [upToDateMessage=true] Sends the message in console on start if module is up to date. Default: true.
+*/
+
+/**
+ * @typedef {Object} ErrorHandlerOptions
+ * @property {Boolean} [handleErrors=true] Handles all errors on startup. Default: true.
+ * @property {Number} [attempts=5] Amount of attempts to load the module. Use 0 for infinity attempts. Default: 5.
+ * @property {Number} [time=3000] Time between every attempt to start the module (in ms). Default: 3000.
+*/
+
+/**
+ * @typedef {Object} CheckerOptions Options object for an 'Leveling.utils.checkOptions' method.
+ * @property {Boolean} [ignoreInvalidTypes=false] Allows the method to ignore the options with invalid types. Default: false.
+ * @property {Boolean} [ignoreUnspecifiedOptions=false] Allows the method to ignore the unspecified  Default: false.
+ * @property {Boolean} [ignoreInvalidOptions=false] Allows the method to ignore the unexisting  Default: false.
+ * @property {Boolean} [showProblems=false] Allows the method to show all the problems in the console. Default: false.
+ * @property {Boolean} [sendLog=false] Allows the method to send the result in the console. Default: false.
+ * @property {Boolean} [sendSuccessLog=false] Allows the method to send the result if no problems were found. Default: false.
+*/
+
+/**
+ * @typedef {Object} UserData User data object.
+ * @property {String} id User's ID.
+ * @property {String} username User's username.
+ * @property {String} tag User's tag.
+ * @property {String} discriminator User's discriminator.
+*/
+
+/**
+ * @typedef {Object} LevelData
+ * @property {Number} xp User's amount of XP.
+ * @property {Number} totalXP User's total amount of XP.
+ * @property {Number} level User's level.
+ * @property {Number} maxXP How much XP in total the user need to reach the next level.
+ * @property {Number} difference The difference between max XP and current amount of XP. It shows how much XP he need to reach the next level.
+ * @property {Number} multiplier User's XP multiplier.
+ * @property {Boolean} onMessage The value will be true if the event was called on 'messageCreate' bot event.
+*/
+
+/**
+ * @typedef {Object} XPData
+ * @property {String} guildID Guild ID.
+ * @property {String} userID User ID.
+ * @property {Number} xp User's amount of XP.
+ * @property {Number} totalXP User's total amount of XP.
+ * @property {Number} level User's level.
+ * @property {Number} maxXP How much XP in total the user need to reach the next level.
+ * @property {Number} difference The difference between max XP and current amount of XP. It shows how much XP he need to reach the next level.
+ * @property {Number} multiplier User's XP multiplier.
+ * @property {Boolean} onMessage The value will be true if the event was called on 'messageCreate' bot event.
+*/
+
+/**
+ * @typedef {Object} LevelUpData
+ * @property {String} guildID Guild ID.
+ * @property {User} user The user that reached a new level.
+ * @property {Number} level New level.
+ * @property {Number} maxXP How much XP in total the user need to reach the next level.
+ * @property {Number} difference The difference between max XP and current amount of XP. It shows how much XP he need to reach the next level.
+ * @property {Number} multiplier User's XP multiplier.
+ * @property {Boolean} onMessage The value will be true if the event was called on 'messageCreate' bot event.
+*/
+
+/**
+ * @typedef {Object} SettingsTypes
+ * @property {Number} xp Amount of XP that user will receive after sending a message.
+ * @property {Number} maxXP Amount of XP that user will totally need to reach the next level. This value will double for each level.
+ * @property {Number} multiplier XP multiplier.
+ * @property {Boolean} status You can enable or disable the leveling system using this option.
+ * @property {String[]} ignoredUsers Array of user IDs that won't give XP.
+ * @property {String[]} lockedChannels Array of channel IDs that won't give XP to users.
+ * @property {Boolean} ignoreBots If true, every message from bots won't give them XP.
+ * @property {String | FilterFunction} filter Callback function that must return a boolean value, it will add XP only to authors of filtered messages.
  */
 
 /**
- * @typedef {Object} LevelingOptions Default Economy options.
- * @property {Object} options Constructor options object.
- * @property {String} options.storagePath Full path to a JSON file. Default: './leveling.json'.
- * @property {Boolean} options.checkStorage Checks the if database file exists and if it has errors. Default: true
- * @property {Number} options.xp Amount of XP that user will receive after sending a message. Default: 5.
- * @property {Boolean} options.status You can enable or disable the leveling system using this option. Default: true.
- * @property {Number} options.maxXP Amount of XP that user will totally need to reach the next level. This value will double for each level. Default: 300.
- * @property {String[]} options.lockedChannels Array of channel IDs that won't give XP to users. Default: [].
- * @property {String[]} options.ignoredGuilds Array of guilds on which none of the members will be given XP. Default: [].
- * @property {Boolean} options.multiplier XP multiplier. Default: 1.
- * @property {FilterFunction} options.filter Callback function that must return a boolean value, it will add XP only to authors of filtered messages. Default: null.
- * @property {Number} options.updateCountdown Checks for if storage file exists in specified time (in ms). Default: 1000.
- * @property {Object} options.updater Update Checker options object.
- * @property {Boolean} options.updater.checkUpdates Sends the update state message in console on start. Default: true.
- * @property {Boolean} options.updater.upToDateMessage Sends the message in console on start if module is up to date. Default: true.
- * @property {Object} options.errorHandler Error Handler options object.
- * @property {Boolean} options.errorHandler.handleErrors Handles all errors on startup. Default: true.
- * @property {Number} options.errorHandler.attempts Amount of attempts to load the module. Use 'null' for infinity attempts. Default: 5.
- * @property {Number} options.errorHandler.time Time between every attempt to start the module (in ms). Default: 3000.
+ * @typedef {Object} SettingsArrays
+ * @property {String[]} ignoredUsers Array of user IDs that won't give XP.
+ * @property {String[]} lockedChannels Array of channel IDs that won't give XP to users.
  */
 
 /**
- * @callback FilterFunction Callback function that accepts a message, it must return a boolean value and it will add XP only to authors of filtered messages.; Use 'null' to disable the filter. Default: null.
+ * A function that will send a specified message to a specified channel.
+ * @callback SendMessage
+ * @param {String | MessageEmbed | MessageAttachment | MessageOptions} msg Message string, embed, attachment or message options.
+ * @param {String | Channel} channel Channel or it's ID.
+ * @returns {Promise<Message>}
+ */
+
+/**
+ * Filter function that accepts a message;
+ * it must return a boolean value and it will add XP
+ * only to authors of filtered messages.;
+ * Use 'null' to disable the filter. Default: '() => true'.
+ * @callback FilterFunction
  * @param {Message} msg
  * @returns {Boolean} Boolean value.
- */
+*/
+
+// ---------------------------------------
+// Events area starts here...
+// ---------------------------------------
 
 /**
- * The Leveling class.
- * @type {Leveling}
- */
-module.exports = Leveling
+* Emits when the module is ready.
+* @event Leveling#ready
+* @param {void} data Void event.
+*/
+
+/**
+* Emits when the module is destroyed.
+* @event Leveling#destroy
+* @param {void} data Void event.
+*/
+
+
+/**
+* Emits when someone's got the next level.
+* @event Leveling#levelUp
+* @param {LevelUpData} data Level up data object.
+*/
+
+
+/**
+* Emits when someone's set the level.
+* @event Leveling#setLevel
+* @param {LevelData} data Level data object.
+*/
+
+/**
+* Emits when someone's added the levels.
+* @event Leveling#addLevel
+* @param {XPData} data Level data object.
+*/
+
+/**
+* Emits when someone's subtracted the levels.
+* @event Leveling#subtractLevel
+* @param {LevelData} data Level data object.
+*/
+
+
+/**
+* Emits when someone's set the XP.
+* @event Leveling#setXP
+* @param {LevelData} data Level data object.
+*/
+
+/**
+* Emits when someone's add the XP.
+* @event Leveling#addXP
+* @param {XPData} data Level data object.
+*/
+
+/**
+* Emits when someone's subtracted the XP.
+* @event Leveling#subtractXP
+* @param {LevelData} data Level data object.
+*/
+
+
+/**
+* Emits when someone's set the total XP.
+* @event Leveling#setTotalXP
+* @param {LevelData} data Level data object.
+*/
+
+/**
+* Emits when someone's added the total XP.
+* @event Leveling#addTotalXP
+* @param {XPData} data Level data object.
+*/
+
+/**
+* Emits when someone's subtracted the total XP.
+* @event Leveling#subtractTotalXP
+* @param {LevelData} data Level data object.
+*/
