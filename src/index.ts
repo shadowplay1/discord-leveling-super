@@ -604,12 +604,9 @@ class Leveling extends Emitter {
                     const memberXP = xp * multiplier
                     const newLevel = level + 1
 
-                    this.xp.add(memberXP, memberID, guildID, true)
                     this.totalXP.add(memberXP, memberID, guildID, true)
 
-                    this.database.set(`${guildID}.${memberID}.difference`, (userMaxXP - userXP) - settingsXP)
-
-                    if (memberData.xp >= memberData.maxXP || memberXP > memberData.maxXP) {
+                    if ((memberData.xp + xp) >= memberData.maxXP || (memberXP + xp) > memberData.maxXP) {
                         const newMaxXP = options.maxXP * newLevel
 
                         this.xp.set(0, memberID, guildID, true)
@@ -691,7 +688,10 @@ class Leveling extends Emitter {
                                 return message.channel.send(messageOptions)
                             }
                         })
+                        return
                     }
+                    this.xp.add(memberXP, memberID, guildID, true)
+                    this.database.set(`${guildID}.${memberID}.difference`, (userMaxXP - userXP) - settingsXP)
                 }
             }
         })
