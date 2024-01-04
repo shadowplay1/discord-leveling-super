@@ -1,21 +1,35 @@
 {
 	"compilerOptions": {
-		"lib": ["ESNext"],
-		"module": "commonjs",
-		"moduleResolution": "node",
-		"target": "ESNext",
+		"strict": true,
+		"alwaysStrict": true,
+		"moduleResolution": "Node",
+    	"target": "ESNext",
+    	"module": "CommonJS",
+    	"lib": [
+			"DOM",
+			"ES2022"
+		],
+		"types": [
+			"@types/node"
+		],
 		"outDir": "dist",
+		"rootDir": "./",
+		"declaration": true,
+		"strictNullChecks": true,
+		"declarationDir": "./types",
 		"sourceMap": false,
 		"esModuleInterop": true,
-		"experimentalDecorators": true,
-		"emitDecoratorMetadata": true,
+		"removeComments": false,
+		"preserveConstEnums": true,
 		"allowSyntheticDefaultImports": true,
-		"skipLibCheck": true,
 		"skipDefaultLibCheck": true,
 		"resolveJsonModule": true,
-		"declaration": true,
-		"declarationDir": "./types"
 	},
-	"include": ["src"],
-	"exclude": ["node_modules"]
+	"include": [
+		"src/**/*"
+	],
+	"exclude": [
+		"node_modules",
+		"dist"
+	]
 }

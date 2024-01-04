@@ -1,0 +1,26 @@
+name: Build the package
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [opened, reopened]
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install TypeScript
+        run: npm i typescript ts-node -g
+
+      - name: Build the package
+        run: npm run build

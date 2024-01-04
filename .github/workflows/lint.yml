@@ -1,0 +1,23 @@
+name: Check the code for linting issues
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [opened, reopened]
+  push:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install ESLint
+        run: npm i eslint -g
+
+      - name: Check the code for linting issues
+        run: bash ./scripts/lint.sh
