@@ -49,7 +49,7 @@ Features:
 <li><b><a href="https://www.npmjs.com/package/discord-economy-super">discord-economy-super</a></b></li>
 <li><b><a href="https://www.npmjs.com/package/discord-achievements">discord-achievements</a></b></li>
 <li><b><a href="https://www.npmjs.com/package/quick-mongo-super">quick-mongo-super</a></b></li>
-<li><b><a href="https://www.npmjs.com/package/discord-leveling-super">discord-leveling-super</a></b></li>
+<li><b><a href="https://www.npmjs.com/package/discord-giveaways-super">discord-giveaways-super</a></b></li>
 </ul>
 
 ## ❗ | Useful Links

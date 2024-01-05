@@ -39,7 +39,6 @@ $ pnpm add discord-leveling-super
 - [discord-giveaways-super](https://www.npmjs.com/package/discord-giveaways-super)
 - [discord-achievements](https://www.npmjs.com/package/discord-achievements)
 - [quick-mongo-super](https://www.npmjs.com/package/quick-mongo-super)
-- [discord-leveling-super](https://www.npmjs.com/package/discord-leveling-super)
 
 ## ❗ | Useful Links
 - [Documentation](https://dgs-docs.js.org)
