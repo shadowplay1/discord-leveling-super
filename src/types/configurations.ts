@@ -1,4 +1,4 @@
-import { Mongo, IMongoConnectionOptions } from 'quick-mongo-super'
+import { Mongo, IMongoConnectionOptions } from 'quick-mongo-super/MongoItems'
 import Enmap, { EnmapOptions } from 'enmap'
 
 import { DatabaseType } from './databaseType.enum'

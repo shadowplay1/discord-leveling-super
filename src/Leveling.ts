@@ -1,16 +1,10 @@
 import { existsSync } from 'fs'
 import { readFile, writeFile } from 'fs/promises'
 
-import { ms } from './lib/misc/ms'
-
 import QuickMongo from 'quick-mongo-super'
 import Enmap from 'enmap'
 
-import {
-    Client, GatewayIntentBits,
-    GuildMember,
-    IntentsBitField, TextChannel, User
-} from 'discord.js'
+import { Client, GatewayIntentBits, IntentsBitField } from 'discord.js'
 
 import {
     Database, DatabaseConnectionOptions,
