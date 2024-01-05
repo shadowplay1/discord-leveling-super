@@ -39,16 +39,21 @@ import { IDatabaseStructure } from './types/databaseStructure.interface'
  *
  * Type parameters:
  *
- * - `TDatabaseType` ({@link DatabaseType}) - The database type that will be used in the module.
+ * - `TDatabaseType` ({@link DatabaseType}) - The database type that is used.
+ * - `TDatabaseKey` ({@link string}, optional: defaults to `${string}.giveaways`) - The type of database key that will be used in database operations.
+ * - `TDatabaseValue` ({@link any}, optional: defaults to {@link IDatabaseStructure}) - The type of database content that will be used in database operations.
  *
- * @extends {Emitter<ILevelingEvents<TDatabaseType>>}
- * @template TDatabaseType The database type that will be used in the module.
+ * @extends {Emitter<ILevelingEvents<TDatabaseType, TDatabaseKey, TDatabaseValue>>}
+ *
+ * @template TDatabaseType The database type that is used.
+ * @template TDatabaseKey The type of database key that will be used in database operations.
+ * @template TDatabaseValue The type of database content that will be used in database operations.
  */
 export class Leveling<
     TDatabaseType extends DatabaseType,
     TDatabaseKey extends string = `${string}.leveling`,
     TDatabaseValue = IDatabaseStructure
-> extends Emitter<ILevelingEvents<TDatabaseType>> {
+> extends Emitter<ILevelingEvents<TDatabaseType, TDatabaseKey, TDatabaseValue>> {
 
     /**
      * Discord Client.
@@ -92,12 +97,6 @@ export class Leveling<
      * @private
      */
     private readonly _logger: Logger
-
-    /**
-     * Leveling ending state checking interval.
-     * @type {NodeJS.Timeout}
-     */
-    public levelingCheckingInterval: NodeJS.Timeout
 
     /**
      * Main {@link Leveling} constructor.
@@ -155,12 +154,6 @@ export class Leveling<
          * @type {DatabaseManager<TDatabaseType, TDatabaseKey, TDatabaseValue>}
          */
         this.database = null as any // specifying 'null' to just initialize the property; for docs purposes
-
-        /**
-         * {@link Leveling} ending state checking interval.
-         * @type {NodeJS.Timeout}
-         */
-        this.levelingCheckingInterval = null as any // specifying 'null' to just initialize the property; for docs purposes
 
         this._init()
     }
@@ -321,12 +314,6 @@ export class Leveling<
             if (this.client.isReady()) {
                 clearInterval(clientReadyInterval)
 
-                const giveawatCheckingInterval = setInterval(() => {
-                    this._checkLeveling()
-                }, this.options.levelingCheckingInterval)
-
-                this.levelingCheckingInterval = giveawatCheckingInterval
-
                 this.ready = true
                 this.emit('ready', this)
 
@@ -394,10 +381,6 @@ export class Leveling<
  * @typedef {object} ILevelingConfiguration<TDatabaseType>
  * @prop {DatabaseType} database Database type to use.
  * @prop {DatabaseConnectionOptions} connection Database type to use.
- *
- * @prop {?number} [levelingCheckingInterval=1000]
- * Determines how often the leveling ending state will be checked (in ms). Default: 1000.
- *
  * @prop {?boolean} [debug=false] Determines if debug mode is enabled. Default: false.
  * @prop {Partial} [updatesChecker] Updates checker configuration.
  * @prop {Partial} [configurationChecker] Leveling config checker configuration.
@@ -409,10 +392,6 @@ export class Leveling<
 /**
  * Optional configuration for the {@link Leveling} class.
  * @typedef {object} ILevelingOptionalConfiguration
- *
- * @prop {?number} [levelingCheckingInterval=1000]
- * Determines how often the leveling ending state will be checked (in ms). Default: 1000.
- *
  * @prop {?boolean} [debug=false] Determines if debug mode is enabled. Default: false.
  * @prop {Partial} [updatesChecker] Updates checker configuration.
  * @prop {Partial} [configurationChecker] Leveling config checker configuration.
@@ -512,7 +491,20 @@ export class Leveling<
 
 /**
  * A type containing all the {@link Leveling} events and their return types.
+ * 
+ * Type parameters:
+ *
+ * - `TDatabaseType` ({@link DatabaseType}) - The database type that is used.
+ * - `TDatabaseKey` ({@link string}, optional: defaults to `${string}.leveling`) - The type of database key that will be used in database operations.
+ * - `TDatabaseValue` ({@link any}, optional: defaults to {@link IDatabaseStructure}) - The type of database content that will be used in database operations.
+ * 
+ * @typedef {object} ILevelingEvents
+ * @prop {Leveling<DatabaseType, TDatabaseKey, TDatabaseValue>} ready Emits when the {@link Leveling} module is ready.
  * [FILL IN]
+ * 
+ * @template TDatabaseType The database type that is used.
+ * @template TDatabaseKey The type of database key that will be used in database operations.
+ * @template TDatabaseValue The type of database content that will be used in database operations.
  */
 
 /**
@@ -693,29 +685,29 @@ export class Leveling<
  */
 
 /**
-* Conditional type that will return the specified string if it matches the specified length.
-*
-* Type parameters:
-*
-* - `N` ({@link number}) - The string length to match to.
-* - `S` ({@link string}) - The string to check the length of.
-*
-* @template N The string length to match to.
-* @template S The string to check the length of.
-*
-* @typedef {number} ExactLengthString<N, S>
-*/
+ * Conditional type that will return the specified string if it matches the specified length.
+ *
+ * Type parameters:
+ *
+ * - `N` ({@link number}) - The string length to match to.
+ * - `S` ({@link string}) - The string to check the length of.
+ *
+ * @template N The string length to match to.
+ * @template S The string to check the length of.
+ *
+ * @typedef {number} ExactLengthString<N, S>
+ */
 
 /**
-* Conditional type that will return the specified string if it matches any of the possible Discord ID string lengths.
-*
-* Type parameters:
-*
-* - `S` ({@link string}) - The string to check the length of.
-*
-* @template S The string to check the length of.
-* @typedef {number} DiscordID<ID>
-*/
+ * Conditional type that will return the specified string if it matches any of the possible Discord ID string lengths.
+ *
+ * Type parameters:
+ *
+ * - `S` ({@link string}) - The string to check the length of.
+ *
+ * @template S The string to check the length of.
+ * @typedef {number} DiscordID<ID>
+ */
 
 /**
  * Extracts the type that was passed into `Promise<...>` type.
@@ -734,7 +726,7 @@ export class Leveling<
 /**
  * Emits when the {@link Leveling} module is ready.
  * @event Leveling#ready
- * @param {Leveling<DatabaseType>} leveling Initialized {@link Leveling} instance.
+ * @param {Leveling<DatabaseType, TDatabaseKey, TDatabaseValue>} leveling Initialized {@link Leveling} instance.
  */
 
 // [FILL IN]

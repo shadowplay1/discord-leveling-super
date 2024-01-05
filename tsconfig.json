@@ -22,8 +22,9 @@
 		"removeComments": false,
 		"preserveConstEnums": true,
 		"allowSyntheticDefaultImports": true,
+		"skipLibCheck": true,
 		"skipDefaultLibCheck": true,
-		"resolveJsonModule": true,
+		"resolveJsonModule": true
 	},
 	"include": [
 		"src/**/*"
